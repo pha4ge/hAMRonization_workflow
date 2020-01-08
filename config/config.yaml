@@ -1,0 +1,25 @@
+# Output and working directory (all other directories below, if not absolute, are relative to this one)
+workdir:
+  "/home/Tausch/Mycephs/projects/ph4ge/data/testing"
+
+species:
+   "anySpeciesName@edit"
+
+# path or URL to sample sheet (TSV format, columns: sample, assembly); can be created by scripts/create_sampleSheet.sh --mode assembly
+samples: "/cephfs/abteilung4/tausch/projects/ph4ge/code/config/isolate_list.txt"
+
+
+
+params:
+  threads: 1 #number of threads per rule
+  abricate:
+    name: "ncbi"
+    path: "/cephfs/abteilung4/NGS/ReferenceDB/NCBI/ResDB" # path to ncbi resistance gene db (either from conda path/2/conda_env/db or custom)
+    minid: 75 #minimum identity threshold
+    mincov: 0 #minimum coverage threshold
+  srst2:
+    gene_db: "/cephfs/abteilung4/tausch/projects/ph4ge/data/dbs/ResFinder.fasta"
+    min_depth: 5
+    max_divergence: 10
+  ariba:
+    gene_db: "/cephfs/abteilung4/tausch/projects/ph4ge/data/dbs/ariba"

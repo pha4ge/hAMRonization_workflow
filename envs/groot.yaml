@@ -1,0 +1,10 @@
+name: groot
+channels:
+  - bioconda/label/cf201901
+  - defaults
+  - conda-forge
+  - bioconda
+dependencies:
+  - groot=0.8.3=1
+prefix: /home/Tausch/miniconda3/envs/groot
+
