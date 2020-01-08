@@ -15,7 +15,10 @@ rule run_ariba:
         gene_db = config["params"]["ariba"]["gene_db"],
         output_folder = "results/{sample}/ariba/"
     shell:
-       "ariba run --threads {threads} {params.gene_db} {input.reads} {input.read1} {input.read2} {params.output_folder} 2> >(tee {log} >&2)"
+       """
+       rm -r {params.output_folder};
+       ariba run --threads {threads} {params.gene_db} {input.read1} {input.read2} {params.output_folder} 2> >(tee {log} >&2)
+       """
 
 
 
