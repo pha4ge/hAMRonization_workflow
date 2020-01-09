@@ -11,6 +11,7 @@ The selected AMR detection tools are currently:
 * Resfinder
 * RGI
 * SRST2
+* ReMatCh 
 
 To generate comparable result files, all tools are being run in a Snakemake pipeline installing fixed versions of the tools from conda on execution.
 
@@ -18,11 +19,17 @@ Installation
 ------------
 
 This pipeline depends on Snakemake and Conda. If you have conda installed, please run 
+
 `conda create --name hamronization snakemake` 
+
 and 
+
 `conda activate hamronization`
+
 Afterwards, clone this repository:
+
 `git clone https://github.com/pha4ge/hAMRonization.git`
+
 All further dependencies will be installed via conda on execution.
 
 Execution
