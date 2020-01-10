@@ -23,5 +23,6 @@ include: "rules/groot.smk"
 include: "rules/resfinder.smk"
 include: "rules/rgi.smk"
 include: "rules/srst2.smk"
+include: "rules/staramr.smk"
 
 
