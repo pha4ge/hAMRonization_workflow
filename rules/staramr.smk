@@ -2,7 +2,7 @@ rule run_staramr:
     input:
         contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
     output:
-        report = "results/{sample}/staramr/report.tsv"
+        report = "results/{sample}/staramr/resfinder.tsv"
     message: "Running rule run_staramr on {wildcards.sample} with contigs"
     log:
        "logs/staramr_{sample}.log"

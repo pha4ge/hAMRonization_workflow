@@ -25,3 +25,5 @@ params:
     gene_db: "/cephfs/abteilung4/tausch/projects/ph4ge/data/dbs/ariba"
   staramr:
     #empty, no options exposed
+  amrfinder:
+    #empty, no options exposed
