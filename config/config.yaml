@@ -26,4 +26,8 @@ params:
   staramr:
     #empty, no options exposed
   amrfinder:
-    #empty, no options exposed
+    gene_db: "/home/Tausch/miniconda3/envs/amrfinder/share/amrfinderplus/data/2020-01-06.1/"
+  groot:
+    db: "/cephfs/abteilung4/tausch/projects/ph4ge/data/dbs/groot/groot-index-20200110143236/"
+  rgi:
+    #gene_db: "

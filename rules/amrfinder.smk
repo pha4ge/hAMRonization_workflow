@@ -11,7 +11,6 @@ rule run_amrfinder:
     threads:
        config["params"]["threads"]
     params:
-        #refdb = config["params"]["amrfinder"]["path"],
+        refdb = config["params"]["amrfinder"]["gene_db"],
     shell:
-       "amrfinder -n {refdb} -"
-       "amrfinder --threads {threads} --nopath --db {params.dbname} --minid {params.minid} --mincov {params.mincov} --datadir {params.refdb} {input.contigs} > {output.report} 2> >(tee {log} >&2)"
+       "amrfinder -n {input.contigs} -o {output.report} -d {params.refdb} 2> >(tee {log} >&2) "

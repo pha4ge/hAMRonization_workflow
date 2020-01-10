@@ -17,4 +17,4 @@ rule run_staramr:
        rm -r {params.output_folder};
        staramr search -o {params.output_folder} {input.contigs} 2> >(tee {log} >&2)
        """
-       #TODO: activate point mutation search for givenspecies?
+       #TODO: activate point mutation search for given species?
