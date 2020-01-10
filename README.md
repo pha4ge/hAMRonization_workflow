@@ -5,14 +5,15 @@ Description
 hAMRonization is a project aiming at the harmonizatino of output file formats of antimicrobial resistance detection tools. 
 The selected AMR detection tools are currently:
 * abricate
-* ariba
 * AMRfinder
+* ariba
 * Groot
-* Resfinder
 * RGI
 * SRST2
-* ReMatCh 
 * staramr
+* ~~ReMatCh~~ (planned)
+* ~~Resfinder~~ (planned)
+
 
 To generate comparable result files, all tools are being run in a Snakemake pipeline installing fixed versions of the tools from conda on execution.
 
@@ -63,6 +64,12 @@ Mycobacterium tuberculosis  SAMN02598983    GCA_000654735.1 SRR1174279 SRR117325
 ```
 Links to data and corresponding metadata need to be stored in a tab separated sample sheet with the following columns:
 `species biosample       assembly        reads   read1   read2`
+
+
+Results
+-------
+
+The results generated on the aforementioned datasets can be retrieved [here](https://databay.bfrlab.de/d/c937ce66a7f2406e9a0f/).
 
 
 Contact
