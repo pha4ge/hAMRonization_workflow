@@ -1,6 +1,6 @@
 # Output and working directory (all other directories below, if not absolute, are relative to this one)
 workdir:
-  "/home/Tausch/Mycephs/projects/ph4ge/data/testing"
+  "/home/Tausch/Mycephs/projects/ph4ge/data/results"
 
 species:
    "anySpeciesName@edit"
