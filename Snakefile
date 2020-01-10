@@ -11,7 +11,7 @@ def _get_seq(wildcards,seqs):
 
 rule all:
     input:
-        expand("results/{sample}/amrfinder/report.tsv", sample=samples.index),
+        expand("results/{sample}/staramr/report.tsv", sample=samples.index),
         #expand("results/{sample}/ariba/report.tsv", sample=samples.index),
         #expand("results/{sample}/abricate/report.tsv", sample=samples.index),
         #expand("results/{sample}/srst2/srst2__fullgenes__ResFinder__results.txt", sample=samples.index)

@@ -23,3 +23,5 @@ params:
     max_divergence: 10
   ariba:
     gene_db: "/cephfs/abteilung4/tausch/projects/ph4ge/data/dbs/ariba"
+  staramr:
+    #empty, no options exposed
