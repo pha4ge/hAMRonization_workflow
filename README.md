@@ -12,6 +12,7 @@ The selected AMR detection tools are currently:
 * RGI
 * SRST2
 * ReMatCh 
+* staramr
 
 To generate comparable result files, all tools are being run in a Snakemake pipeline installing fixed versions of the tools from conda on execution.
 
