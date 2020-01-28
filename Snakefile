@@ -21,7 +21,8 @@ rule cleanup:
         expand("results/{sample}/abricate/report.tsv", sample=samples.index),
         expand("results/{sample}/amrfinder/report.tsv", sample=samples.index),
         expand("results/{sample}/srst2/srst2__fullgenes__ResFinder__results.txt", sample=samples.index),
-        expand("results/{sample}/groot/report.tsv", sample=samples.index)
+        expand("results/{sample}/groot/report.tsv", sample=samples.index),
+        expand("results/{sample}/mykrobe/report.json", sample=samples.index)
     output:
         "pipeline_finished.txt"
     shell:
@@ -34,6 +35,7 @@ include: "rules/abricate.smk"
 include: "rules/amrfinder.smk"
 include: "rules/ariba.smk"
 include: "rules/groot.smk"
+include: "rules/mykrobe.smk"
 include: "rules/rgi.smk"
 include: "rules/srst2.smk"
 include: "rules/staramr.smk"

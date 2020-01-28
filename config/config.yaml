@@ -31,3 +31,5 @@ params:
     db: "/cephfs/abteilung4/tausch/projects/ph4ge/data/dbs/groot/groot-index-20200110143236/"
   rgi:
     #gene_db: "
+  mykrobe:
+    #todo

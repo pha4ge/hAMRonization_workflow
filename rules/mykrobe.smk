@@ -1,0 +1,16 @@
+rule run_mykrobe:
+    input:
+        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
+        read2 = lambda wildcards: _get_seq(wildcards, 'read2')
+    output:
+        report = "results/{sample}/mykrobe/report.json"
+    message: "Running rule run_mykrobe on {wildcards.sample} with reads"
+    log:
+       "logs/amrfinder_{sample}.log"
+    conda:
+      "../envs/mykrobe.yaml"
+    threads:
+       config["params"]["threads"]
+    params:
+    shell:
+       "mykrobe predict {wildcards.sample} tb -1 {input.read1} {input.read2} --threads {threads} --force --format json --output {output.report} 2> >(tee {log} >&2) "
