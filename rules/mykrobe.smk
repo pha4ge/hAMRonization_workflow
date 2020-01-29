@@ -6,11 +6,11 @@ rule run_mykrobe:
         report = "results/{sample}/mykrobe/report.json"
     message: "Running rule run_mykrobe on {wildcards.sample} with reads"
     log:
-       "logs/amrfinder_{sample}.log"
+       "logs/mykrobe_{sample}.log"
     conda:
       "../envs/mykrobe.yaml"
     threads:
        config["params"]["threads"]
     params:
     shell:
-       "mykrobe predict {wildcards.sample} tb -1 {input.read1} {input.read2} --threads {threads} --force --format json --output {output.report} 2> >(tee {log} >&2) "
+       "rm mykrobe/data/skeletons/tb-species-170421-tb-hunt-probe-set-jan-03-2019_21.ctx & mykrobe predict {wildcards.sample} tb -1 {input.read1} {input.read2} --threads {threads} --format json --output {output.report} 2> >(tee {log} >&2) "
