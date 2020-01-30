@@ -12,5 +12,6 @@ rule run_mykrobe:
     threads:
        config["params"]["threads"]
     params:
+        tmp = "results/{sample}/mykrobe/tmp/"
     shell:
-       "rm mykrobe/data/skeletons/tb-species-170421-tb-hunt-probe-set-jan-03-2019_21.ctx & mykrobe predict {wildcards.sample} tb -1 {input.read1} {input.read2} --threads {threads} --format json --output {output.report} 2> >(tee {log} >&2) "
+       "mykrobe predict {wildcards.sample} tb -1 {input.read1} {input.read2} --threads {threads} --format json --output {output.report} --tmp {params.tmp} 2> >(tee {log} >&2) "
