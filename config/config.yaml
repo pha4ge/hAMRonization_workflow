@@ -8,8 +8,6 @@ species:
 # path or URL to sample sheet (TSV format, columns: sample, assembly); can be created by scripts/create_sampleSheet.sh --mode assembly
 samples: "/cephfs/abteilung4/tausch/projects/ph4ge/code/config/isolate_list.txt"
 
-
-
 params:
   threads: 1 #number of threads per rule
   abricate:
@@ -31,3 +29,5 @@ params:
     db: "/cephfs/abteilung4/tausch/projects/ph4ge/data/dbs/groot/groot-index-20200110143236/"
   rgi:
     #gene_db: "
+  resfams:
+    db: "/cephfs/abteilung4/tausch/projects/ph4ge/data/dbs/resfams/Resfams-full.hmm"

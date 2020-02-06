@@ -1,0 +1,15 @@
+name: resfams
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1=conda_forge
+  - _openmp_mutex=4.5=0_gnu
+  - hmmer=3.2.1=he1b5a44_2
+  - libgcc-ng=9.2.0=h24d8f2e_2
+  - libgomp=9.2.0=h24d8f2e_2
+  - libstdcxx-ng=9.2.0=hdf63c60_2
+  - prodigal=2.6.3=h516909a_2
+prefix: /home/Tausch/miniconda3/envs/resfams
+
