@@ -1,6 +1,6 @@
 # Output and working directory (all other directories below, if not absolute, are relative to this one)
 workdir:
-  "/home/Tausch/Mycephs/projects/ph4ge/data/results"
+  "/home/Tausch/Mycephs/projects/ph4ge/data/results_withmykrobe"
 
 species:
    "anySpeciesName@edit"
@@ -31,3 +31,5 @@ params:
     #gene_db: "
   resfams:
     db: "/cephfs/abteilung4/tausch/projects/ph4ge/data/dbs/resfams/Resfams-full.hmm"
+  mykrobe:
+    #todo
