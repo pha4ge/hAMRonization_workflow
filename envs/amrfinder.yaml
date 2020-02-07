@@ -88,5 +88,3 @@ dependencies:
   - perl=5.26.2=h14c3975_0
   - tk=8.6.8=hbc83047_0
   - zlib=1.2.11=h7b6447c_3
-prefix: /home/Tausch/miniconda3/envs/amrfinder
-

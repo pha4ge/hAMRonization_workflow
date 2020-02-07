@@ -6,5 +6,3 @@ channels:
   - bioconda
 dependencies:
   - groot=0.8.3=1
-prefix: /home/Tausch/miniconda3/envs/groot
-

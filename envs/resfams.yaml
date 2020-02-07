@@ -11,5 +11,3 @@ dependencies:
   - libgomp=9.2.0=h24d8f2e_2
   - libstdcxx-ng=9.2.0=hdf63c60_2
   - prodigal=2.6.3=h516909a_2
-prefix: /home/Tausch/miniconda3/envs/resfams
-
