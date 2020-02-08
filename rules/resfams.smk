@@ -12,9 +12,9 @@ rule run_resfams:
        config["params"]["threads"]
     params:
         output_prefix = "results/{sample}/resfams/resfams"
-        refdb = config["params"]["resfams"]["db"],
+        refdb = config["params"]["resfams"]["db"]
     shell:
        """
-       prodigal -i {input.contigs} -a {params.output_prefix}/protein_seqs.faa 2> >(tee {log} >&2)
+       prodigal -i {input.contigs} -a {params.output_prefix}/protein_seqs.faa 2> >(tee {log} >&2);
        hmmsearch --threads {threads} --tblout {output.report} {params.refdb} {params.output_prefix}/protein_seqs.faa 2> >(tee {log} >&2)
        """
