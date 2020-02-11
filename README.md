@@ -1,5 +1,6 @@
 hAMRonization - Harmonization of output file formats of antimicrobial resistance detection tools 
 =======================================
+[![Build Status](https://travis-ci.com/fmaguire/hAMRonization.svg?branch=master)](https://travis-ci.com/fmaguire/hAMRonization)
 Description
 -----------
 hAMRonization is a project aiming at the harmonizatino of output file formats of antimicrobial resistance detection tools. 
