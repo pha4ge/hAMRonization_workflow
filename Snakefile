@@ -38,7 +38,7 @@ include: "rules/ariba.smk"
 include: "rules/groot.smk"
 include: "rules/mykrobe.smk"
 include: "rules/rgi.smk"
-include: "rules/srst2.smk"
+include: "rules/srst2.smk" #libcurses is causing issue with the env
 include: "rules/staramr.smk"
 include: "rules/resfams.smk"
 #include: "rules/resfinder.smk" #TODO: implement rule for resfinder

@@ -1,35 +1,33 @@
 # Output and working directory (all other directories below, if not absolute, are relative to this one)
-workdir:
-  "/home/Tausch/Mycephs/projects/ph4ge/data/results_withmykrobe"
-
-species:
-   "anySpeciesName@edit"
+workdir: "/home/fin/Documents/research/bioinformatics/AMR_harmonisation/hAMRonization"
+species: "anySpeciesName@edit"
 
 # path or URL to sample sheet (TSV format, columns: sample, assembly); can be created by scripts/create_sampleSheet.sh --mode assembly
-samples: "/cephfs/abteilung4/tausch/projects/ph4ge/code/config/isolate_list.txt"
+samples: "config/test_isolate_list.txt"
 
 params:
   threads: 1 #number of threads per rule
   abricate:
     name: "ncbi"
-    path: "/cephfs/abteilung4/NGS/ReferenceDB/NCBI/ResDB" # path to ncbi resistance gene db (either from conda path/2/conda_env/db or custom)
+    path: "data/dbs" # path to ncbi resistance gene db (either from conda path/2/conda_env/db or custom)
     minid: 75 #minimum identity threshold
     mincov: 0 #minimum coverage threshold
   srst2:
-    gene_db: "/cephfs/abteilung4/tausch/projects/ph4ge/data/dbs/ResFinder.fasta"
+    gene_db: "data/dbs/ResFinder.fasta"
     min_depth: 5
     max_divergence: 10
   ariba:
-    gene_db: "/cephfs/abteilung4/tausch/projects/ph4ge/data/dbs/ariba"
+    gene_db: "data/dbs/ariba_card.prepareref"
   staramr:
     #empty, no options exposed
   amrfinder:
-    gene_db: "/home/Tausch/miniconda3/envs/amrfinder/share/amrfinderplus/data/2020-01-06.1/"
+    gene_db: "data/dbs/amrfinder2020-01-06.1/"
   groot:
-    db: "/cephfs/abteilung4/tausch/projects/ph4ge/data/dbs/groot/groot-index-20200110143236/"
+    gene_db: "data/dbs/groot-index-100"
+    #empty as groot needs different db indexing by readlength and I haven't automated this in snakemake, not sure best approach.
   rgi:
-    #gene_db: "
+    gene_db: "data/dbs/card/card.json"
   resfams:
-    db: "/cephfs/abteilung4/tausch/projects/ph4ge/data/dbs/resfams/Resfams-full.hmm"
+    db: "data/dbs/resfams/Resfams-full.hmm"
   mykrobe:
     #todo

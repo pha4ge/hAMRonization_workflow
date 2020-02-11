@@ -37,9 +37,9 @@ All further dependencies will be installed via conda on execution.
 Execution
 ---------
 
-To execute the pipeline, go to the main folder of the cloned repository, adapt the sample sheet as well as the config file to your needs and call
+To execute the pipeline, go to the main folder of the cloned repository, adapt the sample sheet as well as the config file to your needs and call with the number of jobs you want to run.
 
-`snakemake -c config.yaml --use-conda`
+`snakemake --configfile config/config.yaml --use-conda --jobs 2`
 
 Test data
 ---------
