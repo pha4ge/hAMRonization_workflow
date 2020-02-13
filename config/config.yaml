@@ -27,6 +27,6 @@ params:
   rgi:
     gene_db: "data/dbs/card/card.json"
   resfams:
-    db: "data/dbs/resfams/Resfams-full.hmm"
+    db: "data/dbs/Resfams-full.hmm"
   mykrobe:
     #todo
