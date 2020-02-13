@@ -11,7 +11,7 @@ rule run_resfams:
     threads:
        config["params"]["threads"]
     params:
-        output_prefix = "results/{sample}/resfams/resfams",
+        output_prefix = "results/{sample}/resfams",
         refdb = config["params"]["resfams"]["db"]
     shell:
        """
