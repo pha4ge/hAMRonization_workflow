@@ -18,11 +18,8 @@ ariba getref card ariba_card
 ariba prepareref -f ariba_card.fa -m ariba_card.tsv ariba_card.prepareref 
 
 # get amrfinder database
-mkdir -p amrfinder2020-01-06.1
-curl https://ftp.ncbi.nlm.nih.gov/pathogen/Antimicrobial_resistance/AMRFinder/data/latest/AMR.LIB --output amrfinder2020-01-06.1/AMR.LIB
-curl https://ftp.ncbi.nlm.nih.gov/pathogen/Antimicrobial_resistance/AMRFinder/data/latest/AMRProt --output amrfinder2020-01-06.1/AMRProt
-curl https://ftp.ncbi.nlm.nih.gov/pathogen/Antimicrobial_resistance/AMRFinder/data/latest/AMR_CDS --output amrfinder2020-01-06.1/AMR_CDS
-curl https://ftp.ncbi.nlm.nih.gov/pathogen/Antimicrobial_resistance/AMRFinder/data/latest/fam.tab --output amrfinder2020-01-06.1/fam.tab
+mkdir -p amrfinder2020-01-22.1
+wget -nH --cut-dirs=6 -P amrfinder2020-01-22.1 --ftp-password="AMRFinder@ncbi" --ftp-user="anonymous" -m ftp://ftp.ncbi.nlm.nih.gov/pathogen/Antimicrobial_resistance/AMRFinderPlus/database/3.6/2020-01-22.1/ 
 
 # get groot index
 groot get
