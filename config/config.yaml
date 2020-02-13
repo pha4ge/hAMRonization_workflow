@@ -1,5 +1,4 @@
 # Output and working directory (all other directories below, if not absolute, are relative to this one)
-workdir: "."
 species: "anySpeciesName@edit"
 
 # path or URL to sample sheet (TSV format, columns: sample, assembly); can be created by scripts/create_sampleSheet.sh --mode assembly

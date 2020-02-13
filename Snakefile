@@ -1,7 +1,8 @@
 import pandas as pd
+import os
 shell.executable("bash")
 
-workdir: config["workdir"]
+workdir: os.getcwd()
 
 samples = pd.read_table(config["samples"], index_col="biosample", sep="\t")
 samples.index = samples.index.astype('str', copy=False) # in case samples are integers, need to convert them to str
