@@ -2,7 +2,7 @@
 species: "anySpeciesName@edit"
 
 # path or URL to sample sheet (TSV format, columns: sample, assembly); can be created by scripts/create_sampleSheet.sh --mode assembly
-samples: "config/test_isolate_list.txt"
+samples: "config/test_data.tsv"
 
 params:
   threads: 1 #number of threads per rule
