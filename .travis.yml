@@ -11,5 +11,8 @@ install:
         - cd data/dbs
         - bash get_dbs.sh
         - cd ../..
+        - cd data/test
+        - bash get_test_data.sh
+        - cd ../..
 script: 
     snakemake --configfile config/config.yaml --use-conda --jobs 1
