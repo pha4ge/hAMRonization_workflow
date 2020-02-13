@@ -20,6 +20,7 @@ ariba prepareref -f ariba_card.fa -m ariba_card.tsv ariba_card.prepareref
 # get amrfinder database
 mkdir -p amrfinder2020-01-22.1
 wget -nH --cut-dirs=6 -P amrfinder2020-01-22.1 --ftp-password="AMRFinder@ncbi" --ftp-user="anonymous" -m ftp://ftp.ncbi.nlm.nih.gov/pathogen/Antimicrobial_resistance/AMRFinderPlus/database/3.6/2020-01-22.1/ 
+makeblastdb -in amrfinder2020-01-22.1/AMRProt -dbtype prot -out amrfinder2020-01-22.1/AMRProt
 
 # get groot index
 groot get
