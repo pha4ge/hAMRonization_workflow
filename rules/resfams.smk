@@ -16,5 +16,5 @@ rule run_resfams:
     shell:
        """
        prodigal -i {input.contigs} -a {params.output_prefix}/protein_seqs.faa 2> >(tee {log} >&2);
-       hmmsearch --threads {threads} --tblout {output.report} {params.refdb} {params.output_prefix}/protein_seqs.faa 2> >(tee {log} >&2)
+       hmmsearch --cpu {threads} --tblout {output.report} {params.refdb} {params.output_prefix}/protein_seqs.faa 2> >(tee {log} >&2)
        """
