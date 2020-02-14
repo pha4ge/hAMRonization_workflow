@@ -3,7 +3,7 @@
 set -o errexit
 
 # install blast, ariba, groot in a conda environment to prepare those databases
-#conda create -y -n db_install -c bioconda blast ariba groot
+#conda create -y -n db_install -c bioconda blast ariba groot kma
 
 # get abricate ncbi db
 mkdir -p ncbi
@@ -34,3 +34,12 @@ tar -C card -xvf card/card.tar.gz
 
 # get resfams
 curl http://dantaslab.wustl.edu/resfams/Resfams-full.hmm.gz | gunzip > Resfams-full.hmm
+
+# get resfinder
+mkdir -p resfinder
+wget https://bitbucket.org/genomicepidemiology/resfinder_db/get/2a8dd7fc7a8c.zip
+unzip -j -d resfinder 2a8dd7fc7a8c.zip
+cat resfinder/*.fsa > resfinder/resfinder.fsa
+makeblastdb -in resfinder/resfinder.fsa -dbtype nucl -out resfinder/resfinder_blastdb
+kma index -i resfinder/resfinder.fsa -o resfinder/resfinder_kma
+
