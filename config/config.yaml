@@ -30,3 +30,7 @@ params:
     db: "data/dbs/Resfams-full.hmm"
   mykrobe:
     #todo
+  resfinder:
+    path: "data/dbs/resfinder/resfinder_blastdb"
+  kmerresistance:
+    path: "data/dbs/resfinder/resfinder_kma"
