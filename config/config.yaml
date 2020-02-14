@@ -33,4 +33,5 @@ params:
   resfinder:
     path: "data/dbs/resfinder/resfinder_blastdb"
   kmerresistance:
-    path: "data/dbs/resfinder/resfinder_kma"
+    amr_db: "data/dbs/resfinder/resfinder_kma"
+    species_db: "data/dbs/resfinder/16S_species"

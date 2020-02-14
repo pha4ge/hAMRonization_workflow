@@ -25,6 +25,8 @@ rule cleanup:
         expand("results/{sample}/groot/report.tsv", sample=samples.index),
         expand("results/{sample}/resfams/resfams.tblout", sample=samples.index),
         expand("results/{sample}/mykrobe/report.json", sample=samples.index)
+        expand("results/{sample}/resfinder/report.tsv", sample=samples.index)
+        expand("results/{sample}/kmerresistance/report.KmerRes", sample=samples.index)
     output:
         "pipeline_finished.txt"
     shell:
@@ -39,7 +41,8 @@ include: "rules/ariba.smk"
 include: "rules/groot.smk"
 include: "rules/mykrobe.smk"
 include: "rules/rgi.smk"
-include: "rules/srst2.smk" #libcurses is causing issue with the env
+include: "rules/srst2.smk" 
 include: "rules/staramr.smk"
 include: "rules/resfams.smk"
-#include: "rules/resfinder.smk" #TODO: implement rule for resfinder
+include: "rules/resfinder.smk" 
+include: "rules/kmerresistance.smk" 
