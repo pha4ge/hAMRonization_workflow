@@ -19,8 +19,3 @@ rule run_ariba:
        rm -r {params.output_folder};
        ariba run --threads {threads} {params.gene_db} {input.read1} {input.read2} {params.output_folder} 2> >(tee {log} >&2)
        """
-
-
-
-
-

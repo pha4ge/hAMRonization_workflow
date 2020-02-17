@@ -11,9 +11,10 @@ rule run_rgi:
     threads:
        config["params"]["threads"]
     params:
-        output_prefix = "results/{sample}/rgi/rgi"
+        output_prefix = "results/{sample}/rgi/rgi",
+        gene_db = config["params"]["rgi"]["gene_db"]
     shell:
        """
+       rgi load --card_json {params.gene_db}
        rgi main --input_sequence {input.contigs} --output_file {params.output_prefix} --clean --num_threads {threads} 2> >(tee {log} >&2)
-       rgi tab -i {params.output_prefix}/rgi.json
        """

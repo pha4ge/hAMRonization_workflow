@@ -34,15 +34,34 @@ Afterwards, clone this repository:
 
 All further dependencies will be installed via conda on execution.
 
+Databases can be downloaded by going to the `data/dbs` directory and running:
+
+`bash get_dbs.sh`
+
 Execution
 ---------
 
-To execute the pipeline, go to the main folder of the cloned repository, adapt the sample sheet as well as the config file to your needs and call
+To execute the pipeline, go to the main folder of the cloned repository, adapt the sample sheet as well as the config file to your needs and call with the number of jobs you want to run.
 
-`snakemake -c config.yaml --use-conda`
+`snakemake --configfile config/config.yaml --use-conda --jobs 2`
 
-Test data
----------
+
+Testing
+-------
+
+If you want to test the pipeline locally on a single TB isolate you can use the
+`run_test.sh` script to create a clean conda instance, download the dbs, and download
+the test data. 
+
+If you've already downloaded the test data you can just run to execute the pipeline:
+
+`snakemake --configfile config/test_config.yaml --use-conda --jobs 2`
+
+
+Initial Run
+-----------
+
+### Run Data
 
 Following datasets are currently used for result file generation:
 ```
@@ -66,11 +85,9 @@ Links to data and corresponding metadata need to be stored in a tab separated sa
 `species biosample       assembly        reads   read1   read2`
 
 
-Results
--------
+### Results
 
 The results generated on the aforementioned datasets can be retrieved [here](https://databay.bfrlab.de/d/c937ce66a7f2406e9a0f/).
-
 
 Contact
 -------
@@ -78,5 +95,6 @@ Please consult the [PHA4GE project website](https://github.com/pha4ge) for quest
 
 For technical questions, please feel free to consult:
  * Simon H. Tausch <Simon.Tausch (at) bfr.bund.de> 
+ * Finlay Maguire <finlaymaguire (at) gmail.com> 
  
 

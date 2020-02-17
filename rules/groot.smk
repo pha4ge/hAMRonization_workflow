@@ -4,7 +4,7 @@ rule run_groot:
         read2 = lambda wildcards: _get_seq(wildcards, 'read2')
     output:
         report = "results/{sample}/groot/report.tsv"
-    message: "Running rule run_groot on {wildcards.sample} with contigs"
+    message: "Running rule run_groot on {wildcards.sample} with reads"
     log:
        "logs/groot_{sample}.log"
     conda:
@@ -12,6 +12,6 @@ rule run_groot:
     threads:
        config["params"]["threads"]
     params:
-        refdb = config["params"]["groot"]["db"],
+        refdb = config["params"]['groot']['gene_db']
     shell:
        "groot align -f {input.read1} {input.read2} -i {params.refdb} -y {log} | groot report -y {log} > {output.report}"

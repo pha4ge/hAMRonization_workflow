@@ -1,7 +1,8 @@
 import pandas as pd
+import os
 shell.executable("bash")
 
-workdir: config["workdir"]
+workdir: os.getcwd()
 
 samples = pd.read_table(config["samples"], index_col="biosample", sep="\t")
 samples.index = samples.index.astype('str', copy=False) # in case samples are integers, need to convert them to str
@@ -22,7 +23,10 @@ rule cleanup:
         expand("results/{sample}/amrfinder/report.tsv", sample=samples.index),
         expand("results/{sample}/srst2/srst2__fullgenes__ResFinder__results.txt", sample=samples.index),
         expand("results/{sample}/groot/report.tsv", sample=samples.index),
+        expand("results/{sample}/resfams/resfams.tblout", sample=samples.index),
         expand("results/{sample}/mykrobe/report.json", sample=samples.index)
+        expand("results/{sample}/resfinder/report.tsv", sample=samples.index)
+        expand("results/{sample}/kmerresistance/report.KmerRes", sample=samples.index)
     output:
         "pipeline_finished.txt"
     shell:
@@ -37,8 +41,8 @@ include: "rules/ariba.smk"
 include: "rules/groot.smk"
 include: "rules/mykrobe.smk"
 include: "rules/rgi.smk"
-include: "rules/srst2.smk"
+include: "rules/srst2.smk" 
 include: "rules/staramr.smk"
-#include: "rules/resfinder.smk" #TODO: implement rule for resfinder
-
-
+include: "rules/resfams.smk"
+include: "rules/resfinder.smk" 
+include: "rules/kmerresistance.smk" 
