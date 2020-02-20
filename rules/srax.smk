@@ -14,4 +14,4 @@ rule run_srax:
     params:
        dbtype = config["params"]["srax"]["dbtype"]
     shell:
-       "sraX -i {input.genome_dir} -t {threads} -db {params.dbtype} -o {output.outdir} 2> >(tee {log} >&2)"
+       "sraX -i {input.genome_dir} -t 4 -db {params.dbtype} -o {output.outdir} 2> >(tee {log} >&2)"
