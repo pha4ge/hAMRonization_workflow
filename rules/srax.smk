@@ -1,6 +1,6 @@
 rule run_srax:
     input:
-        genome_dir = lambda wildcards: _get_seq (wildcards, 'assembly'),
+        genome_dir = lambda wildcards: _get_seqdir(wildcards),
     output:
         report = "results/{sample}/srax/Results/srax_analysis.html",
         outdir = "results/{sample}/srax"
