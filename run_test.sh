@@ -6,7 +6,7 @@ wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O mi
 bash miniconda.sh -b -p miniconda
 source "miniconda/etc/profile.d/conda.sh"
 conda install -n base -y conda=4.5.13
-conda create -n harmonization -y -c bioconda snakemake blast ariba=2.14.4=py36he1b5a44_0 groot=0.8.3=1 ncbi-amrfinderplus=3.6.10=hf18293b_0 kma
+conda create -n harmonization -y -c bioconda snakemake blast ariba=2.14.4=py36he1b5a44_0 groot=0.8.3=1 ncbi-amrfinderplus=3.6.10=hf18293b_0 kma unzip
 conda activate harmonization
 
 # get and format databases
