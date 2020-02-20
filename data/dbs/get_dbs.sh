@@ -41,7 +41,7 @@ mkdir -p resfinder
 wget https://bitbucket.org/genomicepidemiology/resfinder_db/get/2a8dd7fc7a8c.zip
 unzip -j -d resfinder 2a8dd7fc7a8c.zip
 cat resfinder/*.fsa > resfinder/resfinder.fsa
-makeblastdb -in resfinder/resfinder.fsa -dbtype nucl -out resfinder/resfinder_blastdb
+makeblastdb -in resfinder/resfinder.fsa -dbtype nucl -out resfinder/resfinder.fsa
 kma index -i resfinder/resfinder.fsa -o resfinder/resfinder_kma
 
 # get a species 16S set for kmerresistance, real db not available so grabbed a
