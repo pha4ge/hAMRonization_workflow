@@ -3,7 +3,7 @@ rule run_resfinder:
         contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
         ref = config["params"]["resfinder"]["path"]
     output:
-        report = "results/{sample}/resfinder/report.tsv",
+        report = "results/{sample}/resfinder/data_resfinder.json",
         outdir = "results/{sample}/resfinder"
     message: "Running rule run_resfinder on {wildcards.sample} with contigs"
     log:
