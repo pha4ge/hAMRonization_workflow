@@ -14,4 +14,4 @@ rule run_srax:
     params:
        dbtype = config["params"]["srax"]["dbtype"]
     shell:
-       "srax -i {input.contigs} -t {threads} -db {params.dbtype} -o {output.outdir} 2> >(tee {log} >&2)"
+       "sraX -i {input.contigs} -t {threads} -db {params.dbtype} -o {output.outdir} 2> >(tee {log} >&2)"

@@ -14,16 +14,15 @@ The selected AMR detection tools are currently included (scored out tools are in
 * mykrobe
 * resfams
 * staramr
+* Resfinder
+* KmerResistance
 * ~~ReMatCh~~ 
-* ~~Resfinder~~ 
-* ~~KmerResistance~~
 * ~~DeepARG~~
 * ~~sraX~~
 * ~~pointfinder~~ 
 * ~~ARGS-OAP~~
 * ~~SSTAR~~
 * ~~SEAR~~
-* ~~shortBRED~~
 * ~~AMRplusplus~~
 
 Not included:
@@ -32,6 +31,7 @@ Not included:
 * RAST (not easily runnable on CLI)
 * PATRIC (not easily runnable on CLI)
 * Single organism/or resistance tools (e.g. LREfinder, SSCmec Finder, U-CARE, ARGO)
+* shortBRED (relies on usearch which isn't open-source)
 
 To generate comparable result files, all tools are being run in a Snakemake pipeline installing fixed versions of the tools from conda on execution.
 
