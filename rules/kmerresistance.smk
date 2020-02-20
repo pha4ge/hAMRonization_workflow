@@ -13,7 +13,7 @@ rule run_kmerresistance:
        config["params"]["threads"]
     params:
         amr_db = config["params"]["kmerresistance"]["amr_db"],
-        species_db = config["params"]["kmerresistance"]["species_db"]
+        species_db = config["params"]["kmerresistance"]["species_db"],
         output_folder = "results/{sample}/kmerresistance/"
     shell:
        """
