@@ -3,7 +3,7 @@ rule run_kmerresistance:
         read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
         read2 = lambda wildcards: _get_seq(wildcards, 'read2')
     output:
-        report = "results/{sample}/kmerresistance/report.KmerRes"
+        report = "results/{sample}/kmerresistance/results.KmerRes"
     message: "Running rule run_kmerresistance on {wildcards.sample} with reads"
     log:
        "logs/kmerresistance_{sample}.log"
