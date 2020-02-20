@@ -16,9 +16,9 @@ The selected AMR detection tools are currently included (scored out tools are in
 * staramr
 * Resfinder
 * KmerResistance
+* sraX
 * ~~ReMatCh~~ 
 * ~~DeepARG~~
-* ~~sraX~~
 * ~~pointfinder~~ 
 * ~~ARGS-OAP~~
 * ~~SSTAR~~
