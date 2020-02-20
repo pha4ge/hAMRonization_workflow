@@ -25,7 +25,7 @@ rule cleanup:
         #expand("results/{sample}/groot/report.tsv", sample=samples.index),
         #expand("results/{sample}/resfams/resfams.tblout", sample=samples.index),
         #expand("results/{sample}/mykrobe/report.json", sample=samples.index)
-        expand("results/{sample}/resfinder/report.tsv", sample=samples.index),
+        expand("results/{sample}/resfinder/data_resfinder.json", sample=samples.index),
         expand("results/{sample}/kmerresistance/results.KmerRes", sample=samples.index)
     output:
         "pipeline_finished.txt"
