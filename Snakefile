@@ -26,7 +26,8 @@ rule cleanup:
         #expand("results/{sample}/resfams/resfams.tblout", sample=samples.index),
         #expand("results/{sample}/mykrobe/report.json", sample=samples.index)
         expand("results/{sample}/resfinder/data_resfinder.json", sample=samples.index),
-        expand("results/{sample}/kmerresistance/results.KmerRes", sample=samples.index)
+        expand("results/{sample}/kmerresistance/results.KmerRes", sample=samples.index),
+        expand("results/{sample}/srax/Results/srax_analysis.html", sample=sample.index)
     output:
         "pipeline_finished.txt"
     shell:
@@ -46,3 +47,4 @@ rule cleanup:
 #include: "rules/resfams.smk"
 include: "rules/resfinder.smk" 
 include: "rules/kmerresistance.smk" 
+include: "rules/srax.smk" 

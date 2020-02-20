@@ -35,3 +35,5 @@ params:
   kmerresistance:
     amr_db: "data/dbs/resfinder/resfinder_kma"
     species_db: "data/dbs/resfinder/16S_species"
+  srax:
+     dbtype: "basic"
