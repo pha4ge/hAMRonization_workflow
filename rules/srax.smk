@@ -2,7 +2,7 @@ rule run_srax:
     input:
         genome_dir = lambda wildcards: _get_seqdir(wildcards),
     output:
-        report = "results/{sample}/srax/Results/srax_analysis.html",
+        report = "results/{sample}/srax/Results/sraX_analysis.html",
         outdir = "results/{sample}/srax"
     message: "Running rule run_srax on {wildcards.sample} with contigs"
     log:

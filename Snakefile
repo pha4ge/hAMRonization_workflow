@@ -30,7 +30,7 @@ rule cleanup:
         #expand("results/{sample}/mykrobe/report.json", sample=samples.index)
         expand("results/{sample}/resfinder/data_resfinder.json", sample=samples.index),
         expand("results/{sample}/kmerresistance/results.KmerRes", sample=samples.index),
-        expand("results/{sample}/srax/Results/srax_analysis.html", sample=samples.index)
+        expand("results/{sample}/srax/Results/sraX_analysis.html", sample=samples.index)
     output:
         "pipeline_finished.txt"
     shell:
