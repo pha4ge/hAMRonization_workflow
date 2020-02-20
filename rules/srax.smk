@@ -11,5 +11,7 @@ rule run_srax:
       "../envs/srax.yaml"
     threads:
        config["params"]["threads"]
+    params:
+       dbtype = config["params"]["srax"]["dbtype"]
     shell:
        "srax -t {threads} -db {params.dbtype} -o {output.outdir} 2> >(tee {log} >&2})"
