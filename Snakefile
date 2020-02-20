@@ -10,6 +10,9 @@ samples.index = samples.index.astype('str', copy=False) # in case samples are in
 def _get_seq(wildcards,seqs):
     return samples.loc[(wildcards.sample), [seqs]].dropna()[0]
 
+def _get_seqdir(wildcards):
+    return os.path.dirname(samples.loc[(wildcards.sample), ["assembly"]].dropna()[0])
+
 rule all:
     input:
         "pipeline_finished.txt"

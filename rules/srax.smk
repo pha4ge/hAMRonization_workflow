@@ -1,6 +1,6 @@
 rule run_srax:
     input:
-        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        genome_dir = lambda wildcards: _get_seq (wildcards, 'assembly'),
     output:
         report = "results/{sample}/srax/Results/srax_analysis.html",
         outdir = "results/{sample}/srax"
@@ -14,4 +14,4 @@ rule run_srax:
     params:
        dbtype = config["params"]["srax"]["dbtype"]
     shell:
-       "sraX -i {input.contigs} -t {threads} -db {params.dbtype} -o {output.outdir} 2> >(tee {log} >&2)"
+       "sraX -i {input.genome_dir} -t {threads} -db {params.dbtype} -o {output.outdir} 2> >(tee {log} >&2)"
