@@ -10,6 +10,9 @@ samples.index = samples.index.astype('str', copy=False) # in case samples are in
 def _get_seq(wildcards,seqs):
     return samples.loc[(wildcards.sample), [seqs]].dropna()[0]
 
+def _get_seqdir(wildcards):
+    return os.path.dirname(samples.loc[(wildcards.sample), ["assembly"]].dropna()[0])
+
 rule all:
     input:
         "pipeline_finished.txt"
@@ -24,9 +27,10 @@ rule cleanup:
         expand("results/{sample}/srst2/srst2__fullgenes__ResFinder__results.txt", sample=samples.index),
         expand("results/{sample}/groot/report.tsv", sample=samples.index),
         expand("results/{sample}/resfams/resfams.tblout", sample=samples.index),
-        expand("results/{sample}/mykrobe/report.json", sample=samples.index)
-        expand("results/{sample}/resfinder/report.tsv", sample=samples.index)
-        expand("results/{sample}/kmerresistance/report.KmerRes", sample=samples.index)
+        expand("results/{sample}/mykrobe/report.json", sample=samples.index),
+        expand("results/{sample}/resfinder/data_resfinder.json", sample=samples.index),
+        expand("results/{sample}/kmerresistance/results.KmerRes", sample=samples.index),
+        expand("results/{sample}/srax/Results/sraX_analysis.html", sample=samples.index)
     output:
         "pipeline_finished.txt"
     shell:
@@ -46,3 +50,4 @@ include: "rules/staramr.smk"
 include: "rules/resfams.smk"
 include: "rules/resfinder.smk" 
 include: "rules/kmerresistance.smk" 
+include: "rules/srax.smk" 

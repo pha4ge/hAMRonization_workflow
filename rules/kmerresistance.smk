@@ -3,7 +3,7 @@ rule run_kmerresistance:
         read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
         read2 = lambda wildcards: _get_seq(wildcards, 'read2')
     output:
-        report = "results/{sample}/kmerresistance/report.KmerRes"
+        report = "results/{sample}/kmerresistance/results.KmerRes"
     message: "Running rule run_kmerresistance on {wildcards.sample} with reads"
     log:
        "logs/kmerresistance_{sample}.log"
@@ -13,7 +13,7 @@ rule run_kmerresistance:
        config["params"]["threads"]
     params:
         amr_db = config["params"]["kmerresistance"]["amr_db"],
-        species_db = config["params"]["kmerresistance"]["species_db"]
+        species_db = config["params"]["kmerresistance"]["species_db"],
         output_folder = "results/{sample}/kmerresistance/"
     shell:
        """

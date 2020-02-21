@@ -31,7 +31,9 @@ params:
   mykrobe:
     #todo
   resfinder:
-    path: "data/dbs/resfinder/resfinder_blastdb"
+    path: "data/dbs/resfinder"
   kmerresistance:
     amr_db: "data/dbs/resfinder/resfinder_kma"
     species_db: "data/dbs/resfinder/16S_species"
+  srax:
+     dbtype: "basic"

@@ -3,7 +3,7 @@ hAMRonization - Harmonization of output file formats of antimicrobial resistance
 Description
 -----------
 hAMRonization is a project aiming at the harmonizatino of output file formats of antimicrobial resistance detection tools. 
-The selected AMR detection tools are currently:
+The selected AMR detection tools are currently included (scored out tools are in development):
 * abricate
 * AMRfinder
 * ariba
@@ -11,9 +11,27 @@ The selected AMR detection tools are currently:
 * RGI
 * SRST2
 * staramr
-* ~~ReMatCh~~ (planned)
-* ~~Resfinder~~ (planned)
+* mykrobe
+* resfams
+* staramr
+* Resfinder
+* KmerResistance
+* sraX
+* ~~ReMatCh~~ 
+* ~~DeepARG~~
+* ~~pointfinder~~ 
+* ~~ARGS-OAP~~
+* ~~SSTAR~~
+* ~~SEAR~~
+* ~~AMRplusplus~~
 
+Not included:
+
+* ARG-ANNOT (no longer downloadable)
+* RAST (not easily runnable on CLI)
+* PATRIC (not easily runnable on CLI)
+* Single organism/or resistance tools (e.g. LREfinder, SSCmec Finder, U-CARE, ARGO)
+* shortBRED (relies on usearch which isn't open-source)
 
 To generate comparable result files, all tools are being run in a Snakemake pipeline installing fixed versions of the tools from conda on execution.
 
