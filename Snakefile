@@ -23,7 +23,7 @@ rule cleanup:
         expand("results/{sample}/staramr/resfinder.tsv", sample=samples.index),
         expand("results/{sample}/ariba/report.tsv", sample=samples.index),
         expand("results/{sample}/abricate/report.tsv", sample=samples.index),
-        #expand("results/{sample}/amrfinder/report.tsv", sample=samples.index),
+        expand("results/{sample}/amrfinder/report.tsv", sample=samples.index),
         expand("results/{sample}/srst2/srst2__fullgenes__ResFinder__results.txt", sample=samples.index),
         expand("results/{sample}/groot/report.tsv", sample=samples.index),
         expand("results/{sample}/resfams/resfams.tblout", sample=samples.index),

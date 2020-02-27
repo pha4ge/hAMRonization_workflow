@@ -20,7 +20,7 @@ params:
   staramr:
     #empty, no options exposed
   amrfinder:
-    gene_db: "data/dbs/amrfinder2020-01-22.1/"
+    gene_db: "data/dbs/amrfinder/latest"
   groot:
     gene_db: "data/dbs/groot-index-100"
     #empty as groot needs different db indexing by readlength and I haven't automated this in snakemake, not sure best approach.
