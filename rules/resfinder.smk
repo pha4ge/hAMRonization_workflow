@@ -3,8 +3,7 @@ rule run_resfinder:
         contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
         ref = config["params"]["resfinder"]["path"]
     output:
-        report = "results/{sample}/resfinder/data_resfinder.json",
-        outdir = "results/{sample}/resfinder"
+        report = "results/{sample}/resfinder/data_resfinder.json"
     message: "Running rule run_resfinder on {wildcards.sample} with contigs"
     log:
        "logs/resfinder_{sample}.log"
@@ -14,8 +13,9 @@ rule run_resfinder:
        config["params"]["threads"]
     params:
         refdb = config["params"]["resfinder"]["path"],
+        outdir = "results/{sample}/resfinder"
     shell:
        """
        mkdir -p {output.outdir};
-       resfinder.py -p {params.refdb} -i {input.contigs} -o {output.outdir} 2> >(tee {log} >&2)
+       resfinder.py -p {params.refdb} -i {input.contigs} -o {params.outdir} 2> >(tee {log} >&2)
        """
