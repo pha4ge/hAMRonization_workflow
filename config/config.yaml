@@ -2,7 +2,7 @@
 species: "anySpeciesName@edit"
 
 # path or URL to sample sheet (TSV format, columns: sample, assembly); can be created by scripts/create_sampleSheet.sh --mode assembly
-samples: "config/test_data.tsv"
+samples: "config/isolate_list.txt"
 
 params:
   threads: 1 #number of threads per rule
@@ -20,9 +20,9 @@ params:
   staramr:
     #empty, no options exposed
   amrfinder:
-    gene_db: "data/dbs/amrfinder2020-01-22.1/"
+    gene_db: "data/dbs/amrfinder/latest"
   groot:
-    gene_db: "data/dbs/groot-index-100"
+    gene_db: "data/dbs/groot-index-100/"
     #empty as groot needs different db indexing by readlength and I haven't automated this in snakemake, not sure best approach.
   rgi:
     gene_db: "data/dbs/card/card.json"
@@ -31,7 +31,9 @@ params:
   mykrobe:
     #todo
   resfinder:
-    path: "data/dbs/resfinder/resfinder_blastdb"
+    path: "data/dbs/resfinder"
   kmerresistance:
     amr_db: "data/dbs/resfinder/resfinder_kma"
     species_db: "data/dbs/resfinder/16S_species"
+  srax:
+     dbtype: "basic"
