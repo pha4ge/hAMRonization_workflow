@@ -14,7 +14,7 @@ The selected AMR detection tools are currently included (scored out tools are in
 * mykrobe
 * resfams
 * staramr
-* Resfinder
+* ~~Resfinder~~ 
 * KmerResistance
 * sraX
 * ~~ReMatCh~~ 
