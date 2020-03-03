@@ -7,6 +7,8 @@ workdir: os.getcwd()
 samples = pd.read_table(config["samples"], index_col="biosample", sep="\t")
 samples.index = samples.index.astype('str', copy=False) # in case samples are integers, need to convert them to str
 
+amrplusplus_exts = ["snp.tsv", "gene.tsv", "mech.tsv", "group.tsv", "class.tsv"]
+
 def _get_seq(wildcards,seqs):
     return samples.loc[(wildcards.sample), [seqs]].dropna()[0]
 
@@ -19,6 +21,7 @@ rule all:
 
 rule cleanup:
     input:
+        expand("results/{sample}/amrplusplus/{amrplusplus_outputs}", sample=samples.index, amrplusplus_outputs=amrplusplus_exts),
         expand("results/{sample}/rgi/rgi.json", sample=samples.index),
         expand("results/{sample}/staramr/resfinder.tsv", sample=samples.index),
         expand("results/{sample}/ariba/report.tsv", sample=samples.index),
@@ -28,14 +31,14 @@ rule cleanup:
         expand("results/{sample}/groot/report.tsv", sample=samples.index),
         expand("results/{sample}/resfams/resfams.tblout", sample=samples.index),
         expand("results/{sample}/mykrobe/report.json", sample=samples.index),
-        #expand("results/{sample}/resfinder/data_resfinder.json", sample=samples.index),
+        expand("results/{sample}/resfinder/data_resfinder.json", sample=samples.index),
         expand("results/{sample}/kmerresistance/results.KmerRes", sample=samples.index),
         expand("results/{sample}/srax/Results/sraX_analysis.html", sample=samples.index)
     output:
         "pipeline_finished.txt"
     shell:
         """
-        rm -r results/*/staramr/hits/ results/*/ariba/*.gz results/*/srst2/*.bam results/*/srst2/*.pileup results/*/srax/tmp || echo "tempfiles already absent"
+        rm -r tmp/* results/*/staramr/hits/ results/*/ariba/*.gz results/*/srst2/*.bam results/*/srst2/*.pileup results/*/srax/tmp || echo "tempfiles already absent"
         touch pipeline_finished.txt
         """
 
@@ -51,3 +54,4 @@ include: "rules/resfams.smk"
 include: "rules/resfinder.smk" 
 include: "rules/kmerresistance.smk" 
 include: "rules/srax.smk" 
+include: "rules/amrplusplus.smk"

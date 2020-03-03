@@ -23,7 +23,7 @@ The selected AMR detection tools are currently included (scored out tools are in
 * ~~ARGS-OAP~~
 * ~~SSTAR~~
 * ~~SEAR~~
-* ~~AMRplusplus~~
+* AMRplusplus
 
 Not included:
 

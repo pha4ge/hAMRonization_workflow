@@ -37,3 +37,9 @@ params:
     species_db: "data/dbs/resfinder/16S_species"
   srax:
      dbtype: "basic"
+  amrplusplus:
+    refdb: "data/dbs/megares/megares_drugs_database_v2.00.fasta"
+    annots: "data/dbs/megares/megares_drugs_annotations_v2.00.csv" 
+    resistome_tool: "data/dbs/megares/resistome"
+    rarefaction_tool: "data/dbs/megares/rarefaction"
+    snp_tool: "data/dbs/megares/snpfinder"
