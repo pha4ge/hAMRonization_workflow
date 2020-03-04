@@ -38,7 +38,7 @@ rule cleanup:
         "pipeline_finished.txt"
     shell:
         """
-        rm -r tmp/* results/*/staramr/hits/ results/*/ariba/*.gz results/*/srst2/*.bam results/*/srst2/*.pileup results/*/srax/tmp || echo "tempfiles already absent"
+        rm -r tmp/* results/*/groot/graphs results/*/staramr/hits/ results/*/ariba/*.gz results/*/srst2/*.bam results/*/srst2/*.pileup results/*/srax/tmp || echo "tempfiles already absent"
         touch pipeline_finished.txt
         """
 
