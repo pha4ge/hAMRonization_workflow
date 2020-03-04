@@ -28,5 +28,5 @@ cd data/non_conda_deps
 bash install_non_conda_deps.sh 
 cd ../..
 
-# run snakemake on this trivial test-case
-snakemake --configfile config/test_config.yaml --use-conda --jobs 1
+# run snakemake on this trivial test-case, no snakemake support for singularity args for individual repos
+snakemake --configfile config/test_config.yaml --use-conda --jobs 1 --use-singularity --singularity-args "-B $PWD:/data"
