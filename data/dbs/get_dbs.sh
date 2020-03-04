@@ -3,7 +3,7 @@
 set -o errexit
 
 # install blast, ariba, groot in a conda environment to prepare those databases
-conda create -y -n db_install -c bioconda blast ariba groot kma unzip amrfinder
+#conda create -y -n db_install -c bioconda blast ariba groot kma unzip amrfinder bwa git
 # the run_test.sh script will do this for you
 
 # get abricate ncbi db
@@ -51,3 +51,14 @@ kma index -i resfinder/resfinder.fsa -o resfinder/resfinder_kma
 ## couple of silva 16S
 wget -O resfinder/16S_test.fasta https://osf.io/abgyq/download
 kma index -i resfinder/16S_test.fasta -o resfinder/16S_species
+
+# get megares database
+mkdir -p megares
+wget -O megares/megares.zip https://megares.meglab.org/download/megares_v2.00.zip
+cd megares
+unzip megares
+bwa index megares_drugs_database_v2.00.fasta 
+
+# get pointfinder db
+git clone https://git@bitbucket.org/genomicepidemiology/pointfinder_db.git
+

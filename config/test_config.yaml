@@ -37,3 +37,17 @@ params:
     species_db: "data/dbs/resfinder/16S_species"
   srax:
      dbtype: "basic"
+  amrplusplus:
+    refdb: "data/dbs/megares/megares_drugs_database_v2.00.fasta"
+    annots: "data/dbs/megares/megares_drugs_annotations_v2.00.csv" 
+    resistome_tool: "data/non_conda_deps/resistomeanalyzer/resistome"
+    rarefaction_tool: "data/non_conda_deps/rarefactionanalyzer/rarefaction"
+    snp_tool: "data/non_conda_deps/snpfinder/snpfinder"
+  SSTAR:
+    binary: "data/non_conda_deps/c-SSTAR/c-SSTAR"
+    refdb: "data/dbs/ResFinder.fasta"
+  pointfinder:
+    binary: "data/non_conda_deps/pointfinder/PointFinder.py"
+    dbpath: "data/dbs/pointfinder_db" 
+    species: "escherichia_coli"
+    

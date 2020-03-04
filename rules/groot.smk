@@ -14,4 +14,4 @@ rule run_groot:
     params:
         refdb = config["params"]['groot']['gene_db']
     shell:
-       "groot align -f {input.read1} {input.read2} -i {params.refdb} -y {log} | groot report -y {log} > {output.report}"
+       "groot align -f {input.read1} {input.read2} -i {params.refdb} -y {log} -o results/{wildcards.sample}/groot/graphs | groot report -y {log} > {output.report}"

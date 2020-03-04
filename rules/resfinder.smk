@@ -16,6 +16,6 @@ rule run_resfinder:
         outdir = "results/{sample}/resfinder"
     shell:
        """
-       mkdir -p {output.outdir};
+       mkdir -p {params.outdir};
        resfinder.py -p {params.refdb} -i {input.contigs} -o {params.outdir} 2> >(tee {log} >&2)
        """
