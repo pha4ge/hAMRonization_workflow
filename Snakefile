@@ -34,14 +34,16 @@ rule cleanup:
         expand("results/{sample}/resfinder/data_resfinder.json", sample=samples.index),
         expand("results/{sample}/kmerresistance/results.KmerRes", sample=samples.index),
         expand("results/{sample}/srax/Results/sraX_analysis.html", sample=samples.index)
+        expand("results/{sample}/deeparg/output.mapping.ARG", sample=samples.index)
     output:
         "pipeline_finished.txt"
     shell:
         """
-        rm -r tmp/* results/*/groot/graphs results/*/staramr/hits/ results/*/ariba/*.gz results/*/srst2/*.bam results/*/srst2/*.pileup results/*/srax/tmp || echo "tempfiles already absent"
+        rm -r results/*/deeparg/*.fasta tmp/* results/*/groot/graphs results/*/staramr/hits/ results/*/ariba/*.gz results/*/srst2/*.bam results/*/srst2/*.pileup results/*/srax/tmp || echo "tempfiles already absent"
         touch pipeline_finished.txt
         """
 
+include: "rules/deeparg.smk"
 include: "rules/abricate.smk"
 include: "rules/amrfinder.smk"
 include: "rules/ariba.smk"
