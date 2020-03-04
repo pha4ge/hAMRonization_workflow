@@ -58,16 +58,7 @@ wget -O megares/megares.zip https://megares.meglab.org/download/megares_v2.00.zi
 cd megares
 unzip megares
 bwa index megares_drugs_database_v2.00.fasta 
-# install the amrplusplus tools not in any system
-git clone https://github.com/cdeanj/snpfinder
-cd snpfinder
-make
-cd ..
-git clone https://github.com/cdeanj/rarefactionanalyzer
-cd rarefactionanalyzer
-make
-cd ..
-git clone https://github.com/cdeanj/resistomeanalyzer
-cd resistomeanalyzer
-make
-cd ..
+
+# get pointfinder db
+git clone https://git@bitbucket.org/genomicepidemiology/pointfinder_db.git
+
