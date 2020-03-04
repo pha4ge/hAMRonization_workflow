@@ -52,7 +52,7 @@ Pointfinder, amrplusplus, and SSTAR are installed manually by going to the `data
 
 All further dependencies will be installed via conda on execution.
 
-If you want to run `DeepARG` you need to have a working `singularity` install on your system and invoke `--use --use-singularity --singularity-args "-B $PWD:/data"` when running snakemake
+If you want to run `DeepARG` you need to have a working `singularity` install on your system and invoke `--use-singularity --singularity-args "-B $PWD:/data"` when running snakemake
 
 Databases can be downloaded by going to the `data/dbs` directory and running:
 
@@ -65,8 +65,7 @@ Execution
 
 To execute the pipeline, go to the main folder of the cloned repository, adapt the sample sheet as well as the config file to your needs and call with the number of jobs you want to run.
 
-`snakemake --configfile config/config.yaml --use-conda --jobs 2`
-
+`snakemake --configfile config/config.yaml --use-conda --jobs 2 --use-singularity --singularity-args "-B $PWD:/data"` 
 
 Testing
 -------
