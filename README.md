@@ -2,8 +2,11 @@ hAMRonization - Harmonization of output file formats of antimicrobial resistance
 =======================================
 Description
 -----------
-hAMRonization is a project aiming at the harmonizatino of output file formats of antimicrobial resistance detection tools. 
-The selected AMR detection tools are currently included (scored out tools are in development):
+hAMRonization is a project aiming at the harmonization of output file formats of antimicrobial resistance detection tools. 
+
+The inclusion criteria was open-source tools for specifically AMR detection.
+
+The following tools are currently included:
 * abricate
 * AMRfinder
 * ariba
@@ -22,10 +25,9 @@ The selected AMR detection tools are currently included (scored out tools are in
 * SSTAR
 * AMRplusplus
 
-Not included:
-
+Excluded tools:
 * SEAR, ARG-ANNOT (no longer downloadable)
-* RAST, PATRIC (not easily runnable on CLI)
+* RAST/PATRIC (not easily runnable on CLI)
 * Single organism/or resistance tools (e.g. Kleborate, LREfinder, SSCmec Finder, U-CARE, ARGO)
 * shortBRED, ARGS-OAP (rely on usearch which isn't open-source)
 
