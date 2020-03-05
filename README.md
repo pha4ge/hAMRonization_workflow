@@ -26,7 +26,7 @@ Not included:
 
 * SEAR, ARG-ANNOT (no longer downloadable)
 * RAST, PATRIC (not easily runnable on CLI)
-* Single organism/or resistance tools (e.g. LREfinder, SSCmec Finder, U-CARE, ARGO)
+* Single organism/or resistance tools (e.g. Kleborate, LREfinder, SSCmec Finder, U-CARE, ARGO)
 * shortBRED, ARGS-OAP (rely on usearch which isn't open-source)
 
 To generate comparable result files, all tools are being run in a Snakemake pipeline installing fixed versions of the tools from conda on execution.
