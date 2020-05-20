@@ -33,7 +33,7 @@ rule cleanup:
         expand("results/{sample}/mykrobe/report.json", sample=samples.index),
         expand("results/{sample}/resfinder/data_resfinder.json", sample=samples.index),
         expand("results/{sample}/kmerresistance/results.KmerRes", sample=samples.index),
-        expand("results/{sample}/srax/Results/sraX_analysis.html", sample=samples.index)
+        expand("results/{sample}/srax/Results/sraX_analysis.html", sample=samples.index),
         expand("results/{sample}/deeparg/output.mapping.ARG", sample=samples.index)
     output:
         "pipeline_finished.txt"
