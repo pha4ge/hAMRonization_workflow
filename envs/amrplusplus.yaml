@@ -42,7 +42,7 @@ dependencies:
   - perl=5.26.2=h516909a_1006
   - pip=20.0.2=py_2
   - pthread-stubs=0.4=h14c3975_1001
-  - python=3.8.2=h9d8adfe_1_cpython
+  - python=3.8.2
   - readline=8.0=hf8c457e_0
   - samtools=1.9=h10a08f8_12
   - setuptools=45.2.0=py38_0
