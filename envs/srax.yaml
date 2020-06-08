@@ -4,4 +4,4 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - srax=1.5=pl526h1341992_0
+  - srax=1.5

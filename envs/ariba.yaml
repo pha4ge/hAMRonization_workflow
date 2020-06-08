@@ -4,4 +4,4 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - ariba=2.14.4=py36he1b5a44_0
+  - ariba=2.14.4

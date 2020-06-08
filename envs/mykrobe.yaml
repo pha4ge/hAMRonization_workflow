@@ -4,4 +4,4 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - mykrobe=0.8.0=py36ha80c686_1
+  - mykrobe=0.8.0

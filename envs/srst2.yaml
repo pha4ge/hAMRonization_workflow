@@ -4,5 +4,4 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - samtools
-  - srst2
+  - srst2=0.2.0

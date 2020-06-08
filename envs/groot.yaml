@@ -5,4 +5,4 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - groot=0.8.3=1
+  - groot=0.8.3

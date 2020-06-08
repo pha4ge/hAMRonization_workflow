@@ -4,5 +4,5 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - hmmer=3.2.1=he1b5a44_2
-  - prodigal=2.6.3=h516909a_2
+  - hmmer=3.2.1
+  - prodigal=2.6.3

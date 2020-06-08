@@ -4,5 +4,4 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - abricate=0.9.8=h1341992_0
-  - perl-path-tiny
+  - abricate=1.0.1
