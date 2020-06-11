@@ -1,0 +1,15 @@
+name: hamronization
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - ariba=2.14.4 
+  - bwa=0.7.17 
+  - blast=2.9.0 
+  - curl=7.69.1 
+  - groot=0.8.3 
+  - kma=1.2.26 
+  - ncbi-amrfinderplus=3.6.10 
+  - rgi=5.1.0
+  - snakemake=5.18.1

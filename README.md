@@ -38,7 +38,7 @@ Installation
 
 This pipeline depends on Snakemake and Conda. If you have conda installed, please run 
 
-`conda create --name hamronization snakemake` 
+`conda env create -n hamronization --file envs/hamronization.yaml` 
 
 and 
 
