@@ -33,8 +33,9 @@ params:
   resfinder:
     #empty, no options exposed
   kmerresistance:
-    amr_db: "data/dbs/resfinder/resfinder_kma"
-    species_db: "data/dbs/resfinder/16S_species"
+    # empty, no options exposed, uses same res db as resfinder and due to the
+    # the large size and slow FTP for the species db (20GB >2hr download)
+    # just uses a single dummy klebsiella type genome
   srax:
      dbtype: "basic"
   amrplusplus:
