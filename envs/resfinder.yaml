@@ -7,3 +7,5 @@ channels:
 dependencies:
   - blast=2.9.0
   - resfinder=3.2
+  - pip:
+    - tabulate

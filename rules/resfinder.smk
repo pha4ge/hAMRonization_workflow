@@ -1,7 +1,20 @@
+rule get_resfinder_db:
+    output: 
+       resfinder_db = directory(os.path.join(config["params"]["db_dir"], "resfinder_db"))
+    log:
+        "logs/resfinder_db.log"
+    params:
+        db_dir = os.path.join(config["params"]["db_dir"], "resfinder")
+    shell:
+        """
+        curl https://bitbucket.org/genomicepidemiology/resfinder_db/get/2a8dd7fc7a8c.zip --output {params.db_dir}.zip
+        unzip -j -d {output.resfinder_db} {params.db_dir}.zip
+        """
+
 rule run_resfinder:
     input:
         contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
-        ref = config["params"]["resfinder"]["path"]
+        resfinder_db = os.path.join(config["params"]["db_dir"], "resfinder_db")
     output:
         report = "results/{sample}/resfinder/data_resfinder.json"
     message: "Running rule run_resfinder on {wildcards.sample} with contigs"
@@ -12,10 +25,9 @@ rule run_resfinder:
     threads:
        config["params"]["threads"]
     params:
-        refdb = config["params"]["resfinder"]["path"],
         outdir = "results/{sample}/resfinder"
     shell:
        """
        mkdir -p {params.outdir};
-       resfinder.py -p {params.refdb} -i {input.contigs} -o {params.outdir} 2> >(tee {log} >&2)
+       resfinder.py -p {input.resfinder_db} -i {input.contigs} -o {params.outdir} 2> >(tee {log} >&2)
        """
