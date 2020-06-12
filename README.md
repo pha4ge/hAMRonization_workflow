@@ -12,7 +12,6 @@ The following tools are currently included:
 * ariba
 * Groot
 * RGI
-* SRST2
 * staramr
 * mykrobe
 * resfams
@@ -26,6 +25,7 @@ The following tools are currently included:
 * AMRplusplus
 
 Excluded tools:
+* SRST2 (current bioconda recipe relies on samtools 0.1.18 which is broken on many systems, biocontainer fails with same samtools error)
 * SEAR, ARG-ANNOT (no longer downloadable)
 * RAST/PATRIC (not easily runnable on CLI)
 * Single organism/or resistance tools (e.g. Kleborate, LREfinder, SSCmec Finder, U-CARE, ARGO)

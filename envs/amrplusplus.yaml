@@ -4,6 +4,6 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - trimmomatic
-  - samtools=0.1.18
+  - trimmomatic=0.39
+  - samtools=1.10
   - bwa=0.7.17
