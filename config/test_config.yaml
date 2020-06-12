@@ -22,8 +22,8 @@ params:
   amrfinder:
     organism: "Klebsiella" #must be defined to enable mutation detection: set amrfinder --list_organisms for options
   groot:
-    gene_db: "data/dbs/groot-index-100"
-    #empty as groot needs different db indexing by readlength and I haven't automated this in snakemake, not sure best approach.
+    db_source: "resfinder" #which preclustered db to use
+    read_length: 100 # readlengh to use for indexing the preclustered db
   rgi:
     gene_db: "data/dbs/card/card.json"
   resfams:
