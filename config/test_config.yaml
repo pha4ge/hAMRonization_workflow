@@ -25,9 +25,9 @@ params:
     db_source: "resfinder" #which preclustered db to use
     read_length: 100 # readlengh to use for indexing the preclustered db
   rgi:
-    gene_db: "data/dbs/card/card.json"
+    db_version: "3.0.7"
   resfams:
-    db: "data/dbs/Resfams-full.hmm"
+    #empty, no options exposed
   mykrobe:
     #todo
   resfinder:
