@@ -1,7 +1,6 @@
 rule run_abricate:
     input:
         contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
-        ref = os.path.join(config["params"]["abricate"]["path"],config["params"]["abricate"]["name"],"sequences")
     output:
         report = "results/{sample}/abricate/report.tsv"
     message: "Running rule run_abricate on {wildcards.sample} with contigs"
@@ -12,9 +11,11 @@ rule run_abricate:
     threads:
        config["params"]["threads"]
     params:
-        refdb = config["params"]["abricate"]["path"],
         dbname = config["params"]["abricate"]["name"], #"ncbi",
         minid = config["params"]["abricate"]["minid"],
         mincov = config["params"]["abricate"]["minid"]
     shell:
-       "abricate --threads {threads} --nopath --db {params.dbname} --minid {params.minid} --mincov {params.mincov} --datadir {params.refdb} {input.contigs} > {output.report} 2> >(tee {log} >&2)"
+        """
+        abricate --list > {log}
+        abricate --threads {threads} --nopath --db {params.dbname} --minid {params.minid} --mincov {params.mincov} {input.contigs} > {output.report} 2> >(tee -a {log} >&2)
+        """

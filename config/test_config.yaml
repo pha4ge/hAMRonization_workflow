@@ -5,10 +5,10 @@ species: "anySpeciesName@edit"
 samples: "config/test_data.tsv"
 
 params:
+  db_dir: "data/dbs"
   threads: 1 #number of threads per rule
   abricate:
     name: "ncbi"
-    path: "data/dbs" # path to ncbi resistance gene db (either from conda path/2/conda_env/db or custom)
     minid: 75 #minimum identity threshold
     mincov: 0 #minimum coverage threshold
   srst2:
@@ -20,7 +20,7 @@ params:
   staramr:
     #empty, no options exposed
   amrfinder:
-    gene_db: "data/dbs/amrfinder/latest"
+    organism: "Klebsiella" #must be defined to enable mutation detection: set amrfinder --list_organisms for options
   groot:
     gene_db: "data/dbs/groot-index-100"
     #empty as groot needs different db indexing by readlength and I haven't automated this in snakemake, not sure best approach.
