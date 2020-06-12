@@ -16,7 +16,7 @@ params:
     min_depth: 5
     max_divergence: 10
   ariba:
-    gene_db: "data/dbs/ariba_card.prepareref"
+    #empty, no options exposed
   staramr:
     #empty, no options exposed
   amrfinder:
