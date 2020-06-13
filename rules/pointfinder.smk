@@ -15,6 +15,10 @@ rule get_pointfinder_script:
         """
         cd {params.binary_dir}
         git clone https://bitbucket.org/genomicepidemiology/pointfinder.git --recursive
+        
+        # tidy up shebang
+        sed -i "s|env python3$|env python|" pointfinder/PointFinder.py
+        chmod +x pointfinder/PointFinder.py
         """
 
 rule run_pointfinder:
