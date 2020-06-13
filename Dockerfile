@@ -19,8 +19,8 @@ MAINTAINER Finlay Maguire <finlaymaguire@gmail.com>
 RUN apt-get update && apt-get install -y --no-install-recommends curl wget git build-essential libtool autotools-dev automake autoconf libarchive-dev bzip2 unzip libseccomp-dev pkg-config squashfs-tools cryptsetup libssl-dev uuid-dev gnupg
 
 # install golang for singularity
-RUN wget https://dl.google.com/go/go1.13.4.linux-amd64.tar.gz && \
-    sudo tar -C /usr/local -xzf go1.13.4.linux-amd64.tar.gz && \
+RUN wget https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.14.4.linux-amd64.tar.gz && \
     source ~/.profile 
 
 # install singularity
