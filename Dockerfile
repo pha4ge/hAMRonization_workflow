@@ -16,7 +16,7 @@ LABEL tags="Genomics"
 MAINTAINER Finlay Maguire <finlaymaguire@gmail.com>
 
 # get some system essentials
-RUN apt-get update && add-apt-repository -y ppa:longsleep/golang-backports && apt-get update && apt-get install -y --no-install-recommends curl wget git build-essential libtool autotools-dev automake autoconf libarchive-dev bzip2 unzip libseccomp-dev pkg-config squashfs-tools cryptsetup golang-go libssl-dev uuid-dev
+RUN apt-get update && apt-get install -y software-properties-common gnupg apt-file && add-apt-repository -y ppa:longsleep/golang-backports && apt-get update && apt-get install -y --no-install-recommends curl wget git build-essential libtool autotools-dev automake autoconf libarchive-dev bzip2 unzip libseccomp-dev pkg-config squashfs-tools cryptsetup golang-go libssl-dev uuid-dev
 
 # install singularity
 RUN export VERSION=3.5.3 && \
