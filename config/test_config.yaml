@@ -1,24 +1,17 @@
 # Output and working directory (all other directories below, if not absolute, are relative to this one)
-species: "anySpeciesName@edit"
+species: "klebsiella_genomes"
 
 # path or URL to sample sheet (TSV format, columns: sample, assembly); can be created by scripts/create_sampleSheet.sh --mode assembly
 samples: "config/test_data.tsv"
 
 params:
-  db_dir: "data/dbs"
+  db_dir: "data/dbs" #directory to install databases in
+  binary_dir: "data/non_conda_deps" # directory to install non-conda dependencies
   threads: 1 #number of threads per rule
   abricate:
     name: "ncbi"
     minid: 75 #minimum identity threshold
     mincov: 0 #minimum coverage threshold
-  srst2:
-    gene_db: "data/dbs/ResFinder.fasta"
-    min_depth: 5
-    max_divergence: 10
-  ariba:
-    #empty, no options exposed
-  staramr:
-    #empty, no options exposed
   amrfinder:
     organism: "Klebsiella" #must be defined to enable mutation detection: set amrfinder --list_organisms for options
   groot:
@@ -26,6 +19,14 @@ params:
     read_length: 100 # readlengh to use for indexing the preclustered db
   rgi:
     db_version: "3.0.7"
+  srax:
+    dbtype: "basic"
+  pointfinder:
+    species: "klebsiella"
+  ariba:
+    #empty, no options exposed
+  staramr:
+    #empty, no options exposed
   resfams:
     #empty, no options exposed
   mykrobe:
@@ -33,11 +34,7 @@ params:
   resfinder:
     #empty, no options exposed
   kmerresistance:
-    # empty, no options exposed, uses same res db as resfinder and due to the
-    # the large size and slow FTP for the species db (20GB >2hr download)
-    # just uses a single dummy klebsiella type genome
-  srax:
-     dbtype: "basic"
+    # empty, no options exposed, uses same res db as resfinder and due to the the large size and slow FTP for the species db (20GB >2hr download) just uses a single dummy klebsiella type genome
   amrplusplus:
     refdb: "data/dbs/megares/megares_drugs_database_v2.00.fasta"
     annots: "data/dbs/megares/megares_drugs_annotations_v2.00.csv" 
@@ -47,8 +44,7 @@ params:
   SSTAR:
     binary: "data/non_conda_deps/c-SSTAR/c-SSTAR"
     refdb: "data/dbs/ResFinder.fasta"
-  pointfinder:
-    binary: "data/non_conda_deps/pointfinder/PointFinder.py"
-    dbpath: "data/dbs/pointfinder_db" 
-    species: "escherichia_coli"
-    
+    #srst2: not supported due to upstream packaging bug
+    #  gene_db: "data/dbs/ResFinder.fasta"
+    #  min_depth: 5
+    #  max_divergence: 10

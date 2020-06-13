@@ -6,5 +6,5 @@ channels:
 dependencies:
   - cgecore=1.5.4
   - blast=2.9.0
-  - biopython=1.7
+  - biopython=1.70
   - tabulate=0.8.7
