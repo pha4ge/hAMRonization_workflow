@@ -36,7 +36,8 @@ To generate comparable result files, all tools are being run in a Snakemake pipe
 Installation 
 ------------
 
-This pipeline depends on Snakemake and Conda. If you have conda installed, please run 
+This pipeline depends on snakemake, conda, build-essentials, git, and unzip. 
+If you have conda installed, please run 
 
 `conda env create -n hamronization --file envs/hamronization.yaml` 
 
@@ -48,18 +49,9 @@ Afterwards, clone this repository:
 
 `git clone https://github.com/pha4ge/hAMRonization.git`
 
-Pointfinder, amrplusplus, and SSTAR are installed manually by going to the `data/non_conda_deps` directory:
-
-`bash install_non_conda_deps.sh`
-
 All further dependencies will be installed via conda on execution.
 
 If you want to run `DeepARG` you need to have a working `singularity` install on your system and invoke `--use-singularity --singularity-args "-B $PWD:/data"` when running snakemake
-
-Databases can be downloaded by going to the `data/dbs` directory and running:
-
-`bash get_dbs.sh`
-
 
 
 Execution

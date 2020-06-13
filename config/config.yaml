@@ -5,41 +5,41 @@ species: "anySpeciesName@edit"
 samples: "config/isolate_list.txt"
 
 params:
+  db_dir: "data/dbs" #directory to install databases in
+  binary_dir: "data/non_conda_deps" # directory to install non-conda dependencies
   threads: 1 #number of threads per rule
   abricate:
     name: "ncbi"
-    path: "data/dbs" # path to ncbi resistance gene db (either from conda path/2/conda_env/db or custom)
     minid: 75 #minimum identity threshold
     mincov: 0 #minimum coverage threshold
-  srst2:
-    gene_db: "data/dbs/ResFinder.fasta"
-    min_depth: 5
-    max_divergence: 10
+  amrfinder:
+    organism: "Klebsiella" #must be defined to enable mutation detection: set amrfinder --list_organisms for options
+  groot:
+    db_source: "resfinder" #which preclustered db to use
+    read_length: 100 # readlengh to use for indexing the preclustered db
+  rgi:
+    db_version: "3.0.7"
+  srax:
+    dbtype: "basic"
+  pointfinder:
+    species: "klebsiella" # must be defined and support by pointfinder
+  amrplusplus:
+    ref_version: "v2.00"
   ariba:
-    gene_db: "data/dbs/ariba_card.prepareref"
+    #empty, no options exposed
   staramr:
     #empty, no options exposed
-  amrfinder:
-    gene_db: "data/dbs/amrfinder/latest"
-  groot:
-    gene_db: "data/dbs/groot-index-100/"
-    #empty as groot needs different db indexing by readlength and I haven't automated this in snakemake, not sure best approach.
-  rgi:
-    gene_db: "data/dbs/card/card.json"
   resfams:
-    db: "data/dbs/Resfams-full.hmm"
+    #empty, no options exposed
   mykrobe:
-    #todo
+    #empty, no options exposed
   resfinder:
-    path: "data/dbs/resfinder"
+    #empty, no options exposed
   kmerresistance:
-    amr_db: "data/dbs/resfinder/resfinder_kma"
-    species_db: "data/dbs/resfinder/16S_species"
-  srax:
-     dbtype: "basic"
-  amrplusplus:
-    refdb: "data/dbs/megares/megares_drugs_database_v2.00.fasta"
-    annots: "data/dbs/megares/megares_drugs_annotations_v2.00.csv" 
-    resistome_tool: "data/dbs/megares/resistome"
-    rarefaction_tool: "data/dbs/megares/rarefaction"
-    snp_tool: "data/dbs/megares/snpfinder"
+    # empty, no options exposed, uses same res db as resfinder and due to the the large size and slow FTP for the species db (20GB >2hr download) just uses a single dummy klebsiella type genome
+  SSTAR:
+    # empty, no options exposed, uses same res db as resfinder and due to the the large size and slow FTP for the species db (20GB >2hr download) just uses a single dummy klebsiella type genome
+    #srst2: not supported due to upstream packaging bug
+    #  gene_db: "data/dbs/ResFinder.fasta"
+    #  min_depth: 5
+    #  max_divergence: 10
