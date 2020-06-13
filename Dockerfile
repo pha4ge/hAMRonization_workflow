@@ -16,19 +16,24 @@ LABEL tags="Genomics"
 MAINTAINER Finlay Maguire <finlaymaguire@gmail.com>
 
 # get some system essentials
-RUN apt-get update && apt-get install -y --no-install-recommends curl wget git build-essential squashfs-tools libtool autotools-dev automake autoconf libarchive-dev bzip2 unzip
+RUN apt-get update && add-apt-repository -y ppa:longsleep/golang-backports && apt-get update && apt-get install -y --no-install-recommends curl wget git build-essential libtool autotools-dev automake autoconf libarchive-dev bzip2 unzip libseccomp-dev pkg-config squashfs-tools cryptsetup golang-go libssl-dev uuid-dev
 
 # install singularity
 RUN export VERSION=3.5.3 && \
-    wget https://github.com/hpcng/singularity/releases/download/$VERSION/singularity-$VERSION.tar.gz && \
+    wget https://github.com/hpcng/singularity/releases/download/v$VERSION/singularity-$VERSION.tar.gz && \
     tar xvf singularity-$VERSION.tar.gz && \
-    cd singularity-$VERSION && \
-    ./configure --prefix=/usr/local && make && make install
+    cd singularity && \
+    ./mconfig && cd ./builddir && make && make install
 
 # clone the repo
 RUN git clone https://github.com/pha4ge/hamronization
 
-# build the run environment
+# get the test data
 WORKDIR /hamronization
-RUN bash run_test.sh
-#RUN conda run -n hamronization snakemake --configfile config/test_config.yaml --use-conda --jobs 1 --use-singularity --singularity-args "-B $PWD:/data"
+RUN cd data/test && bash get_test_data.sh && cd ../..
+
+# build the run env
+RUN conda env create -n hamronization --file envs/hamronization.yaml
+
+# run the test command
+RUN conda run -n hamronization snakemake --configfile config/test_config.yaml --use-conda --jobs 1 --use-singularity --singularity-args "-B $PWD:/data"
