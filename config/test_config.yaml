@@ -23,6 +23,8 @@ params:
     dbtype: "basic"
   pointfinder:
     species: "klebsiella"
+  amrplusplus:
+    ref_version: "v2.00"
   ariba:
     #empty, no options exposed
   staramr:
@@ -35,12 +37,6 @@ params:
     #empty, no options exposed
   kmerresistance:
     # empty, no options exposed, uses same res db as resfinder and due to the the large size and slow FTP for the species db (20GB >2hr download) just uses a single dummy klebsiella type genome
-  amrplusplus:
-    refdb: "data/dbs/megares/megares_drugs_database_v2.00.fasta"
-    annots: "data/dbs/megares/megares_drugs_annotations_v2.00.csv" 
-    resistome_tool: "data/non_conda_deps/resistomeanalyzer/resistome"
-    rarefaction_tool: "data/non_conda_deps/rarefactionanalyzer/rarefaction"
-    snp_tool: "data/non_conda_deps/snpfinder/snpfinder"
   SSTAR:
     binary: "data/non_conda_deps/c-SSTAR/c-SSTAR"
     refdb: "data/dbs/ResFinder.fasta"
