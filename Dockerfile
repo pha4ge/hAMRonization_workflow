@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl wget git b
 # install golang for singularity
 RUN wget https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz && \
     tar -C /usr/local -xzf go1.14.4.linux-amd64.tar.gz && \
-    source ~/.profile 
+    export PATH=$PATH:/usr/local/go/bin
 
 # install singularity
 RUN export VERSION=3.5.3 && \
