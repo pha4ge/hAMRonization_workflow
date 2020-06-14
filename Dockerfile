@@ -15,6 +15,9 @@ LABEL tags="Genomics"
 # maintainer
 MAINTAINER Finlay Maguire <finlaymaguire@gmail.com>
 
+# set shell so conda works properly
+SHELL ["/bin/bash", "-c"]
+
 # get some system essentials
 RUN apt-get update && apt-get install -y --no-install-recommends curl wget git build-essential libtool autotools-dev automake autoconf libarchive-dev bzip2 unzip libseccomp-dev pkg-config squashfs-tools cryptsetup libssl-dev uuid-dev gnupg zlib1g-dev
 
