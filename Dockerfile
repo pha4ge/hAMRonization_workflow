@@ -20,11 +20,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl wget git b
 
 # install golang for singularity
 RUN wget https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz && \
-    tar -C /usr/local -xzf go1.14.4.linux-amd64.tar.gz && \
-    echo 'export PATH=$PATH:/usr/local/go/bin' > $HOME/.profile
+    tar -C /usr/local -xzf go1.14.4.linux-amd64.tar.gz 
 
 # install singularity
-RUN export VERSION=3.5.3 && \
+RUN export PATH=$PATH:/usr/local/go/bin && \
+    export VERSION=3.5.3 && \
     wget https://github.com/hpcng/singularity/releases/download/v$VERSION/singularity-$VERSION.tar.gz && \
     tar xvf singularity-$VERSION.tar.gz && \
     cd singularity && \
@@ -38,7 +38,10 @@ WORKDIR /hamronization
 RUN cd data/test && bash get_test_data.sh && cd ../..
 
 # build the run env
-RUN conda env create -n hamronization --file envs/hamronization.yaml
+RUN conda init bash && conda env create -n hamronization --file envs/hamronization.yaml
 
-# run the test command
-RUN conda run -n hamronization snakemake --configfile config/test_config.yaml --use-conda --jobs 1 --use-singularity --singularity-args "-B $PWD:/data"
+# install the snakemake envs
+RUN source ~/.bashrc && conda activate hamronization && snakemake --configfile config/test_config.yaml --use-conda --conda-create-envs-only --jobs 1 --use-singularity --singularity-args "-B $PWD:/data"
+
+# run on test data (needs docker run --privileged so can't be done at build)
+# RUN source ~/.bashrc && conda activate hamronization && snakemake --configfile config/test_config.yaml --use-conda --jobs 1 --use-singularity --singularity-args "-B $PWD:/data"
