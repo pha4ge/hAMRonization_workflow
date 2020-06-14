@@ -12,6 +12,7 @@ rule run_mykrobe:
     threads:
        config["params"]["threads"]
     params:
-        tmp = "results/{sample}/mykrobe/tmp/"
+        tmp = "results/{sample}/mykrobe/tmp/",
+        skel_dir = "results/{sample}/mykrobe/skels"
     shell:
-       "mykrobe predict {wildcards.sample} tb -1 {input.read1} {input.read2} --threads {threads} --format json --output {output.report} --tmp {params.tmp} 2> >(tee {log} >&2) "
+       "mykrobe predict {wildcards.sample} tb -1 {input.read1} {input.read2} --skeleton_dir {params.skel_dir} --threads {threads} --format json --output {output.report} --tmp {params.tmp} 2> >(tee {log} >&2) "
