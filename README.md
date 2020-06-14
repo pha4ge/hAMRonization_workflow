@@ -17,7 +17,6 @@ The following tools are currently included:
 * resfams
 * staramr
 * Resfinder
-* KmerResistance
 * sraX
 * DeepARG (requires singularity)
 * pointfinder
@@ -25,6 +24,7 @@ The following tools are currently included:
 * AMRplusplus
 
 Excluded tools:
+* KmerResistance (currently kma fails without error, just a non-zero exit code in the container)
 * SRST2 (current bioconda recipe relies on samtools 0.1.18 which is broken on many systems, biocontainer fails with same samtools error)
 * SEAR, ARG-ANNOT (no longer downloadable)
 * RAST/PATRIC (not easily runnable on CLI)
@@ -85,15 +85,15 @@ If you are unable to run docker in privileged mode then you can just comment out
 
 First get the docker container:
 
-`docker pull finlaymaguire/hamronization:1.0.0`
+`docker pull finlaymaguire/hamronization:1.0.1`
 
 You can execute it in a couple of ways but the easiest is to just mount the folder containing your reads and running it interactively:
 
-`docker run -it --privileged -v $HOST_FOLDER_CONTAINING_ISOLATES:/data finlaymaguire/hamronization:1.0.0 /bin/bash`
+`docker run -it --privileged -v $HOST_FOLDER_CONTAINING_ISOLATES:/data finlaymaguire/hamronization:1.0.1 /bin/bash`
 
 If our isolate data is in `~/isolates` the command to interactively run this container and get a bash terminal would be:
 
-`docker run -it --privileged -v ~/isolates:/data finlaymaguire/hamronization:1.0.0 /bin/bash`
+`docker run -it --privileged -v ~/isolates:/data finlaymaguire/hamronization:1.0.1 /bin/bash`
 
 Then point your `sample_table.tsv` to that folder, entries for this example would be:
 
@@ -113,7 +113,7 @@ Then the workflow:
 
 *WARNING* You will have to extract your results folder (e.g. `cp results /data` for the example mounted volume) from the container if you wish to use them elsewhere.  
 
-Note: kma/kmerresistance fails without explanation in the container (possibly zlib related, although adding the zlib headers didn't solve this) if it causes issues just comment it out for now.
+Note: kma/kmerresistance fails without explanation in the container (possibly zlib related, although adding the zlib headers didn't solve this). It is commented out for now.
 
 
 Initial Run
