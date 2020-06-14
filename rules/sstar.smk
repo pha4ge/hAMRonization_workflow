@@ -23,7 +23,9 @@ rule run_sstar:
       "../envs/sstar.yaml"
     threads:
        config["params"]["threads"]
+    params:
+        outdir = 'results/{sample}/sstar'
     shell:
        """
-       {input.sstar} -g {input.contigs} -d {input.resfinder_db} > {output.report} 
+       {input.sstar} -g {input.contigs} -d {input.resfinder_db} -o {params.outdir} > {output.report} 
        """
