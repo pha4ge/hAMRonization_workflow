@@ -16,7 +16,7 @@ LABEL tags="Genomics"
 MAINTAINER Finlay Maguire <finlaymaguire@gmail.com>
 
 # get some system essentials
-RUN apt-get update && apt-get install -y --no-install-recommends curl wget git build-essential libtool autotools-dev automake autoconf libarchive-dev bzip2 unzip libseccomp-dev pkg-config squashfs-tools cryptsetup libssl-dev uuid-dev gnupg
+RUN apt-get update && apt-get install -y --no-install-recommends curl wget git build-essential libtool autotools-dev automake autoconf libarchive-dev bzip2 unzip libseccomp-dev pkg-config squashfs-tools cryptsetup libssl-dev uuid-dev gnupg zlib1g-dev
 
 # install golang for singularity
 RUN wget https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz && \
