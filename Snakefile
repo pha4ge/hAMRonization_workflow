@@ -32,10 +32,10 @@ rule cleanup:
         expand("results/{sample}/resfams/resfams.tblout", sample=samples.index),
         expand("results/{sample}/mykrobe/report.json", sample=samples.index),
         expand("results/{sample}/resfinder/data_resfinder.json", sample=samples.index),
-        expand("results/{sample}/kmerresistance/results.KmerRes", sample=samples.index),
         expand("results/{sample}/srax/Results/sraX_analysis.html", sample=samples.index),
         expand("results/{sample}/deeparg/output.mapping.ARG", sample=samples.index),
         expand("results/{sample}/sstar/report.tsv", sample=samples.index)
+        #expand("results/{sample}/kmerresistance/results.KmerRes", sample=samples.index),
         #expand("results/{sample}/srst2/srst2__fullgenes__ResFinder__results.txt", sample=samples.index),
     output:
         "pipeline_finished.txt"

@@ -111,7 +111,9 @@ Then the workflow:
 
 `snakemake --configfile config/config.yaml --use-conda --cores 6 --use-singularity --singularity-args "-B $PWD:/data"`
 
-*WARNING/TODO*: kma/kmerresistance fails without explanation in the container (possibly zlib related, although adding the zlib headers didn't solve this) if it causes issues just comment it out for now.
+*WARNING* You will have to extract your results folder (e.g. `cp results /data` for the example mounted volume) from the container if you wish to use them elsewhere.  
+
+Note: kma/kmerresistance fails without explanation in the container (possibly zlib related, although adding the zlib headers didn't solve this) if it causes issues just comment it out for now.
 
 
 Initial Run
