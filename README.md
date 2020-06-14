@@ -111,6 +111,8 @@ Then the workflow:
 
 `snakemake --configfile config/config.yaml --use-conda --cores 6 --use-singularity --singularity-args "-B $PWD:/data"`
 
+*WARNING/TODO*: kma/kmerresistance fails without explanation in the container (possibly zlib related, although adding the zlib headers didn't solve this) if it causes issues just comment it out for now.
+
 
 Initial Run
 -----------
