@@ -15,8 +15,8 @@ params:
   amrfinder:
     organism: "Klebsiella" #must be defined to enable mutation detection: set amrfinder --list_organisms for options
   groot:
-    db_source: "resfinder" #which preclustered db to use
-    read_length: 100 # readlengh to use for indexing the preclustered db
+    db_source: "card" #which preclustered db to use
+    read_length: 150 # readlengh to use for indexing the preclustered db
   rgi:
     db_version: "3.0.7"
   srax:

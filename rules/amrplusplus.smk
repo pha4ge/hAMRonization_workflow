@@ -61,13 +61,14 @@ rule run_amrplusplus:
       "../envs/amrplusplus.yaml"
     threads:
        config["params"]["threads"]
+    params:
+        output_prefix_tmp = "results/{sample}/amrplusplus/tmp"
     shell:
        """
-       mkdir -p tmp
-       trimmomatic PE  {input.read1} {input.read2} tmp/{wildcards.sample}_r1_pe_trimmed.fq tmp/{wildcards.sample}_r1_se_trimmed.fq tmp/{wildcards.sample}_r2_pe_trimmed.fq tmp/{wildcards.sample}_r2_se_trimmed.fq SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36 2> >(tee {log} >&2)
-       rm tmp/{wildcards.sample}_r1_se_trimmed.fq tmp/{wildcards.sample}_r2_se_trimmed.fq
-       bwa mem {input.megares_db} tmp/{wildcards.sample}_r1_pe_trimmed.fq tmp/{wildcards.sample}_r2_pe_trimmed.fq | samtools sort -n -O sam > tmp/{wildcards.sample}.sam 2> >(tee -a {log} >&2)
-       {input.resistome_tool} -ref_fp {input.megares_db} -annot_fp {input.megares_annot} -sam_fp tmp/{wildcards.sample}.sam -gene_fp {output.amr_gene} -group_fp {output.amr_group} -class_fp {output.amr_class} -mech_fp {output.amr_mech} -t 80 2> >(tee -a {log} >&2)
-       {input.rarefaction_tool} -ref_fp {input.megares_db} -annot_fp {input.megares_annot} -sam_fp tmp/{wildcards.sample}.sam -gene_fp {output.amr_gene}_rare -group_fp {output.amr_group}_rare -class_fp {output.amr_class}_rare -mech_fp {output.amr_mech}_rare -min 5 -max 100 -skip 5 -samples 1 -t 80 2> >(tee -a {log} >&2)
-       {input.snp_tool} -amr_fp {input.megares_db} -sampe tmp/{wildcards.sample}.sam -out_fp {output.amr_snps} 2> >(tee -a {log} >&2)
+       mkdir -p {params.output_prefix_tmp}
+       trimmomatic PE  {input.read1} {input.read2} {params.output_prefix_tmp}/{wildcards.sample}_r1_pe_trimmed.fq {params.output_prefix_tmp}/{wildcards.sample}_r1_se_trimmed.fq {params.output_prefix_tmp}/{wildcards.sample}_r2_pe_trimmed.fq {params.output_prefix_tmp}/{wildcards.sample}_r2_se_trimmed.fq SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36 2> >(tee {log} >&2)
+       bwa mem {input.megares_db} {params.output_prefix_tmp}/{wildcards.sample}_r1_pe_trimmed.fq {params.output_prefix_tmp}/{wildcards.sample}_r2_pe_trimmed.fq | samtools sort -n -O sam > {params.output_prefix_tmp}/{wildcards.sample}.sam 2> >(tee -a {log} >&2)
+       {input.resistome_tool} -ref_fp {input.megares_db} -annot_fp {input.megares_annot} -sam_fp {params.output_prefix_tmp}/{wildcards.sample}.sam -gene_fp {output.amr_gene} -group_fp {output.amr_group} -class_fp {output.amr_class} -mech_fp {output.amr_mech} -t 80 2> >(tee -a {log} >&2)
+       {input.rarefaction_tool} -ref_fp {input.megares_db} -annot_fp {input.megares_annot} -sam_fp {params.output_prefix_tmp}/{wildcards.sample}.sam -gene_fp {output.amr_gene}_rare -group_fp {output.amr_group}_rare -class_fp {output.amr_class}_rare -mech_fp {output.amr_mech}_rare -min 5 -max 100 -skip 5 -samples 1 -t 80 2> >(tee -a {log} >&2)
+       {input.snp_tool} -amr_fp {input.megares_db} -sampe {params.output_prefix_tmp}/{wildcards.sample}.sam -out_fp {output.amr_snps} 2> >(tee -a {log} >&2)
        """

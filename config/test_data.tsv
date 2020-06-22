@@ -1,2 +1,2 @@
 species	biosample	assembly	read1	read2
-Mycobacterium tuberculosi	SAMN02599008	data/test/SAMN02599008/GCF_000662585.1.fna	data/test/SAMN02599008/SRR1180160_R1.fastq.gz	data/test/SAMN02599008/SRR1180160_R2.fastq.gz
+Klebsiella	SAMEA6634591	data/test/SAMEA6634591/GCF_902827215.1_SB5881_genomic.fna	data/test/SAMEA6634591/ERR4008003_1.fastq.gz	data/test/SAMEA6634591/ERR4008003_2.fastq.gz

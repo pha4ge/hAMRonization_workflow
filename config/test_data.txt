@@ -1,2 +1,0 @@
-species	biosample	assembly	read1	read2
-Klebsiella pneumoniae	FN396876	data/test/FN396876/FN396876.fna	data/test/FN396876/FN396876_R1.fq.gz	data/test/FN396876/FN396876_R2.fq.gz

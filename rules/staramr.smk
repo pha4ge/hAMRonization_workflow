@@ -11,10 +11,11 @@ rule run_staramr:
     threads:
        config["params"]["threads"]
     params:
-        output_folder = "results/{sample}/staramr/"
+        output_folder = "results/{sample}/staramr/",
+        pointfinder_species = config['params']['pointfinder']['species']
     shell:
        """
        rm -r {params.output_folder};
-       staramr search -o {params.output_folder} {input.contigs} 2> >(tee {log} >&2)
+       staramr search -o {params.output_folder} --nproc {threads} {input.contigs} 2> >(tee {log} >&2)
        """
-       #TODO: activate point mutation search for given species?
+        # only support salmonella/campylobacter

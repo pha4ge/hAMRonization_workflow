@@ -5,4 +5,5 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - groot=0.8.3
+  - seqkit
+  - groot=1.1.2
