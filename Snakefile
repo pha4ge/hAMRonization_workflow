@@ -33,19 +33,20 @@ rule cleanup:
         expand("results/{sample}/mykrobe/report.json", sample=samples.index),
         expand("results/{sample}/resfinder/data_resfinder.json", sample=samples.index),
         expand("results/{sample}/srax/Results/sraX_analysis.html", sample=samples.index),
-        expand("results/{sample}/deeparg/output.mapping.ARG", sample=samples.index),
-        expand("results/{sample}/sstar/report.tsv", sample=samples.index)
-        #expand("results/{sample}/kmerresistance/results.KmerRes", sample=samples.index),
-        #expand("results/{sample}/srst2/srst2__fullgenes__ResFinder__results.txt", sample=samples.index),
+        expand("results/{sample}/sstar/report.tsv", sample=samples.index),
+        expand("results/{sample}/kmerresistance/results.KmerRes", sample=samples.index),
+        #expand("results/{sample}/deeparg/output.mapping.ARG", sample=samples.index),
+        #expand("results/{sample}/srst2/srst2__fullgenes__ResFinder__results.txt", sample=samples.index)
     output:
         "pipeline_finished.txt"
     shell:
         """
-        rm -r results/*/deeparg/*.fasta results/*/amrplusplus/tmp results/*/staramr/hits/ results/*/ariba/*.gz results/*/srax/tmp results/*/mykrobe/skels || echo "tempfiles already absent"
+        rm -r results/*/groot/graphs results/*/deeparg/*.fasta results/*/amrplusplus/tmp results/*/staramr/hits/ results/*/ariba/*.gz results/*/srax/tmp results/*/mykrobe/skels || echo "tempfiles already absent"
         touch pipeline_finished.txt
         """
 
-include: "rules/deeparg.smk"
+#include: "rules/deeparg.smk"
+#include: "rules/srst2.smk" 
 include: "rules/abricate.smk"
 include: "rules/amrfinder.smk"
 include: "rules/ariba.smk"
@@ -60,4 +61,3 @@ include: "rules/kmerresistance.smk"
 include: "rules/srax.smk" 
 include: "rules/amrplusplus.smk"
 include: "rules/sstar.smk"
-#include: "rules/srst2.smk" 
