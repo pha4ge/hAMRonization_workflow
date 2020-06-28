@@ -9,11 +9,19 @@ rule get_sstar_script:
         git clone https://github.com/chrisgulvik/c-SSTAR
         """
 
+rule get_sstar_database:
+    output:
+        os.path.join(config['params']['db_dir'], "ResGANNOT_srst2.fasta")
+    shell:
+        """
+        wget -O {output} https://raw.githubusercontent.com/tomdeman-bio/Sequence-Search-Tool-for-Antimicrobial-Resistance-SSTAR-/master/Latest_AR_database/ResGANNOT_srst2.fasta
+        """
+
 rule run_sstar:
     input:
         contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
         sstar = os.path.join(config['params']['binary_dir'], "c-SSTAR", "c-SSTAR"),
-        resfinder_db = os.path.join(config["params"]["db_dir"], "resfinder_db")
+        resgannot_db = os.path.join(config['params']['db_dir'], "ResGANNOT_srst2.fasta")
     output:
         report = "results/{sample}/sstar/report.tsv"
     message: "Running rule run_sstar on {wildcards.sample} with contigs"
@@ -27,5 +35,5 @@ rule run_sstar:
         outdir = 'results/{sample}/sstar'
     shell:
        """
-       {input.sstar} -g {input.contigs} -d {input.resfinder_db} -o {params.outdir} > {output.report} 
+       {input.sstar} -g {input.contigs} -d {input.resgannot_db} --outdir {params.outdir} > {output.report} 
        """
