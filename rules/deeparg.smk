@@ -5,7 +5,7 @@ rule run_deeparg:
         report = "results/{sample}/deeparg/output.mapping.ARG",
         report_potential = "results/{sample}/deeparg/output.mapping.potential.ARG"
     singularity:
-        "docker://gaarangoa/deeparg:latest"
+        "docker://gaarangoa/deeparg:v1.0.1"
     shell:
         """
         python /deeparg/deepARG.py --align --type nucl --reads --input /data/results/{wildcards.sample}/deeparg/reads.fasta --output /data/results/{wildcards.sample}/deeparg/output
