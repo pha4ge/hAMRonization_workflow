@@ -25,9 +25,11 @@ rule run_resfinder:
     threads:
        config["params"]["threads"]
     params:
-        outdir = "results/{sample}/resfinder"
+        outdir = "results/{sample}/resfinder",
+        output_tmp_dir = "results/{sample}/resfinder/tmp"
     shell:
        """
-       mkdir -p {params.outdir};
-       resfinder.py -p {input.resfinder_db} -i {input.contigs} -o {params.outdir} 2> >(tee {log} >&2)
+       mkdir -p {params.outdir}
+       resfinder.py -p {input.resfinder_db} -i {input.contigs} -o {params.outdir} > {log} 2>&1
+       rm -rf {params.output_tmp_dir}
        """

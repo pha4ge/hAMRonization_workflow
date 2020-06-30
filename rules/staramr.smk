@@ -16,6 +16,6 @@ rule run_staramr:
     shell:
        """
        rm -r {params.output_folder};
-       staramr search -o {params.output_folder} --nproc {threads} {input.contigs} 2> >(tee {log} >&2)
+       staramr search -o {params.output_folder} --nproc {threads} {input.contigs} >{log} 2>&1
        """
         # only support salmonella/campylobacter

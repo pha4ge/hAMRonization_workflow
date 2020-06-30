@@ -25,12 +25,11 @@ rule run_ariba:
        "logs/ariba_{sample}.log"
     conda:
       "../envs/ariba.yaml"
-    threads:
-       config["params"]["threads"]
+    threads: 1
     params:
         output_folder = "results/{sample}/ariba/"
     shell:
        """
-       rm -r {params.output_folder};
-       ariba run --threads 1 {input.ref_db} {input.read1} {input.read2} {params.output_folder} 2> >(tee {log} >&2)
+       rm -r {params.output_folder}
+       ariba run --threads {threads} {input.ref_db} {input.read1} {input.read2} {params.output_folder} > {log} 2>&1
        """

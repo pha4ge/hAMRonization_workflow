@@ -20,8 +20,12 @@ rule run_amrfinder:
     conda:
       "../envs/amrfinder.yaml"
     params:
-        organism = config["params"]["amrfinder"]["organism"]
+        organism = config["params"]["amrfinder"]["organism"],
+        output_tmp_dir = "results/{sample}/amrfinder/tmp"
     threads:
        config["params"]["threads"]
     shell:
-       "amrfinder -n {input.contigs} -o {output.report} -O {params.organism} -d {input.db}/latest 2> >(tee {log} >&2) "
+        """
+        amrfinder -n {input.contigs} -o {output.report} -O {params.organism} -d {input.db}/latest >{log} 2>&1
+        rm -rf {params.output_tmp_dir}
+        """

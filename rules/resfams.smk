@@ -21,6 +21,6 @@ rule run_resfams:
         output_prefix = "results/{sample}/resfams"
     shell:
        """
-       prodigal -i {input.contigs} -a {params.output_prefix}/protein_seqs.faa 2> >(tee {log} >&2);
-       hmmsearch --cpu {threads} --tblout {output.report} {input.resfams_hmms} {params.output_prefix}/protein_seqs.faa  > {log} 2>&1
+       prodigal -i {input.contigs} -a {params.output_prefix}/protein_seqs.faa > {log} 2>&1
+       hmmsearch --cpu {threads} --tblout {output.report} {input.resfams_hmms} {params.output_prefix}/protein_seqs.faa  >>{log} 2>&1
        """

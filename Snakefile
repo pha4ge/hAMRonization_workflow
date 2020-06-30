@@ -17,10 +17,6 @@ def _get_seqdir(wildcards):
 
 rule all:
     input:
-        "pipeline_finished.txt"
-
-rule cleanup:
-    input:
         expand("results/{sample}/amrplusplus/{amrplusplus_outputs}", sample=samples.index, amrplusplus_outputs=amrplusplus_exts),
         expand("results/{sample}/rgi/rgi.json", sample=samples.index),
         expand("results/{sample}/staramr/resfinder.tsv", sample=samples.index),
@@ -32,18 +28,11 @@ rule cleanup:
         expand("results/{sample}/resfams/resfams.tblout", sample=samples.index),
         expand("results/{sample}/mykrobe/report.json", sample=samples.index),
         expand("results/{sample}/resfinder/data_resfinder.json", sample=samples.index),
-        expand("results/{sample}/srax/Results/sraX_analysis.html", sample=samples.index),
+        expand("results/{sample}/srax/sraX_analysis.html", sample=samples.index),
         expand("results/{sample}/sstar/report.tsv", sample=samples.index),
         expand("results/{sample}/kmerresistance/results.KmerRes", sample=samples.index),
         expand("results/{sample}/deeparg/output.mapping.ARG", sample=samples.index),
         #expand("results/{sample}/srst2/srst2__fullgenes__ResFinder__results.txt", sample=samples.index)
-    output:
-        "pipeline_finished.txt"
-    shell:
-        """
-        rm -r results/*/groot/graphs results/*/deeparg/*.fasta results/*/amrplusplus/tmp results/*/staramr/hits/ results/*/ariba/*.gz results/*/srax/tmp results/*/mykrobe/skels || echo "tempfiles already absent"
-        touch pipeline_finished.txt
-        """
 
 #include: "rules/srst2.smk" 
 include: "rules/deeparg.smk"

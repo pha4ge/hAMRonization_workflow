@@ -38,9 +38,10 @@ rule run_pointfinder:
         config["params"]["threads"]
     params:
         species = config["params"]["pointfinder"]["species"],
-        
+        output_tmp_dir = "results/{sample}/pointfinder/tmp"
     shell:
         """
-        python {input.pointfinder_script} -i {input.contigs} -p {input.pointfinder_db} -s {params.species} -m blastn -m_p $(which blastn) -o results/{wildcards.sample}/pointfinder 2> >(tee {log} >&2)
+        python {input.pointfinder_script} -i {input.contigs} -p {input.pointfinder_db} -s {params.species} -m blastn -m_p $(which blastn) -o results/{wildcards.sample}/pointfinder > {log} 2>&1
         cp {output.raw_report} {output.report}
+        rm -rf {params.output_tmp_dir}
         """

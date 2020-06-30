@@ -17,4 +17,4 @@ rule run_srst2:
         max_divergence = config["params"]["srst2"]["max_divergence"],
         output_prefix = "results/{sample}/srst2/srst2"
     shell:
-       "srst2 --threads {threads} --gene_db {params.gene_db} --forward '_R1' --reverse '_R2' --input_pe {input.read1} {input.read2} --min_depth {params.min_depth} --output {params.output_prefix} 2> >(tee {log} >&2)"
+       "srst2 --threads {threads} --gene_db {params.gene_db} --forward '_R1' --reverse '_R2' --input_pe {input.read1} {input.read2} --min_depth {params.min_depth} --output {params.output_prefix} > {log} 2>&1"

@@ -35,5 +35,5 @@ rule run_sstar:
         outdir = 'results/{sample}/sstar'
     shell:
        """
-       {input.sstar} -g {input.contigs} -d {input.resgannot_db} --outdir {params.outdir} > {output.report} 
+       {input.sstar} -g {input.contigs} -d {input.resgannot_db} --outdir {params.outdir} > {output.report} 2>{log}
        """

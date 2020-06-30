@@ -30,6 +30,6 @@ rule run_rgi:
         output_prefix = "results/{sample}/rgi/rgi"
     shell:
        """
-       rgi load --card_json {input.card_db}
-       rgi main --input_sequence {input.contigs} --output_file {params.output_prefix} --clean --num_threads {threads} 2> >(tee {log} >&2)
+       rgi load --card_json {input.card_db} > {log} 2>&1
+       rgi main --input_sequence {input.contigs} --output_file {params.output_prefix} --clean --num_threads {threads} >>{log} 2>&1
        """

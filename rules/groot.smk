@@ -36,4 +36,7 @@ rule run_groot:
         max_read_length = config['params']['groot']['read_length'] + 5,
         graph_dir = "results/{sample}/groot/graphs"
     shell:
-       "zcat {input.read1} {input.read2} | seqkit seq --min-len {params.min_read_length} --max-len {params.max_read_length} | groot align -g {params.graph_dir} -p {threads} -i {input.db_index} --log {log} | groot report --log {log} > {output.report}"
+       """
+       zcat {input.read1} {input.read2} | seqkit seq --min-len {params.min_read_length} --max-len {params.max_read_length} | groot align -g {params.graph_dir} -p {threads} -i {input.db_index} --log {log} | groot report --log {log} > {output.report}
+       rm -rf {params.graph_dir}
+       """
