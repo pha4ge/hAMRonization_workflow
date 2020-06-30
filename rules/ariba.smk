@@ -1,6 +1,5 @@
 rule get_ariba_db:
-    output: 
-       db = directory(os.path.join(config["params"]["db_dir"], "ariba_card.prepareref"))
+    output: db = directory(os.path.join(config["params"]["db_dir"], "ariba_card.prepareref"))
     conda:
       "../envs/ariba.yaml"
     log:
@@ -27,9 +26,11 @@ rule run_ariba:
       "../envs/ariba.yaml"
     threads: 1
     params:
-        output_folder = "results/{sample}/ariba/"
+        output_folder = "results/{sample}/ariba/",
+        tmp_dir = "results/{sample}/ariba_tmp"
     shell:
        """
-       rm -r {params.output_folder}
-       ariba run --threads {threads} {input.ref_db} {input.read1} {input.read2} {params.output_folder} > {log} 2>&1
+       mkdir -p {params.tmp_dir}
+       ariba run --noclean --force --tmp_dir {params.tmp_dir} --threads {threads} {input.ref_db} {input.read1} {input.read2} {params.output_folder} > {log} 2>&1
+       rm -rf {params.tmp_dir}
        """
