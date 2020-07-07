@@ -27,7 +27,6 @@ rule run_pointfinder:
         pointfinder_db = os.path.join(config["params"]["db_dir"], "pointfinder_db"),
         pointfinder_script = os.path.join(config['params']['binary_dir'], "pointfinder", "PointFinder.py")
     output:
-        raw_report = "results/{sample}/pointfinder/GCF_blastn_results.tsv",
         report = "results/{sample}/pointfinder/report.tsv"
     message: "Running rule run_pointfinder on {wildcards.sample} with contigs"
     log:
@@ -38,10 +37,11 @@ rule run_pointfinder:
         config["params"]["threads"]
     params:
         species = config["params"]["pointfinder"]["species"],
-        output_tmp_dir = "results/{sample}/pointfinder/tmp"
+        output_tmp_dir = "results/{sample}/pointfinder/tmp",
+	output_dir = "results/{sample}/pointfinder"
     shell:
         """
         python {input.pointfinder_script} -i {input.contigs} -p {input.pointfinder_db} -s {params.species} -m blastn -m_p $(which blastn) -o results/{wildcards.sample}/pointfinder > {log} 2>&1
-        cp {output.raw_report} {output.report}
+        cp {params.output_dir}/*_blastn_results.tsv {output.report}
         rm -rf {params.output_tmp_dir}
         """
