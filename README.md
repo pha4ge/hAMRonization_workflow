@@ -38,6 +38,10 @@ To exclude any particular tool just comment out the relevant line in `Snakefile`
 Installation 
 ------------
 
+First clone this repository:
+
+`git clone https://github.com/pha4ge/hAMRonization.git`
+
 This pipeline depends on snakemake, conda, build-essentials, git, zlib-dev, and unzip. 
 If you have conda installed, please run:
 
@@ -46,10 +50,6 @@ If you have conda installed, please run:
 and 
 
 `conda activate hamronization`
-
-Afterwards, clone this repository:
-
-`git clone https://github.com/pha4ge/hAMRonization.git`
 
 All further dependencies will be installed via conda on execution.
 
