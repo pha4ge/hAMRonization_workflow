@@ -11,7 +11,8 @@ The following tools are currently included:
 * AMRfinder
 * ariba
 * Groot
-* RGI
+* RGI (for complete and draft genomes)
+* RGI BWT (for metagenomes)
 * staramr
 * mykrobe
 * resfams
