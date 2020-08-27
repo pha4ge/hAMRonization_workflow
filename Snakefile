@@ -19,6 +19,7 @@ rule all:
     input:
         expand("results/{sample}/amrplusplus/{amrplusplus_outputs}", sample=samples.index, amrplusplus_outputs=amrplusplus_exts),
         expand("results/{sample}/rgi/rgi.json", sample=samples.index),
+        expand("results/{sample}/rgibwt/rgibwt.gene_mapping_data.txt", sample=samples.index),
         expand("results/{sample}/staramr/resfinder.tsv", sample=samples.index),
         expand("results/{sample}/ariba/report.tsv", sample=samples.index),
         expand("results/{sample}/abricate/report.tsv", sample=samples.index),
@@ -42,6 +43,7 @@ include: "rules/ariba.smk"
 include: "rules/groot.smk"
 include: "rules/mykrobe.smk"
 include: "rules/rgi.smk"
+include: "rules/rgi_bwt.smk"
 include: "rules/staramr.smk"
 include: "rules/pointfinder.smk"
 include: "rules/resfams.smk"
