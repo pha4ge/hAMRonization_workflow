@@ -13,6 +13,7 @@ rule get_groot_db:
        config["params"]["threads"]
     shell:
         """
+	rm -rf {params.db_dir}/groot_clustered
         groot get -d {params.db_source} -o {params.db_dir}/groot_clustered 
         groot index -p {threads} -m {params.db_dir}/groot_clustered/{params.db_source}.90 -i {output.db} -w {params.read_length} --log {log}
         """

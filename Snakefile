@@ -24,31 +24,31 @@ rule all:
         expand("results/{sample}/ariba/report.tsv", sample=samples.index),
         expand("results/{sample}/abricate/report.tsv", sample=samples.index),
         expand("results/{sample}/amrfinder/report.tsv", sample=samples.index),
-        expand("results/{sample}/pointfinder/report.tsv", sample=samples.index),
         expand("results/{sample}/groot/report.tsv", sample=samples.index),
         expand("results/{sample}/resfams/resfams.tblout", sample=samples.index),
-        expand("results/{sample}/mykrobe/report.json", sample=samples.index),
         expand("results/{sample}/resfinder/data_resfinder.json", sample=samples.index),
         expand("results/{sample}/srax/sraX_analysis.html", sample=samples.index),
         expand("results/{sample}/sstar/report.tsv", sample=samples.index),
         expand("results/{sample}/kmerresistance/results.KmerRes", sample=samples.index),
         expand("results/{sample}/deeparg/output.mapping.ARG", sample=samples.index),
-        #expand("results/{sample}/srst2/srst2__fullgenes__ResFinder__results.txt", sample=samples.index)
+        expand("results/{sample}/srst2/srst2__fullgenes__ResGANNOT_srst2__results.txt", sample=samples.index)
+        #expand("results/{sample}/mykrobe/report.json", sample=samples.index), need variant spec to use
+        #expand("results/{sample}/pointfinder/report.tsv", sample=samples.index), need variant spec to use
 
-#include: "rules/srst2.smk" 
+include: "rules/srst2.smk" 
 include: "rules/deeparg.smk"
 include: "rules/abricate.smk"
 include: "rules/amrfinder.smk"
 include: "rules/ariba.smk"
 include: "rules/groot.smk"
-include: "rules/mykrobe.smk"
 include: "rules/rgi.smk"
 include: "rules/rgi_bwt.smk"
 include: "rules/staramr.smk"
-include: "rules/pointfinder.smk"
 include: "rules/resfams.smk"
 include: "rules/resfinder.smk" 
 include: "rules/kmerresistance.smk" 
 include: "rules/srax.smk" 
 include: "rules/amrplusplus.smk"
 include: "rules/sstar.smk"
+#include: "rules/mykrobe.smk"
+#include: "rules/pointfinder.smk"

@@ -39,7 +39,7 @@ params:
     # empty, no options exposed, uses same res db as resfinder and due to the the large size and slow FTP for the species db (20GB >2hr download) just uses a single dummy klebsiella type genome
   SSTAR:
     # empty, no options exposed, uses same res db as resfinder and due to the the large size and slow FTP for the species db (20GB >2hr download) just uses a single dummy klebsiella type genome
-    #srst2: not supported due to upstream packaging bug
-    #  gene_db: "data/dbs/ResFinder.fasta"
-    #  min_depth: 5
-    #  max_divergence: 10
+  srst2: # not supported due to upstream packaging bug
+      gene_db: "data/dbs/ResGANNOT_srst2.fasta"
+      min_depth: 5
+      max_divergence: 10

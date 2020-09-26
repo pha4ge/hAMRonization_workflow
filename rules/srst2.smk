@@ -3,7 +3,7 @@ rule run_srst2:
         read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
         read2 = lambda wildcards: _get_seq(wildcards, 'read2')
     output:
-        report = "results/{sample}/srst2/srst2__fullgenes__ResFinder__results.txt"
+        report = "results/{sample}/srst2/srst2__fullgenes__ResGANNOT_srst2__results.txt"
     message: "Running rule run_srst2 on {wildcards.sample} with reads"
     log:
        "logs/srst2_{sample}.log"
