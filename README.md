@@ -46,11 +46,11 @@ First clone this repository:
 This pipeline depends on snakemake, conda, build-essentials, git, zlib-dev, and unzip. 
 If you have conda installed, please run:
 
-`conda env create -n hamronization --file envs/hamronization.yaml` 
+`conda env create -n hamronization_workflow --file envs/hamronization_workflow.yaml` 
 
 and 
 
-`conda activate hamronization`
+`conda activate hamronization_workflow`
 
 All further dependencies will be installed via conda on execution.
 
@@ -106,7 +106,7 @@ Mycobacterium tuberculosis      SAMN02599009    /data/SAMN02599009/GCF_000662586
 
 Then specify your `config.yaml` to use this `sample_table.tsv` and execute the pipeline from bash in the container by activating the top-level environment:
 
-`conda activate hamronization`
+`conda activate hamronization_workflow`
 
 Then the workflow:
 

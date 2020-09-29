@@ -18,7 +18,7 @@ mv ERR4008003_2.fastq.gz ERR4008003_R2.fastq.gz
 cd ../..
 
 conda env create -n hamronization --file envs/hamronization_workflow.yaml
-conda activate hamronization
+conda activate hamronization_workflow
 
 # run snakemake on this trivial test-case, no snakemake support for singularity args for individual repos
 snakemake --configfile config/test_config.yaml --use-conda --jobs 1 --use-singularity --singularity-args "-B $PWD:/data"
