@@ -14,19 +14,19 @@ The following tools are currently included:
 * RGI (for complete and draft genomes)
 * RGI BWT (for metagenomes)
 * staramr
-* mykrobe
 * resfams
 * staramr
 * Resfinder
 * sraX
 * DeepARG (requires singularity)
-* pointfinder
 * SSTAR
 * AMRplusplus
+* SRST2 
+* KmerResistance
 
 Excluded tools:
-* KmerResistance (currently kma fails without error, just a non-zero exit code in the container)
-* SRST2 (current bioconda recipe relies on samtools 0.1.18 which is broken on many systems, biocontainer fails with same samtools error)
+* mykrobe (needs variant specification to be parseable)
+* pointfinder (needs variant specification to be parseable)
 * SEAR, ARG-ANNOT (no longer downloadable)
 * RAST/PATRIC (not easily runnable on CLI)
 * Single organism/or resistance tools (e.g. Kleborate, LREfinder, SSCmec Finder, U-CARE, ARGO)
