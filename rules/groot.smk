@@ -33,8 +33,8 @@ rule run_groot:
     threads:
        config["params"]["threads"]
     params:
-        min_read_length = config['params']['groot']['read_length'] - 5,
-        max_read_length = config['params']['groot']['read_length'] + 5,
+        min_read_length = config['params']['groot']['read_length'] - config['params']['groot']['window'],
+        max_read_length = config['params']['groot']['read_length'] + config['params']['groot']['window'],
         graph_dir = "results/{sample}/groot/graphs"
     shell:
        """

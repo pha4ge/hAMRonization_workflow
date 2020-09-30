@@ -17,6 +17,7 @@ params:
   groot:
     db_source: "card" #which preclustered db to use
     read_length: 150 # readlengh to use for indexing the preclustered db
+    window: 20 # window size to allow min and max read length (min-len = read_length - window)
   rgi:
     db_version: "3.0.7"
   srax:
