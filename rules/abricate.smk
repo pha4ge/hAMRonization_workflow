@@ -17,5 +17,5 @@ rule run_abricate:
     shell:
         """
         abricate --list > {log}
-        abricate --threads {threads} --nopath --db {params.dbname} --minid {params.minid} --mincov {params.mincov} {input.contigs} > {output.report} > {log} 2>&1
+        abricate --threads {threads} --nopath --db {params.dbname} --minid {params.minid} --mincov {params.mincov} {input.contigs} > {output.report} 2> {log}
         """
