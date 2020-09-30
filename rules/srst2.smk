@@ -1,9 +1,22 @@
+rule get_srst2_db:
+    output:
+        db_file = os.path.join(config["params"]["db_dir"], config["params"]["srst2"]["gene_db"])
+    log:
+        "logs/srst2_db.log"
+    params:
+        db_source = config["params"]["srst2"]["db_source"]
+    shell:
+        """
+        curl {params.db_source} --output {output.db_file}
+        """
+
 rule run_srst2:
     input:
         read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
-        read2 = lambda wildcards: _get_seq(wildcards, 'read2')
+        read2 = lambda wildcards: _get_seq(wildcards, 'read2'),
+        db_file = os.path.join(config["params"]["db_dir"], config["params"]["srst2"]["gene_db"])
     output:
-        report = "results/{sample}/srst2/srst2__fullgenes__ResGANNOT_srst2__results.txt"
+        report = "results/{sample}/srst2/srst2__fullgenes__ARGannot__results.txt"
     message: "Running rule run_srst2 on {wildcards.sample} with reads"
     log:
        "logs/srst2_{sample}.log"
@@ -12,9 +25,11 @@ rule run_srst2:
     threads:
        config["params"]["threads"]
     params:
-        gene_db = config["params"]["srst2"]["gene_db"],
+        gene_db = os.path.join(config["params"]["db_dir"], config["params"]["srst2"]["gene_db"]),
         min_depth = config["params"]["srst2"]["min_depth"],
         max_divergence = config["params"]["srst2"]["max_divergence"],
-        output_prefix = "results/{sample}/srst2/srst2"
+        for_suffix = config["params"]["srst2"]["forward"],
+        rev_suffix = config["params"]["srst2"]["reverse"],
+        output_prefix = "results/{sample}/srst2/srst2",
     shell:
-       "srst2 --threads {threads} --gene_db {params.gene_db} --forward '_R1' --reverse '_R2' --input_pe {input.read1} {input.read2} --min_depth {params.min_depth} --output {params.output_prefix} > {log} 2>&1"
+       "srst2 --threads {threads} --gene_db {params.gene_db} --forward {params.for_suffix} --reverse {params.rev_suffix} --input_pe {input.read1} {input.read2} --min_depth {params.min_depth} --output {params.output_prefix} > {log} 2>&1"
