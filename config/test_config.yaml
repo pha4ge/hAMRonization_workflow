@@ -12,7 +12,7 @@ params:
     name: "ncbi"
     minid: 75 #minimum identity threshold
     mincov: 0 #minimum coverage threshold
-  amrfinder:
+  amrfinderplus:
     organism: "Klebsiella" #must be defined to enable mutation detection: set amrfinder --list_organisms for options
   groot:
     db_source: "card" #which preclustered db to use
@@ -38,7 +38,7 @@ params:
     #empty, no options exposed
   kmerresistance:
     # empty, no options exposed, uses same res db as resfinder and due to the the large size and slow FTP for the species db (20GB >2hr download) just uses a single dummy klebsiella type genome
-  SSTAR:
+  csstar:
     # empty, no options exposed, uses same res db as resfinder and due to the the large size and slow FTP for the species db (20GB >2hr download) just uses a single dummy klebsiella type genome
   srst2: # not supported due to upstream packaging bug
     gene_db: "ARGannot.fasta"

@@ -23,12 +23,12 @@ rule all:
         expand("results/{sample}/staramr/resfinder.tsv", sample=samples.index),
         expand("results/{sample}/ariba/report.tsv", sample=samples.index),
         expand("results/{sample}/abricate/report.tsv", sample=samples.index),
-        expand("results/{sample}/amrfinder/report.tsv", sample=samples.index),
+        expand("results/{sample}/amrfinderplus/report.tsv", sample=samples.index),
         expand("results/{sample}/groot/report.tsv", sample=samples.index),
         expand("results/{sample}/resfams/resfams.tblout", sample=samples.index),
         expand("results/{sample}/resfinder/data_resfinder.json", sample=samples.index),
         expand("results/{sample}/srax/sraX_analysis.html", sample=samples.index),
-        expand("results/{sample}/sstar/report.tsv", sample=samples.index),
+        expand("results/{sample}/csstar/report.tsv", sample=samples.index),
         expand("results/{sample}/kmerresistance/results.KmerRes", sample=samples.index),
         expand("results/{sample}/deeparg/output.mapping.ARG", sample=samples.index),
         expand("results/{sample}/srst2/srst2__fullgenes__ARGannot__results.txt", sample=samples.index)
@@ -38,7 +38,7 @@ rule all:
 include: "rules/srst2.smk" 
 include: "rules/deeparg.smk"
 include: "rules/abricate.smk"
-include: "rules/amrfinder.smk"
+include: "rules/amrfinderplus.smk"
 include: "rules/ariba.smk"
 include: "rules/groot.smk"
 include: "rules/rgi.smk"
@@ -49,6 +49,6 @@ include: "rules/resfinder.smk"
 include: "rules/kmerresistance.smk" 
 include: "rules/srax.smk" 
 include: "rules/amrplusplus.smk"
-include: "rules/sstar.smk"
+include: "rules/csstar.smk"
 #include: "rules/mykrobe.smk"
 #include: "rules/pointfinder.smk"

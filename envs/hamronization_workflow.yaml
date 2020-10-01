@@ -5,4 +5,5 @@ channels:
   - defaults
 dependencies:
   - snakemake=5.18.1
+  - mamba
   - unzip 
