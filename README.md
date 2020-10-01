@@ -41,7 +41,7 @@ Installation
 
 First clone this repository:
 
-`git clone https://github.com/pha4ge/hAMRonization.git`
+`git clone https://github.com/pha4ge/hAMRonization_workflow`
 
 This pipeline depends on snakemake, conda, build-essentials, git, zlib-dev, and unzip. 
 If you have conda installed, please run:
