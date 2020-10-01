@@ -8,7 +8,7 @@ The inclusion criteria was open-source tools for specifically AMR detection.
 
 The following tools are currently included:
 * abricate
-* AMRfinder
+* AMRFinderPlus
 * ariba
 * Groot
 * RGI (for complete and draft genomes)
@@ -19,7 +19,7 @@ The following tools are currently included:
 * Resfinder
 * sraX
 * DeepARG (requires singularity)
-* SSTAR
+* CSSTAR
 * AMRplusplus
 * SRST2 
 * KmerResistance
