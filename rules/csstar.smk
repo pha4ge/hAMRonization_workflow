@@ -23,7 +23,8 @@ rule run_csstar:
         csstar = os.path.join(config['params']['binary_dir'], "c-SSTAR", "c-SSTAR"),
         resgannot_db = os.path.join(config['params']['db_dir'], "ResGANNOT_srst2.fasta")
     output:
-        report = "results/{sample}/csstar/report.tsv"
+        report = "results/{sample}/csstar/report.tsv",
+        metadata = "results/{sample}/csstar/metadata.txt"
     message: "Running rule run_csstar on {wildcards.sample} with contigs"
     log:
        "logs/csstar_{sample}.log"
@@ -32,8 +33,10 @@ rule run_csstar:
     threads:
        config["params"]["threads"]
     params:
-        outdir = 'results/{sample}/csstar'
+        outdir = 'results/{sample}/csstar',
+        logfile = "results/{sample}/csstar/c-SSTAR_GCF_902827215.1_SB5881_genomic.log"
     shell:
        """
        {input.csstar} -g {input.contigs} -d {input.resgannot_db} --outdir {params.outdir} > {output.report} 2>{log}
+       grep "c-SSTAR version" {params.logfile} | perl -p -e 's/.+c-SSTAR version: (.+)/analysis_software_version:$1/' > {output.metadata}
        """

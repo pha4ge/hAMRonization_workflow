@@ -24,7 +24,8 @@ rule run_groot:
         read2 = lambda wildcards: _get_seq(wildcards, 'read2'),
         db_index = os.path.join(config["params"]["db_dir"], "groot_index")
     output:
-        report = "results/{sample}/groot/report.tsv"
+        report = "results/{sample}/groot/report.tsv",
+        metadata = "results/{sample}/groot/metadata.txt"
     message: "Running rule run_groot on {wildcards.sample} with reads"
     log:
        "logs/groot_{sample}.log"
@@ -40,4 +41,5 @@ rule run_groot:
        """
        zcat {input.read1} {input.read2} | seqkit seq --min-len {params.min_read_length} --max-len {params.max_read_length} | groot align -g {params.graph_dir} -p {threads} -i {input.db_index} --log {log} | groot report --log {log} > {output.report}
        rm -rf {params.graph_dir}
+       groot version | perl -p -e 's/(.+)/analysis_software_version:$1/' > {output.metadata}
        """

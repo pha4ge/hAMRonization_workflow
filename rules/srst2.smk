@@ -16,7 +16,8 @@ rule run_srst2:
         read2 = lambda wildcards: _get_seq(wildcards, 'read2'),
         db_file = os.path.join(config["params"]["db_dir"], config["params"]["srst2"]["gene_db"])
     output:
-        report = "results/{sample}/srst2/srst2__fullgenes__ARGannot__results.txt"
+        report = "results/{sample}/srst2/srst2__fullgenes__ARGannot__results.txt",
+        metadata = "results/{sample}/srst2/metadata.txt"
     message: "Running rule run_srst2 on {wildcards.sample} with reads"
     log:
        "logs/srst2_{sample}.log"
@@ -32,4 +33,7 @@ rule run_srst2:
         rev_suffix = config["params"]["srst2"]["reverse"],
         output_prefix = "results/{sample}/srst2/srst2",
     shell:
-       "srst2 --threads {threads} --gene_db {params.gene_db} --forward {params.for_suffix} --reverse {params.rev_suffix} --input_pe {input.read1} {input.read2} --min_depth {params.min_depth} --output {params.output_prefix} > {log} 2>&1"
+       """
+       srst2 --threads {threads} --gene_db {params.gene_db} --forward {params.for_suffix} --reverse {params.rev_suffix} --input_pe {input.read1} {input.read2} --min_depth {params.min_depth} --output {params.output_prefix} > {log} 2>&1
+       srst2 --version 2>&1 | perl -p -e 's/srst2 (.+)/analysis_software_version:$1/' > {output.metadata}
+       """

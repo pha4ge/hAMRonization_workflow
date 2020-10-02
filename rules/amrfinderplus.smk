@@ -13,7 +13,8 @@ rule run_amrfinderplus:
         contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
         db = os.path.join(config["params"]["db_dir"], "amrfinderplus")
     output:
-        report = "results/{sample}/amrfinderplus/report.tsv"
+        report = "results/{sample}/amrfinderplus/report.tsv",
+        metadata = "results/{sample}/amrfinderplus/metadata.txt"
     message: "Running rule run_amrfinderplus on {wildcards.sample} with contigs"
     log:
        "logs/amrfinderplus_{sample}.log"
@@ -28,4 +29,5 @@ rule run_amrfinderplus:
         """
         amrfinder -n {input.contigs} -o {output.report} -O {params.organism} -d {input.db}/latest >{log} 2>&1
         rm -rf {params.output_tmp_dir}
+        amrfinder --version | perl -p -e 's/(.+)/analysis_software_version:$1/' > {output.metadata}
         """
