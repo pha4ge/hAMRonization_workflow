@@ -18,7 +18,8 @@ rule run_ariba:
         read2 = lambda wildcards: _get_seq(wildcards, 'read2'),
         ref_db = os.path.join(config["params"]["db_dir"], "ariba_card.prepareref")
     output:
-        report = "results/{sample}/ariba/report.tsv"
+        report = "results/{sample}/ariba/report.tsv",
+        metadata = "results/{sample}/ariba/metadata.txt"
     message: "Running rule run_ariba on {wildcards.sample} with reads"
     log:
        "logs/ariba_{sample}.log"
@@ -33,4 +34,5 @@ rule run_ariba:
        mkdir -p {params.tmp_dir}
        ariba run --noclean --force --tmp_dir {params.tmp_dir} --threads {threads} {input.ref_db} {input.read1} {input.read2} {params.output_folder} > {log} 2>&1
        rm -rf {params.tmp_dir}
+       ariba version | grep "ARIBA version" | perl -p -e 's/ARIBA version: (.+)/analysis_software_version:$1/' > {output.metadata} 
        """

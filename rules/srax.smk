@@ -2,7 +2,8 @@ rule run_srax:
     input:
         genome_dir = lambda wildcards: _get_seqdir(wildcards),
     output:
-        report = "results/{sample}/srax/sraX_analysis.html"
+        report = "results/{sample}/srax/sraX_analysis.html",
+        metadata = "results/{sample}/srax/metadata.txt"
     message: "Running rule run_srax on {wildcards.sample} with contigs"
     log:
        "logs/srax_{sample}.log"
@@ -23,4 +24,5 @@ rule run_srax:
        sraX -i {input.genome_dir} -t 4 -db {params.dbtype} -o {params.outdir} > {log} 2>&1
        mv {params.result_output_dir}/* {params.outdir}
        rm -rf {params.tmp_output_dir} {params.log_output_dir} {params.ARG_DB_output_dir} {params.analysis_output_dir} {params.result_output_dir}
+       sraX --version | grep version | perl -p -e 's/.+version: (.+)/analysis_software_version:$1/' > {output.metadata}
        """
