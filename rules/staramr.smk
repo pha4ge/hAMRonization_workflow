@@ -13,11 +13,13 @@ rule run_staramr:
        config["params"]["threads"]
     params:
         output_folder = "results/{sample}/staramr/",
-        pointfinder_species = config['params']['pointfinder']['species']
+        pointfinder_species = config['params']['pointfinder']['species'],
+        settings = "results/{sample}/staramr/settings.txt"
     shell:
        """
        rm -r {params.output_folder};
        staramr search -o {params.output_folder} --nproc {threads} {input.contigs} >{log} 2>&1
-       staramr --version | perl -p -e 's/staramr (.+)/analysis_software_version:$1/' > {output.metadata}
+       staramr --version | perl -p -e 's/staramr (.+)/analysis_software_version: $1/' > {output.metadata}
+       cat {params.settings} | grep resfinder_db_date | perl -p -e 's/.+= (.+)/reference_database_version: $1/' >> {output.metadata}
        """
         # only support salmonella/campylobacter

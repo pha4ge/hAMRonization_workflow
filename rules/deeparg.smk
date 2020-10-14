@@ -15,7 +15,8 @@ rule run_deeparg:
         """
         python /deeparg/deepARG.py --align --type nucl --reads --input /data/results/{wildcards.sample}/deeparg/reads.fasta --output /data/results/{wildcards.sample}/deeparg/output > {log} 2>&1
         rm /data/results/{wildcards.sample}/deeparg/reads.fasta
-        echo "analysis_software_version:{params.version}" > {output.metadata}
+        echo "analysis_software_version: {params.version}" > {output.metadata}
+        echo "reference_database_version: {params.version}" >> {output.metadata}
         """
 
 rule prepare_deeparg_reads:

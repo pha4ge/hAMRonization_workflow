@@ -34,6 +34,9 @@ rule all:
         expand("results/{sample}/srst2/srst2__fullgenes__ARGannot__results.txt", sample=samples.index),
         #expand("results/{sample}/mykrobe/report.json", sample=samples.index), need variant spec to use
         #expand("results/{sample}/pointfinder/report.tsv", sample=samples.index), need variant spec to use
+        os.path.join(config["params"]["db_dir"], "ariba_card.version.txt"),
+        os.path.join(config["params"]["db_dir"], "amrfinderplus/latest/version.txt"),
+        os.path.join(config["params"]["db_dir"], "ResGANNOT_srst2_version.txt")
 
 include: "rules/srst2.smk" 
 include: "rules/deeparg.smk"

@@ -11,7 +11,8 @@ rule get_amrfinder_db:
 rule run_amrfinderplus:
     input:
         contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
-        db = os.path.join(config["params"]["db_dir"], "amrfinderplus")
+        db = os.path.join(config["params"]["db_dir"], "amrfinderplus"),
+        dbversion = os.path.join(config["params"]["db_dir"], "amrfinderplus", "latest", "version.txt")
     output:
         report = "results/{sample}/amrfinderplus/report.tsv",
         metadata = "results/{sample}/amrfinderplus/metadata.txt"
@@ -22,12 +23,13 @@ rule run_amrfinderplus:
       "../envs/amrfinderplus.yaml"
     params:
         organism = config["params"]["amrfinderplus"]["organism"],
-        output_tmp_dir = "results/{sample}/amrfinderplus/tmp"
+        output_tmp_dir = "results/{sample}/amrfinderplus/tmp",
     threads:
        config["params"]["threads"]
     shell:
         """
         amrfinder -n {input.contigs} -o {output.report} -O {params.organism} -d {input.db}/latest >{log} 2>&1
         rm -rf {params.output_tmp_dir}
-        amrfinder --version | perl -p -e 's/(.+)/analysis_software_version:$1/' > {output.metadata}
+        amrfinder --version | perl -p -e 's/(.+)/analysis_software_version: $1/' > {output.metadata}
+        cat {input.dbversion} | perl -p -e 's/(.+)/reference_database_version: $1/' >> {output.metadata} 
         """

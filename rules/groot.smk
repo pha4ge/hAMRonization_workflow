@@ -41,5 +41,5 @@ rule run_groot:
        """
        zcat {input.read1} {input.read2} | seqkit seq --min-len {params.min_read_length} --max-len {params.max_read_length} | groot align -g {params.graph_dir} -p {threads} -i {input.db_index} --log {log} | groot report --log {log} > {output.report}
        rm -rf {params.graph_dir}
-       groot version | perl -p -e 's/(.+)/analysis_software_version:$1/' > {output.metadata}
+       groot version | perl -p -e 's/(.+)/analysis_software_version: $1/' > {output.metadata}
        """

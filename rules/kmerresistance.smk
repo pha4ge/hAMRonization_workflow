@@ -54,5 +54,5 @@ rule run_kmerresistance:
        zcat {input.read1} {input.read2} > {params.output_folder}/temp_all_reads.fq
        kmerresistance -i {params.output_folder}/temp_all_reads.fq -t_db {params.kma_resfinder_db} -s_db {params.species_db} -o {params.output_folder}/results > {log} 2>&1
        rm {params.output_folder}/temp_all_reads.fq
-       kmerresistance -v 2>&1 | perl -p -e 's/KmerResistance-(.+)/analysis_software_version:$1/' > {output.metadata}
+       kmerresistance -v 2>&1 | perl -p -e 's/KmerResistance-(.+)/analysis_software_version: $1/' > {output.metadata}
        """
