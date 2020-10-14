@@ -5,7 +5,8 @@ species: "klebsiella_genomes"
 samples: "config/test_data.tsv"
 
 params:
-  db_dir: "data/dbs" #directory to install databases in
+  db_dir: "data/dbs" # directory to install databases in
+  dateformat: "%Y-%b-%d" # date formats for database downloads
   binary_dir: "data/non_conda_deps" # directory to install non-conda dependencies
   threads: 1 #number of threads per rule
   abricate:
@@ -39,6 +40,7 @@ params:
   kmerresistance:
     # empty, no options exposed, uses same res db as resfinder and due to the the large size and slow FTP for the species db (20GB >2hr download) just uses a single dummy klebsiella type genome
   csstar:
+    db_source: "https://raw.githubusercontent.com/tomdeman-bio/Sequence-Search-Tool-for-Antimicrobial-Resistance-SSTAR-/master/Latest_AR_database/ResGANNOT_srst2.fasta"
     # empty, no options exposed, uses same res db as resfinder and due to the the large size and slow FTP for the species db (20GB >2hr download) just uses a single dummy klebsiella type genome
   srst2: # not supported due to upstream packaging bug
     gene_db: "ARGannot.fasta"

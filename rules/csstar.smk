@@ -11,17 +11,23 @@ rule get_csstar_script:
 
 rule get_csstar_database:
     output:
-        os.path.join(config['params']['db_dir'], "ResGANNOT_srst2.fasta")
+        dbfile = os.path.join(config['params']['db_dir'], "ResGANNOT_srst2.fasta"),
+        dbversion = os.path.join(config["params"]["db_dir"], "ResGANNOT_srst2_version.txt")
+    params:
+        db_source = config["params"]["csstar"]["db_source"],
+        dateformat = config["params"]["dateformat"]
     shell:
         """
-        wget -O {output} https://raw.githubusercontent.com/tomdeman-bio/Sequence-Search-Tool-for-Antimicrobial-Resistance-SSTAR-/master/Latest_AR_database/ResGANNOT_srst2.fasta
+        wget -O {output.dbfile} {params.db_source} 
+        date +"{params.dateformat}" > {output.dbversion}
         """
 
 rule run_csstar:
     input:
         contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
         csstar = os.path.join(config['params']['binary_dir'], "c-SSTAR", "c-SSTAR"),
-        resgannot_db = os.path.join(config['params']['db_dir'], "ResGANNOT_srst2.fasta")
+        resgannot_db = os.path.join(config['params']['db_dir'], "ResGANNOT_srst2.fasta"),
+        dbversion = os.path.join(config["params"]["db_dir"], "ResGANNOT_srst2_version.txt")
     output:
         report = "results/{sample}/csstar/report.tsv",
         metadata = "results/{sample}/csstar/metadata.txt"
@@ -34,9 +40,10 @@ rule run_csstar:
        config["params"]["threads"]
     params:
         outdir = 'results/{sample}/csstar',
-        logfile = "results/{sample}/csstar/c-SSTAR_GCF_902827215.1_SB5881_genomic.log"
+        logfile = "results/{sample}/csstar/c-SSTAR_*.log"
     shell:
        """
        {input.csstar} -g {input.contigs} -d {input.resgannot_db} --outdir {params.outdir} > {output.report} 2>{log}
-       grep "c-SSTAR version" {params.logfile} | perl -p -e 's/.+c-SSTAR version: (.+)/analysis_software_version:$1/' > {output.metadata}
+       grep "c-SSTAR version" {params.logfile} | perl -p -e 's/.+c-SSTAR version: (.+)/analysis_software_version: $1/' > {output.metadata}
+       cat {input.dbversion} | perl -p -e 's/(.+)/reference_database_version: $1/' >> {output.metadata} 
        """

@@ -18,6 +18,6 @@ rule run_abricate:
     shell:
         """
         abricate --threads {threads} --nopath --db {params.dbname} --minid {params.minid} --mincov {params.mincov} {input.contigs} > {output.report} 2> {log}
-        abricate --version | perl -p -e 's/abricate (.+)/analysis_software_version:$1/' > {output.metadata}
-        abricate --list > {log}
+        abricate --version | perl -p -e 's/abricate (.+)/analysis_software_version: $1/' > {output.metadata}
+        abricate --list | grep {params.dbname} | perl -p -e 's/.+?\t.+?\t.+?\t(.+)/reference_database_version: $1/' >> {output.metadata}
         """

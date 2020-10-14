@@ -18,11 +18,13 @@ rule run_srax:
        log_output_dir = "results/{sample}/srax/Log",
        ARG_DB_output_dir = "results/{sample}/srax/ARG_DB",
        analysis_output_dir = "results/{sample}/srax/Analysis",
-       result_output_dir = "results/{sample}/srax/Results"
+       result_output_dir = "results/{sample}/srax/Results",
+       dateformat = config["params"]["dateformat"]
     shell:
        """
        sraX -i {input.genome_dir} -t 4 -db {params.dbtype} -o {params.outdir} > {log} 2>&1
        mv {params.result_output_dir}/* {params.outdir}
-       rm -rf {params.tmp_output_dir} {params.log_output_dir} {params.ARG_DB_output_dir} {params.analysis_output_dir} {params.result_output_dir}
-       sraX --version | grep version | perl -p -e 's/.+version: (.+)/analysis_software_version:$1/' > {output.metadata}
+       sraX --version | grep version | perl -p -e 's/.+version: (.+)/analysis_software_version: $1/' > {output.metadata}
+       date +"{params.dateformat}" | perl -p -e 's/(.+)/reference_database_version: $1/' >> {output.metadata}
        """
+#       rm -rf {params.tmp_output_dir} {params.log_output_dir} {params.ARG_DB_output_dir} {params.analysis_output_dir} {params.result_output_dir}
