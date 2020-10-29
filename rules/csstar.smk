@@ -44,6 +44,21 @@ rule run_csstar:
     shell:
        """
        {input.csstar} -g {input.contigs} -d {input.resgannot_db} --outdir {params.outdir} > {output.report} 2>{log}
-       grep "c-SSTAR version" {params.logfile} | perl -p -e 's/.+c-SSTAR version: (.+)/analysis_software_version: $1/' > {output.metadata}
-       cat {input.dbversion} | perl -p -e 's/(.+)/reference_database_version: $1/' >> {output.metadata} 
+       grep "c-SSTAR version" {params.logfile} | perl -p -e 's/.+c-SSTAR version: (.+)/--analysis_software_version $1/' > {output.metadata}
+       cat {input.dbversion} | perl -p -e 's/(.+)/--reference_database_version $1/' >> {output.metadata} 
        """
+
+rule hamronize_csstar:
+    input:
+        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        report = "results/{sample}/csstar/report.tsv",
+        metadata = "results/{sample}/csstar/metadata.txt"
+    output:
+        "results/{sample}/csstar/hamronized_report.tsv"
+    conda:
+        "../envs/hamronization.yaml"
+    shell:
+        """
+        hamronize csstar --input_file_name {input.contigs} --reference_database_id ResGANNOT $(paste - - < {input.metadata}) {input.report} > {output}
+        """
+
