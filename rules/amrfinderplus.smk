@@ -3,10 +3,12 @@ rule get_amrfinder_db:
        dbversion = os.path.join(config["params"]["db_dir"], "amrfinderplus", "latest", "version.txt")
     conda:
       "../envs/amrfinderplus.yaml"
+    params:
+        db_dir = os.path.join(config['params']['db_dir'], 'amrfinderplus')
     log:
        "logs/amrfinderplus_db.log"
     shell:
-        "amrfinder_update -d {output.db} 2> {log}"
+        "amrfinder_update -d {params.db_dir} 2> {log}"
         
 rule run_amrfinderplus:
     input:
@@ -30,6 +32,20 @@ rule run_amrfinderplus:
         """
         amrfinder -n {input.contigs} -o {output.report} -O {params.organism} -d {params.db}/latest >{log} 2>&1
         rm -rf {params.output_tmp_dir}
-        amrfinder --version | perl -p -e 's/(.+)/analysis_software_version: $1/' > {output.metadata}
-        cat {input.dbversion} | perl -p -e 's/(.+)/reference_database_version: $1/' >> {output.metadata} 
+        amrfinder --version | perl -p -e 's/(.+)/--analysis_software_version $1/' > {output.metadata}
+        cat {input.dbversion} | perl -p -e 's/(.+)/--reference_database_version $1/' >> {output.metadata} 
+        """
+    
+rule hamronize_amrfinderplus:
+    input:
+        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        report = "results/{sample}/amrfinderplus/report.tsv",
+        metadata = "results/{sample}/amrfinderplus/metadata.txt"
+    output:
+        "results/{sample}/amrfinderplus/hamronized_report.tsv"
+    conda:
+        "../envs/hamronization.yaml"
+    shell:
+        """
+        hamronize amrfinderplus --input_file_name {input.contigs} $(paste - - < {input.metadata}) {input.report} > {output}
         """
