@@ -39,6 +39,20 @@ rule run_ariba:
        mkdir -p {params.tmp_dir}
        ariba run --noclean --force --tmp_dir {params.tmp_dir} --threads {threads} {input.ref_db} {input.read1} {input.read2} {params.output_folder} > {log} 2>&1
        rm -rf {params.tmp_dir}
-       ariba version | grep "ARIBA version" | perl -p -e 's/ARIBA version: (.+)/analysis_software_version: $1/' > {output.metadata} 
-       cat {input.dbversion} | perl -p -e 's/(.+)/reference_database_version: $1/' >> {output.metadata} 
+       ariba version | grep "ARIBA version" | perl -p -e 's/ARIBA version: (.+)/--analysis_software_version $1/' > {output.metadata} 
+       cat {input.dbversion} | perl -p -e 's/(.+)/--reference_database_version $1/' >> {output.metadata} 
        """
+
+rule hamronize_ariba:
+    input:
+        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
+        report = "results/{sample}/ariba/report.tsv",
+        metadata = "results/{sample}/ariba/metadata.txt"
+    output:
+        "results/{sample}/ariba/hamronized_report.tsv"
+    conda:
+        "../envs/hamronization.yaml"
+    shell:
+        """
+        hamronize ariba --input_file_name {input.read1} --reference_database_id CARD $(paste - - < {input.metadata}) {input.report} > {output}
+        """
