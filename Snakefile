@@ -25,7 +25,7 @@ rule all:
         expand("results/{sample}/abricate/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/amrfinderplus/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/groot/hamronized_report.tsv", sample=samples.index),
-        expand("results/{sample}/resfams/resfams.tblout", sample=samples.index),
+        expand("results/{sample}/resfams/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/resfinder/data_resfinder.json", sample=samples.index),
         expand("results/{sample}/srax/sraX_analysis.html", sample=samples.index),
         expand("results/{sample}/csstar/hamronized_report.tsv", sample=samples.index),
