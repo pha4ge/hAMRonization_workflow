@@ -15,8 +15,8 @@ rule run_deeparg:
         """
         python /deeparg/deepARG.py --align --type nucl --reads --input /data/results/{wildcards.sample}/deeparg/reads.fasta --output /data/results/{wildcards.sample}/deeparg/output > {log} 2>&1
         rm /data/results/{wildcards.sample}/deeparg/reads.fasta
-        echo "analysis_software_version: {params.version}" > {output.metadata}
-        echo "reference_database_version: {params.version}" >> {output.metadata}
+        echo "--analysis_software_version {params.version}" > {output.metadata}
+        echo "--reference_database_version {params.version}" >> {output.metadata}
         """
 
 rule prepare_deeparg_reads:
@@ -27,3 +27,17 @@ rule prepare_deeparg_reads:
         fasta_reads = "results/{sample}/deeparg/reads.fasta"
     shell:
         "zcat {input.read1} {input.read2} > {output.fasta_reads}"
+
+rule hamronize_deeparg:
+    input:
+        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
+        report = "results/{sample}/deeparg/output.mapping.ARG",
+        metadata = "results/{sample}/deeparg/metadata.txt"
+    output:
+        "results/{sample}/deeparg/hamronized_report.tsv"
+    conda:
+        "../envs/hamronization.yaml"
+    shell:
+        """
+        hamronize deeparg --input_file_name {input.read1} $(paste - - < {input.metadata}) {input.report} > {output}
+        """

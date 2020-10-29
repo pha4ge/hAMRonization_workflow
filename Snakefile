@@ -30,7 +30,7 @@ rule all:
         expand("results/{sample}/srax/sraX_analysis.html", sample=samples.index),
         expand("results/{sample}/csstar/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/kmerresistance/results.KmerRes", sample=samples.index),
-        expand("results/{sample}/deeparg/output.mapping.ARG", sample=samples.index),
+        expand("results/{sample}/deeparg/hamronized_report.tsv", sample=samples.index),
         #expand("results/{sample}/srst2/srst2__fullgenes__ARGannot__results.txt", sample=samples.index),
         #expand("results/{sample}/mykrobe/report.json", sample=samples.index), need variant spec to use
         #expand("results/{sample}/pointfinder/report.tsv", sample=samples.index), need variant spec to use
