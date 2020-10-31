@@ -19,7 +19,8 @@ rule run_rgi_bwt:
         read2 = lambda wildcards: _get_seq(wildcards, 'read2'),
         card_db_bwt = os.path.join(config["params"]["db_dir"], "card_bwt", "card.json")
     output:
-        report = "results/{sample}/rgibwt/rgibwt.gene_mapping_data.txt"
+        report = "results/{sample}/rgibwt/rgibwt.gene_mapping_data.txt",
+        metadata = "results/{sample}/rgibwt/metadata.txt"
     message: "Running rule run_rgi_bwt on {wildcards.sample} with reads"
     log:
        "logs/rgi_bwt_{sample}.log"
@@ -35,4 +36,21 @@ rule run_rgi_bwt:
        rgi load --card_json {input.card_db_bwt} --card_annotation card_database_v*.fasta >> {log} 2>&1
        rm card_database_v*.fasta
        rgi bwt --read_one {input.read1} --read_two {input.read2} --output_file {params.output_prefix} --aligner bowtie2 --clean --threads {threads} >>{log} 2>&1
+
+       echo "--analysis_software_version $(rgi main --version)" > {output.metadata}
+       echo "--reference_database_version $(rgi database --version)" >> {output.metadata}
        """
+
+rule hamronize_rgi_bwt:
+    input:
+        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
+        report = "results/{sample}/rgibwt/rgibwt.gene_mapping_data.txt",
+        metadata = "results/{sample}/rgibwt/metadata.txt"
+    output:
+        "results/{sample}/rgibwt/hamronized_report.tsv"
+    conda:
+        "../envs/hamronization.yaml"
+    shell:
+        """
+        hamronize rgi $(paste - - < {input.metadata}) --input_file_name {input.read1} {input.report} > {output}
+        """

@@ -7,8 +7,6 @@ workdir: os.getcwd()
 samples = pd.read_table(config["samples"], index_col="biosample", sep="\t")
 samples.index = samples.index.astype('str', copy=False) # in case samples are integers, need to convert them to str
 
-amrplusplus_exts = ["snp.tsv", "gene.tsv", "mech.tsv", "group.tsv", "class.tsv"]
-
 def _get_seq(wildcards,seqs):
     return samples.loc[(wildcards.sample), [seqs]].dropna()[0]
 
@@ -28,16 +26,17 @@ rule all:
         expand("results/{sample}/deeparg/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/kmerresistance/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/resfinder/hamronized_report.tsv", sample=samples.index),
-        expand("results/{sample}/rgi/rgi.json", sample=samples.index),
-        expand("results/{sample}/rgibwt/rgibwt.gene_mapping_data.txt", sample=samples.index),
-        expand("results/{sample}/amrplusplus/{amrplusplus_outputs}", sample=samples.index, amrplusplus_outputs=amrplusplus_exts),
-        #expand("results/{sample}/srst2/srst2__fullgenes__ARGannot__results.txt", sample=samples.index),
-        #expand("results/{sample}/mykrobe/report.json", sample=samples.index), need variant spec to use
-        #expand("results/{sample}/pointfinder/report.tsv", sample=samples.index), need variant spec to use
+        expand("results/{sample}/rgi/hamronized_report.tsv", sample=samples.index),
+        expand("results/{sample}/rgibwt/hamronized_report.tsv", sample=samples.index),
+        expand("results/{sample}/amrplusplus/hamronized_report.tsv", sample=samples.index),
         os.path.join(config["params"]["db_dir"], "ariba_card.version.txt"),
         os.path.join(config["params"]["db_dir"], "amrfinderplus/latest/version.txt"),
         os.path.join(config["params"]["db_dir"], "ResGANNOT_srst2_version.txt")
 
+        #expand("results/{sample}/srst2/srst2__fullgenes__ARGannot__results.txt", sample=samples.index),
+        #expand("results/{sample}/mykrobe/report.json", sample=samples.index), need variant spec to use
+        #expand("results/{sample}/pointfinder/report.tsv", sample=samples.index), need variant spec to use
+        
 include: "rules/srst2.smk" 
 include: "rules/deeparg.smk"
 include: "rules/abricate.smk"
@@ -53,5 +52,6 @@ include: "rules/kmerresistance.smk"
 include: "rules/srax.smk" 
 include: "rules/amrplusplus.smk"
 include: "rules/csstar.smk"
+
 #include: "rules/mykrobe.smk"
 #include: "rules/pointfinder.smk"
