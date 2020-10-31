@@ -15,6 +15,10 @@ def _get_seqdir(wildcards):
 
 rule all:
     input:
+        "results/all_hamronized_results.tsv" 
+
+rule hamronize:
+    input:
         expand("results/{sample}/staramr/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/ariba/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/abricate/hamronized_report.tsv", sample=samples.index),
@@ -29,13 +33,17 @@ rule all:
         expand("results/{sample}/rgi/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/rgibwt/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/amrplusplus/hamronized_report.tsv", sample=samples.index),
-        os.path.join(config["params"]["db_dir"], "ariba_card.version.txt"),
-        os.path.join(config["params"]["db_dir"], "amrfinderplus/latest/version.txt"),
         os.path.join(config["params"]["db_dir"], "ResGANNOT_srst2_version.txt")
-
         #expand("results/{sample}/srst2/srst2__fullgenes__ARGannot__results.txt", sample=samples.index),
         #expand("results/{sample}/mykrobe/report.json", sample=samples.index), need variant spec to use
         #expand("results/{sample}/pointfinder/report.tsv", sample=samples.index), need variant spec to use
+    output:
+        "results/all_hamronized_results.tsv"
+    shell:
+        """
+        head -n1 {input[0]} > {output}
+        awk -F '$\t' 'FNR > 1' {input} >> {output}
+        """
         
 include: "rules/srst2.smk" 
 include: "rules/deeparg.smk"
