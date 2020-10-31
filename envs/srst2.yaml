@@ -5,3 +5,4 @@ channels:
   - defaults
 dependencies:
   - srst2=0.2.0
+  - samtools=0.1.18

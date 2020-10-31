@@ -36,9 +36,26 @@ rule run_srst2:
         for_suffix = config["params"]["srst2"]["forward"],
         rev_suffix = config["params"]["srst2"]["reverse"],
         output_prefix = "results/{sample}/srst2/srst2",
+        db_source = config["params"]["srst2"]["db_source"]
     shell:
        """
        srst2 --threads {threads} --gene_db {params.gene_db} --forward {params.for_suffix} --reverse {params.rev_suffix} --input_pe {input.read1} {input.read2} --min_depth {params.min_depth} --output {params.output_prefix} > {log} 2>&1
-       srst2 --version 2>&1 | perl -p -e 's/srst2 (.+)/analysis_software_version: $1/' > {output.metadata}
-       cat {input.dbversion} | perl -p -e 's/(.+)/reference_database_version: $1/' >> {output.metadata} 
+       srst2 --version 2>&1 | perl -p -e 's/srst2 (.+)/--analysis_software_version $1/' > {output.metadata}
+       cat {input.dbversion} | perl -p -e 's/(.+)/--reference_database_version $1/' >> {output.metadata} 
+       echo "--reference_database_id {params.db_source}" >> {output.metadata}
        """
+
+
+rule hamronize_srst2:
+    input:
+        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
+        report = "results/{sample}/srst2/srst2__fullgenes__ARGannot__results.txt",
+        metadata = "results/{sample}/srst2/metadata.txt"
+    output:
+        "results/{sample}/srst2/hamronized_report.tsv"
+    conda:
+        "../envs/hamronization.yaml"
+    shell:
+        """
+        hamronize srst2 --input_file_name {input.read1} $(paste - - - < {input.metadata}) {input.report} > {output}
+        """

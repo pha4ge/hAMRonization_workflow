@@ -33,8 +33,7 @@ rule hamronize:
         expand("results/{sample}/rgi/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/rgibwt/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/amrplusplus/hamronized_report.tsv", sample=samples.index),
-        os.path.join(config["params"]["db_dir"], "ResGANNOT_srst2_version.txt")
-        #expand("results/{sample}/srst2/srst2__fullgenes__ARGannot__results.txt", sample=samples.index),
+        expand("results/{sample}/srst2/hamronized_report.tsv", sample=samples.index)
         #expand("results/{sample}/mykrobe/report.json", sample=samples.index), need variant spec to use
         #expand("results/{sample}/pointfinder/report.tsv", sample=samples.index), need variant spec to use
     output:
