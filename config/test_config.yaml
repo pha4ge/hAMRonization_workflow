@@ -26,7 +26,9 @@ params:
   pointfinder:
     species: "klebsiella"
   amrplusplus:
-    ref_version: "v2.00"
+    resistome_analyzer_version: c6b097ad054e0620560f3bcd22e2a63b896ab33a
+    snpfinder_version: 28a20e981d33f8d22814ed6f0aeba36f101a8037
+    rarefactionanalyzer_version: de06630986c10c03b8540fd53925075baca5d38e
   ariba:
     #empty, no options exposed
   staramr:
