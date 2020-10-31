@@ -27,7 +27,7 @@ rule all:
         expand("results/{sample}/csstar/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/deeparg/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/kmerresistance/hamronized_report.tsv", sample=samples.index),
-        expand("results/{sample}/resfinder/data_resfinder.json", sample=samples.index),
+        expand("results/{sample}/resfinder/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/rgi/rgi.json", sample=samples.index),
         expand("results/{sample}/rgibwt/rgibwt.gene_mapping_data.txt", sample=samples.index),
         expand("results/{sample}/amrplusplus/{amrplusplus_outputs}", sample=samples.index, amrplusplus_outputs=amrplusplus_exts),
