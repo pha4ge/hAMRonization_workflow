@@ -19,7 +19,21 @@ rule run_staramr:
        """
        rm -r {params.output_folder};
        staramr search -o {params.output_folder} --nproc {threads} {input.contigs} >{log} 2>&1
-       staramr --version | perl -p -e 's/staramr (.+)/analysis_software_version: $1/' > {output.metadata}
-       cat {params.settings} | grep resfinder_db_date | perl -p -e 's/.+= (.+)/reference_database_version: $1/' >> {output.metadata}
+       staramr --version | perl -p -e 's/staramr (.+)/--analysis_software_version $1/' > {output.metadata}
+       grep "resfinder_db_commit" {params.settings} | perl -p -e 's/.+= (.+)/--reference_database_version $1/' >> {output.metadata}
        """
         # only support salmonella/campylobacter
+
+rule hamronize_staramr:
+    input:
+        report = "results/{sample}/staramr/resfinder.tsv",
+        metadata = "results/{sample}/staramr/metadata.txt"
+    output:
+        "results/{sample}/staramr/hamronized_report.tsv"
+    conda:
+        "../envs/hamronization.yaml"
+    shell:
+        """
+        hamronize staramr $(paste - - < {input.metadata}) {input.report} > {output}
+        """
+
