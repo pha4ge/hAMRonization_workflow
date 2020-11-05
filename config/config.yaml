@@ -14,7 +14,8 @@ params:
     minid: 75 #minimum identity threshold
     mincov: 0 #minimum coverage threshold
   amrfinderplus:
-    organism: "Klebsiella" #must be defined to enable mutation detection: set amrfinder --list_organisms for options
+    #must be defined to enable mutation detection: set amrfinder --list_organisms for options
+    # hAMRonize doesn't support variants so far
   groot:
     db_source: "card" #which preclustered db to use
     read_length: 150 # readlengh to use for indexing the preclustered db
@@ -23,8 +24,6 @@ params:
     db_version: "3.0.7"
   srax:
     dbtype: "basic"
-  pointfinder:
-    species: "klebsiella"
   amrplusplus:
     resistome_analyzer_version: c6b097ad054e0620560f3bcd22e2a63b896ab33a
     snpfinder_version: 28a20e981d33f8d22814ed6f0aeba36f101a8037
