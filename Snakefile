@@ -29,6 +29,8 @@ rule generate_interactive_contig_only_report:
         expand("results/{sample}/rgi/hamronized_report.tsv", sample=samples.index),
     output:
         "results/contig_only_hamronized_summary.html"
+    conda:
+        "envs/hamronization.yaml"
     shell:
         """
         hamronize summarize -t interactive -o {output} {input}
