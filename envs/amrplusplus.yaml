@@ -5,5 +5,5 @@ channels:
   - defaults
 dependencies:
   - trimmomatic=0.39
-  - samtools=1.10
+  - samtools=1.11
   - bwa=0.7.17

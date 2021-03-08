@@ -4,4 +4,4 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - staramr=0.7.1
+  - staramr=0.7.2

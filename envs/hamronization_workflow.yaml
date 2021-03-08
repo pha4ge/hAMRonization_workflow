@@ -4,6 +4,6 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - snakemake=5.18.1
+  - snakemake=6.0.2
   - mamba
   - unzip 
