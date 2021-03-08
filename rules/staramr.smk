@@ -13,7 +13,6 @@ rule run_staramr:
        config["params"]["threads"]
     params:
         output_folder = "results/{sample}/staramr/",
-        pointfinder_species = config['params']['pointfinder']['species'],
         settings = "results/{sample}/staramr/settings.txt"
     shell:
        """
