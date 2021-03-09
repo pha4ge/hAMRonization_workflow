@@ -35,7 +35,7 @@ rule run_rgi_bwt:
        rgi card_annotation --input {input.card_db_bwt} > {log} 2>&1 
        rgi load --card_json {input.card_db_bwt} --card_annotation card_database_v*.fasta >> {log} 2>&1
        rm card_database_v*.fasta
-       rgi bwt --read_one {input.read1} --read_two {input.read2} --output_file {params.output_prefix} --aligner bowtie2 --clean --threads {threads} >>{log} 2>&1
+       rgi bwt --read_one {input.read1} --read_two {input.read2} --output_file {params.output_prefix} --aligner bwa --threads {threads} >>{log} 2>&1
 
        echo "--analysis_software_version $(rgi main --version)" > {output.metadata}
        echo "--reference_database_version $(rgi database --version)" >> {output.metadata}

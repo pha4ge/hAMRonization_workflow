@@ -74,12 +74,12 @@ rule run_amrplusplus:
     shell:
        """
        mkdir -p {params.output_prefix_tmp}
-       trimmomatic PE  {input.read1} {input.read2} {params.output_prefix_tmp}/{wildcards.sample}_r1_pe_trimmed.fq {params.output_prefix_tmp}/{wildcards.sample}_r1_se_trimmed.fq {params.output_prefix_tmp}/{wildcards.sample}_r2_pe_trimmed.fq {params.output_prefix_tmp}/{wildcards.sample}_r2_se_trimmed.fq SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36 >{log} 2>&1 
+       trimmomatic PE {input.read1} {input.read2} {params.output_prefix_tmp}/{wildcards.sample}_r1_pe_trimmed.fq {params.output_prefix_tmp}/{wildcards.sample}_r1_se_trimmed.fq {params.output_prefix_tmp}/{wildcards.sample}_r2_pe_trimmed.fq {params.output_prefix_tmp}/{wildcards.sample}_r2_se_trimmed.fq SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36 >{log} 2>&1 
        bwa mem {input.megares_db} {params.output_prefix_tmp}/{wildcards.sample}_r1_pe_trimmed.fq {params.output_prefix_tmp}/{wildcards.sample}_r2_pe_trimmed.fq 2>> {log} | samtools sort -n -O sam > {params.output_prefix_tmp}/{wildcards.sample}.sam 2>>{log}
        {input.resistome_tool} -ref_fp {input.megares_db} -annot_fp {input.megares_annot} -sam_fp {params.output_prefix_tmp}/{wildcards.sample}.sam -gene_fp {output.amr_gene} -group_fp {output.amr_group} -class_fp {output.amr_class} -mech_fp {output.amr_mech} -t 80  >>{log} 2>&1
        {input.rarefaction_tool} -ref_fp {input.megares_db} -annot_fp {input.megares_annot} -sam_fp {params.output_prefix_tmp}/{wildcards.sample}.sam -gene_fp {output.amr_gene}_rare -group_fp {output.amr_group}_rare -class_fp {output.amr_class}_rare -mech_fp {output.amr_mech}_rare -min 5 -max 100 -skip 5 -samples 1 -t 80 >>{log} 2>&1
        {input.snp_tool} -amr_fp {input.megares_db} -sampe {params.output_prefix_tmp}/{wildcards.sample}.sam -out_fp {output.amr_snps} >>{log} 2>&1
-       rm -rf {params.output_prefix_tmp}
+       #rm -rf {params.output_prefix_tmp}
 
        echo "--analysis_software_version {params.resistome_analyzer_version}" > {output.metadata}
        echo "--reference_database_version v2.00" >> {output.metadata}

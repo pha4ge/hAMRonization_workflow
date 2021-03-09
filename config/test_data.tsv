@@ -1,2 +1,0 @@
-species	biosample	assembly	read1	read2
-Klebsiella	SAMEA6634591	data/test/SAMEA6634591/GCF_902827215.1_SB5881_genomic.fna	data/test/SAMEA6634591/ERR4008003_R1.fastq.gz	data/test/SAMEA6634591/ERR4008003_R2.fastq.gz

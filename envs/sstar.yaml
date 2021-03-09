@@ -1,9 +1,0 @@
-name: sstar
-channels:
-  - bioconda
-  - conda-forge
-  - defaults
-dependencies:
-  - biopython=1.78
-  - python=2.7.17
-  - blast=2.10.0

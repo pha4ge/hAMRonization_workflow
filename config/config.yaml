@@ -1,8 +1,8 @@
 # Output and working directory (all other directories below, if not absolute, are relative to this one)
-species: "klebsiella_genomes"
+species: "Klebsiella pneumoniae"
 
 # path or URL to sample sheet (TSV format, columns: sample, assembly); can be created by scripts/create_sampleSheet.sh --mode assembly
-samples: "config/test_data.tsv"
+samples: "config/isolate_list.txt"
 
 params:
   db_dir: "data/dbs" # directory to install databases in
@@ -15,13 +15,13 @@ params:
     mincov: 0 #minimum coverage threshold
   amrfinderplus:
     #must be defined to enable mutation detection: set amrfinder --list_organisms for options
-    # hAMRonize doesn't support variants so far
+    # hAMRonize doesn't support variants so far so not defined
   groot:
     db_source: "card" #which preclustered db to use
     read_length: 150 # readlengh to use for indexing the preclustered db
     window: 20 # window size to allow min and max read length (min-len = read_length - window)
   rgi:
-    db_version: "3.0.7"
+    db_version: "3.1.1"
   srax:
     dbtype: "basic"
   amrplusplus:
@@ -34,19 +34,15 @@ params:
     #empty, no options exposed
   resfams:
     #empty, no options exposed
-  mykrobe:
-    #empty, no options exposed
   resfinder:
     db_version: 2a8dd7fc7a8c
     #git hash for version used
   kmerresistance:
     db_version: 2a8dd7fc7a8c
-    # git hash for resfinder version used 
-    # empty, no options exposed, uses same res db as resfinder and due to the the large size and slow FTP for the species db (20GB >2hr download) just uses a single dummy klebsiella type genome
+    # species results are meaningless as dummy is used instead of very slow db download (20GB >2hr download) 
   csstar:
     db_source: "https://raw.githubusercontent.com/tomdeman-bio/Sequence-Search-Tool-for-Antimicrobial-Resistance-SSTAR-/master/Latest_AR_database/ResGANNOT_srst2.fasta"
-    # empty, no options exposed, uses same res db as resfinder and due to the the large size and slow FTP for the species db (20GB >2hr download) just uses a single dummy klebsiella type genome
-  srst2: # not supported due to upstream packaging bug
+  srst2: 
     gene_db: "ARGannot.fasta"
     db_source: "https://raw.githubusercontent.com/katholt/srst2/master/data/ARGannot.fasta"
     min_depth: 5

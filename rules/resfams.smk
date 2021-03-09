@@ -29,12 +29,11 @@ rule run_resfams:
         output_prefix = "results/{sample}/resfams"
     shell:
        """
-       prodigal -i {input.contigs} -a {params.output_prefix}/protein_seqs.faa > {log} 2>&1
+       prodigal -p meta -i {input.contigs} -a {params.output_prefix}/protein_seqs.faa > {log} 2>&1
        hmmsearch --cpu {threads} --tblout {output.report} {input.resfams_hmms} {params.output_prefix}/protein_seqs.faa  >>{log} 2>&1
        hmmsearch -h | grep "# HMMER " | perl -p -e 's/# HMMER (.+) \(.+/--analysis_software_version hmmsearch_v$1/' >> {output.metadata}
        cat {input.dbversion} | perl -p -e 's/(.+)/--reference_database_version $1/' >> {output.metadata} 
        """
-#       prodigal -v 2>&1 | grep "Prodigal" | perl -p -e 's/(.+)/--analysis_software_version $1/' > {output.metadata}
 
 rule hamronize_resfams:
     input:

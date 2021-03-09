@@ -21,7 +21,7 @@ rule run_staramr:
        staramr --version | perl -p -e 's/staramr (.+)/--analysis_software_version $1/' > {output.metadata}
        grep "resfinder_db_commit" {params.settings} | perl -p -e 's/.+= (.+)/--reference_database_version $1/' >> {output.metadata}
        """
-        # only support salmonella/campylobacter
+       # only supports salmonella/campylobacter
 
 rule hamronize_staramr:
     input:

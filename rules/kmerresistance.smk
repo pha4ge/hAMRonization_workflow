@@ -22,7 +22,7 @@ rule get_kmerresistance_db:
         #export KmerFinder_DB=$(pwd)
         #bash INSTALL.sh $KmerFinder_DB bacteria latest
         curl https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/240/185/GCF_000240185.1_ASM24018v2/GCF_000240185.1_ASM24018v2_genomic.fna.gz | gunzip > {params.db_dir}/klebsiella_type_genome.fasta 
-        kma index -i {params.db_dir}/klebsiella_type_genome.fasta -o {params.species_db}
+        kma index -i {params.db_dir}/klebsiella_type_genome.fasta -o {params.species_db} -Sparse ATG
         
         curl https://bitbucket.org/genomicepidemiology/resfinder_db/get/{params.db_version}.zip --output {params.db_dir}.zip
         mkdir -p {params.db_dir}/resfinder
@@ -48,7 +48,7 @@ rule run_kmerresistance:
     threads:
        config["params"]["threads"]
     params:
-        output_folder = "results/{sample}/kmerresistance/",
+        output_folder = "results/{sample}/kmerresistance",
         kma_resfinder_db = os.path.join(config["params"]["db_dir"], "kmerresistance", 'resfinder_kma'),
         species_db = os.path.join(config["params"]["db_dir"], "kmerresistance", 'bacteria'),
         db_version = config["params"]["kmerresistance"]["db_version"]

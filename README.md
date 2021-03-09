@@ -1,10 +1,11 @@
-hAMRonization - Harmonization of output file formats of antimicrobial resistance detection tools 
-=======================================
-Description
------------
-hAMRonization is a project aiming at the harmonization of output file formats of antimicrobial resistance detection tools. 
+# hAMRonization workflow
 
-The inclusion criteria was open-source tools for specifically AMR detection.
+## Description
+
+hAMRonization is a project aiming at the harmonization of output file formats of antimicrobial resistance detection tools. 
+This is a workflow acting as a proof of concept test-case for the [hAMRonization](https://github.com/pha4ge/hAMRonization) parsers.
+
+Specifically, this runs a set of AMR gene detection tools against a set of contigs/reads and uses `hAMRonization` to collate the results in a single unified report.
 
 The following tools are currently included:
 * abricate
@@ -32,12 +33,7 @@ Excluded tools:
 * Single organism/or resistance tools (e.g. Kleborate, LREfinder, SSCmec Finder, U-CARE, ARGO)
 * shortBRED, ARGS-OAP (rely on usearch which isn't open-source)
 
-To generate comparable result files, all tools are being run in a Snakemake pipeline installing fixed versions of the tools from conda on execution.
-
-To exclude any particular tool just comment out the relevant line in `Snakefile` e.g. to remove mykrobe comment out `expand("results/{sample}/mykrobe/report.json", sample=samples.index),`.
-
-Installation 
-------------
+## Installation 
 
 First clone this repository:
 
@@ -56,24 +52,19 @@ All further dependencies will be installed via conda on execution.
 
 If you want to run `DeepARG` you need to have a working `singularity` install on your system and invoke `--use-singularity --singularity-args "-B $PWD:/data"` when running snakemake (otherwise comment out this input to the cleanup rule in the `Snakefile`).
 
+## Running
 
-Execution
----------
+To execute the pipeline, navigate to the cloned repository, edit the config (`config/config.yaml`) and input details (`config/isolate_list.txt`) for your purposes.
+Execute the following substitution the value for `--jobs` as needed:
 
-To execute the pipeline, go to the main folder of the cloned repository, adapt the sample sheet as well as the config file to your needs and call with the number of jobs you want to run.
-
-`snakemake --configfile config/config.yaml --use-conda --jobs 2 --use-singularity --singularity-args "-B $PWD:/data"` 
+`snakemake --configfile config/config.yaml --use-conda --conda-frontend mamba --jobs 2 --use-singularity --singularity-args "-B $PWD:/data"` 
 
 Testing
 -------
 
-If you want to test the pipeline locally on a single TB isolate you can use the
-`run_test.sh` script to create a clean conda instance, download the dbs, and download
-the test data. 
+To test the pipeline follow the above installation instructions and execute on the test data set:
 
-If you've already downloaded the test data you can just run to execute the pipeline:
-
-`snakemake --configfile config/test_config.yaml --use-conda --jobs 1 --use-singularity --singularity-args "-B $PWD:/data"`
+`snakemake --configfile config/test_config.yaml --use-conda --conda-frontend mamba --jobs 1 --use-singularity --singularity-args "-B $PWD:/data"`
 
 Docker
 ------
@@ -153,7 +144,7 @@ Contact
 Please consult the [PHA4GE project website](https://github.com/pha4ge) for questions.
 
 For technical questions, please feel free to consult:
- * Simon H. Tausch <Simon.Tausch (at) bfr.bund.de> 
  * Finlay Maguire <finlaymaguire (at) gmail.com> 
+ * Simon H. Tausch <Simon.Tausch (at) bfr.bund.de> 
  
 
