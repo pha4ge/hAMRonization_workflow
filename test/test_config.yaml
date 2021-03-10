@@ -1,0 +1,54 @@
+# Output and working directory (all other directories below, if not absolute, are relative to this one)
+species: "test_run"
+
+# path or URL to sample sheet (TSV format, columns: sample, assembly); can be created by scripts/create_sampleSheet.sh --mode assembly
+samples: "test/test_data.tsv"
+
+params:
+  db_dir: "data/dbs" # directory to install databases in
+  dateformat: "%Y-%b-%d" # date formats for database downloads
+  binary_dir: "data/non_conda_deps" # directory to install non-conda dependencies
+  threads: 1 #number of threads per rule
+  abricate:
+    name: "ncbi"
+    minid: 75 #minimum identity threshold
+    mincov: 0 #minimum coverage threshold
+  amrfinderplus:
+    # empty no options exposed (don't support variant in hAMRonization scheme)
+  groot:
+    db_source: "card" #which preclustered db to use
+    read_length: 250 # readlengh to use for indexing the preclustered db
+    window: 20 # window size to allow min and max read length (min-len = read_length - window)
+  rgi:
+    db_version: "3.1.1"
+  srax:
+    dbtype: "basic"
+  amrplusplus:
+    resistome_analyzer_version: c6b097ad054e0620560f3bcd22e2a63b896ab33a
+    snpfinder_version: 28a20e981d33f8d22814ed6f0aeba36f101a8037
+    rarefactionanalyzer_version: de06630986c10c03b8540fd53925075baca5d38e
+  ariba:
+    #empty, no options exposed
+  staramr:
+    #empty, no options exposed
+  resfams:
+    #empty, no options exposed
+  mykrobe:
+    #empty, no options exposed
+  resfinder:
+    db_version: 2a8dd7fc7a8c
+    #git hash for version used
+  kmerresistance:
+    db_version: 2a8dd7fc7a8c
+    # git hash for resfinder version used 
+    # empty, no options exposed, uses same res db as resfinder and due to the the large size and slow FTP for the species db (20GB >2hr download) just uses a single dummy klebsiella type genome
+  csstar:
+    db_source: "https://raw.githubusercontent.com/tomdeman-bio/Sequence-Search-Tool-for-Antimicrobial-Resistance-SSTAR-/master/Latest_AR_database/ResGANNOT_srst2.fasta"
+    # empty, no options exposed, uses same res db as resfinder and due to the the large size and slow FTP for the species db (20GB >2hr download) just uses a single dummy klebsiella type genome
+  srst2: # not supported due to upstream packaging bug
+    gene_db: "ARGannot.fasta"
+    db_source: "https://raw.githubusercontent.com/katholt/srst2/master/data/ARGannot.fasta"
+    min_depth: 5
+    max_divergence: 10
+    forward: "_R1"
+    reverse: "_R2"

@@ -1,0 +1,2 @@
+species	biosample	assembly	read1	read2
+NDM	NDM_biosample	test/simple/test_contig.fna	test/simple/test_R1.fq.gz	test/simple/test_R2.fq.gz
