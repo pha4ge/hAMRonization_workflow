@@ -6,7 +6,7 @@ rule run_deeparg:
         report_potential = "results/{sample}/deeparg/output.mapping.potential.ARG",
         metadata = "results/{sample}/deeparg/metadata.txt"
     log:
-       "logs/amrfinder_{sample}.log"
+       "logs/deeparg_{sample}.log"
     singularity:
         "docker://gaarangoa/deeparg:v1.0.1"
     params:
