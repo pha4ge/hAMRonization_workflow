@@ -9,8 +9,8 @@ rule get_rgi_bwt_db:
     shell:
         """
         mkdir -p {params.db_dir}
-        curl https://card.mcmaster.ca/download/0/broadstreet-v{params.db_version}.tar.gz --output {params.db_dir}/card.tar.gz
-        tar -C {params.db_dir} -xvf {params.db_dir}/card.tar.gz
+        curl https://card.mcmaster.ca/latest/data --output {params.db_dir}/card.tar.bz2
+        tar -C {params.db_dir} -xvf {params.db_dir}/card.tar.bz2
         """
 
 rule run_rgi_bwt:

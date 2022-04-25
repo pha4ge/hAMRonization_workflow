@@ -13,6 +13,14 @@ def _get_seq(wildcards,seqs):
 def _get_seqdir(wildcards):
     return os.path.dirname(samples.loc[(wildcards.sample), ["assembly"]].dropna()[0])
 
+def _get_deeparg():
+	results = []
+
+	if hasattr(workflow, 'use_singularity') and workflow.use_singularity:
+		results = expand("results/{sample}/deeparg/hamronized_report.tsv", sample=samples.index),
+	
+	return results
+
 rule all:
     input:
         "results/all_hamronized_results.tsv",
@@ -46,7 +54,8 @@ rule hamronize:
         expand("results/{sample}/resfams/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/srax/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/csstar/hamronized_report.tsv", sample=samples.index),
-        expand("results/{sample}/deeparg/hamronized_report.tsv", sample=samples.index),
+#        expand("results/{sample}/deeparg/hamronized_report.tsv", sample=samples.index),
+        _get_deeparg(),
         expand("results/{sample}/kmerresistance/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/resfinder/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/rgi/hamronized_report.tsv", sample=samples.index),
