@@ -18,8 +18,8 @@ rule get_ariba_db:
 
 rule run_ariba:
     input:
-        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
-        read2 = lambda wildcards: _get_seq(wildcards, 'read2'),
+        read1 = get_read1,
+        read2 = get_read2,
         ref_db = os.path.join(config["params"]["db_dir"], "ariba_card.prepareref"),
         dbversion = os.path.join(config["params"]["db_dir"], "ariba_card.version.txt")
     output:
@@ -45,7 +45,7 @@ rule run_ariba:
 
 rule hamronize_ariba:
     input:
-        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
+        read1 = get_read1,
         report = "results/{sample}/ariba/report.tsv",
         metadata = "results/{sample}/ariba/metadata.txt"
     output:

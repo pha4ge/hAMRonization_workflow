@@ -14,7 +14,7 @@ rule get_resfinder_db:
 
 rule run_resfinder:
     input:
-        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        contigs = get_assembly,
         resfinder_db = os.path.join(config["params"]["db_dir"], "resfinder_db")
     output:
         report = "results/{sample}/resfinder/data_resfinder.json",

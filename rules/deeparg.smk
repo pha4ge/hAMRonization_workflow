@@ -21,8 +21,8 @@ rule run_deeparg:
 
 rule prepare_deeparg_reads:
     input:
-        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
-        read2 = lambda wildcards: _get_seq(wildcards, 'read2')
+        read1 = get_read1,
+        read2 = get_read2
     output:
         fasta_reads = "results/{sample}/deeparg/reads.fasta"
     shell:
@@ -30,7 +30,7 @@ rule prepare_deeparg_reads:
 
 rule hamronize_deeparg:
     input:
-        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
+        read1 = get_read1,
         report = "results/{sample}/deeparg/output.mapping.ARG",
         metadata = "results/{sample}/deeparg/metadata.txt"
     output:

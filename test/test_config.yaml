@@ -1,7 +1,4 @@
-# Output and working directory (all other directories below, if not absolute, are relative to this one)
-species: "test_run"
-
-# path or URL to sample sheet (TSV format, columns: sample, assembly); can be created by scripts/create_sampleSheet.sh --mode assembly
+# Path or URL to sample sheet
 samples: "test/test_data.tsv"
 
 params:
@@ -14,7 +11,7 @@ params:
     minid: 75 #minimum identity threshold
     mincov: 0 #minimum coverage threshold
   amrfinderplus:
-    # empty no options exposed (don't support variant in hAMRonization scheme)
+    #empty, no options exposed
   groot:
     db_source: "card" #which preclustered db to use
     read_length: 250 # readlengh to use for indexing the preclustered db

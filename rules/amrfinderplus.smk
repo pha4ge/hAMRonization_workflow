@@ -12,7 +12,7 @@ rule get_amrfinder_db:
 
 rule run_amrfinderplus:
     input:
-        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        contigs = get_assembly,
         dbversion = os.path.join(config["params"]["db_dir"], "amrfinderplus", "latest", "version.txt")
     output:
         report = "results/{sample}/amrfinderplus/report.tsv",
@@ -37,7 +37,7 @@ rule run_amrfinderplus:
 
 rule hamronize_amrfinderplus:
     input:
-        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        contigs = get_assembly,
         report = "results/{sample}/amrfinderplus/report.tsv",
         metadata = "results/{sample}/amrfinderplus/metadata.txt"
     output:

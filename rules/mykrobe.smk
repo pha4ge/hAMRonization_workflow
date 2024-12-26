@@ -1,7 +1,7 @@
 rule run_mykrobe:
     input:
-        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
-        read2 = lambda wildcards: _get_seq(wildcards, 'read2')
+        read1 = get_read1,
+        read2 = get_read2
     output:
         report = "results/{sample}/mykrobe/report.json"
     message: "Running rule run_mykrobe on {wildcards.sample} with reads"

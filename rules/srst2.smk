@@ -15,8 +15,8 @@ rule get_srst2_db:
 
 rule run_srst2:
     input:
-        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
-        read2 = lambda wildcards: _get_seq(wildcards, 'read2'),
+        read1 = get_read1,
+        read2 = get_read2,
         db_file = os.path.join(config["params"]["db_dir"], config["params"]["srst2"]["gene_db"]),
         dbversion = os.path.join(config["params"]["db_dir"], config["params"]["srst2"]["gene_db"] + '-version.txt')
     output:
@@ -45,7 +45,7 @@ rule run_srst2:
 
 rule hamronize_srst2:
     input:
-        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
+        read1 = get_read1,
         report = "results/{sample}/srst2/srst2__fullgenes__ARGannot__results.txt",
         metadata = "results/{sample}/srst2/metadata.txt"
     output:

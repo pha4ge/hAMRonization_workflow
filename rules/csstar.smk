@@ -24,7 +24,7 @@ rule get_csstar_database:
 
 rule run_csstar:
     input:
-        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        contigs = get_assembly,
         csstar = os.path.join(config['params']['binary_dir'], "c-SSTAR", "c-SSTAR"),
         resgannot_db = os.path.join(config['params']['db_dir'], "ResGANNOT_srst2.fasta"),
         dbversion = os.path.join(config["params"]["db_dir"], "ResGANNOT_srst2_version.txt")
@@ -50,7 +50,7 @@ rule run_csstar:
 
 rule hamronize_csstar:
     input:
-        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        contigs = get_assembly,
         report = "results/{sample}/csstar/report.tsv",
         metadata = "results/{sample}/csstar/metadata.txt"
     output:

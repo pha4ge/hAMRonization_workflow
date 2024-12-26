@@ -12,7 +12,7 @@ rule get_resfams_db:
 
 rule run_resfams:
     input:
-        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        contigs = get_assembly,
         resfams_hmms = os.path.join(config["params"]["db_dir"], "resfams-full.hmm"),
         dbversion = os.path.join(config["params"]["db_dir"], "resfams.version.txt")
     output:
@@ -37,7 +37,7 @@ rule run_resfams:
 
 rule hamronize_resfams:
     input:
-        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        contigs = get_assembly,
         report = "results/{sample}/resfams/resfams.tblout",
         metadata = "results/{sample}/resfams/metadata.txt"
     output:

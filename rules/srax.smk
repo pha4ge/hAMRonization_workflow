@@ -1,6 +1,6 @@
 rule run_srax:
     input:
-        genome_dir = lambda wildcards: _get_seqdir(wildcards),
+        genome_dir = lambda w: os.path.dirname(get_assembly(w))
     output:
         report = "results/{sample}/srax/Summary_files/sraX_detected_ARGs.tsv",
         metadata = "results/{sample}/srax/metadata.txt"
@@ -31,7 +31,7 @@ rule run_srax:
 
 rule hamronize srax:
     input:
-        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        contigs = get_assembly,
         report = "results/{sample}/srax/Summary_files/sraX_detected_ARGs.tsv",
         metadata = "results/{sample}/srax/metadata.txt"
     output:

@@ -15,7 +15,7 @@ rule get_rgi_db:
 
 rule run_rgi:
     input:
-        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        contigs = get_assembly,
         card_db = os.path.join(config["params"]["db_dir"], "card", "card.json")
     output:
         report = "results/{sample}/rgi/rgi.txt",
@@ -40,7 +40,7 @@ rule run_rgi:
 
 rule hamronize_rgi:
     input:
-        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        contigs = get_assembly,
         report = "results/{sample}/rgi/rgi.txt",
         metadata = "results/{sample}/rgi/metadata.txt"
     output:

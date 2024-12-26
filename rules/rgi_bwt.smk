@@ -15,8 +15,8 @@ rule get_rgi_bwt_db:
 
 rule run_rgi_bwt:
     input:
-        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
-        read2 = lambda wildcards: _get_seq(wildcards, 'read2'),
+        read1 = get_read1,
+        read2 = get_read2,
         card_db_bwt = os.path.join(config["params"]["db_dir"], "card_bwt", "card.json")
     output:
         report = "results/{sample}/rgibwt/rgibwt.gene_mapping_data.txt",
@@ -43,7 +43,7 @@ rule run_rgi_bwt:
 
 rule hamronize_rgi_bwt:
     input:
-        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
+        read1 = get_read1,
         report = "results/{sample}/rgibwt/rgibwt.gene_mapping_data.txt",
         metadata = "results/{sample}/rgibwt/metadata.txt"
     output:

@@ -1,8 +1,7 @@
-# Output and working directory (all other directories below, if not absolute, are relative to this one)
-species: "Klebsiella pneumoniae"
+# Configuration file for a hAMRronization workflow run
 
-# path or URL to sample sheet (TSV format, columns: sample, assembly); can be created by scripts/create_sampleSheet.sh --mode assembly
-samples: "config/isolate_list.txt"
+# Path or URL to the sample sheet
+samples: "config/isolate_list.tsv"
 
 params:
   db_dir: "data/dbs" # directory to install databases in
@@ -14,8 +13,7 @@ params:
     minid: 75 #minimum identity threshold
     mincov: 0 #minimum coverage threshold
   amrfinderplus:
-    #must be defined to enable mutation detection: set amrfinder --list_organisms for options
-    # hAMRonize doesn't support variants so far so not defined
+    #empty, no options exposed
   groot:
     db_source: "card" #which preclustered db to use
     read_length: 150 # readlengh to use for indexing the preclustered db

@@ -1,6 +1,6 @@
 rule run_staramr:
     input:
-        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        contigs = get_assembly
     output:
         report = "results/{sample}/staramr/resfinder.tsv",
         metadata = "results/{sample}/staramr/metadata.txt"

@@ -23,7 +23,7 @@ rule get_pointfinder_script:
 
 rule run_pointfinder:
     input:
-        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        contigs = get_assembly,
         pointfinder_db = os.path.join(config["params"]["db_dir"], "pointfinder_db"),
         pointfinder_script = os.path.join(config['params']['binary_dir'], "pointfinder", "PointFinder.py")
     output:
@@ -36,7 +36,7 @@ rule run_pointfinder:
     threads:
         config["params"]["threads"]
     params:
-        species = config["params"]["pointfinder"]["species"],
+        species = get_species,
         output_tmp_dir = "results/{sample}/pointfinder/tmp",
         output_dir = "results/{sample}/pointfinder"
     shell:

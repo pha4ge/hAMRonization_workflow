@@ -46,8 +46,8 @@ rule get_amrplusplus_binaries:
 
 rule run_amrplusplus:
     input:
-        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
-        read2 = lambda wildcards: _get_seq(wildcards, 'read2'),
+        read1 = get_read1,
+        read2 = get_read2,
         megares_db = os.path.join(config["params"]["db_dir"], "megares", "megares_full_database_v2.00.fasta"),
         megares_annot = os.path.join(config["params"]["db_dir"], "megares", "megares_full_annotations_v2.00.csv"),
         resistome_tool = os.path.join(config["params"]["binary_dir"], 'resistomeanalyzer', 'resistome'),
@@ -87,7 +87,7 @@ rule run_amrplusplus:
 
 rule hamronize_amrplusplus:
     input:
-        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
+        read1 = get_read1,
         amr_gene  = "results/{sample}/amrplusplus/gene.tsv",
         metadata = "results/{sample}/amrplusplus/metadata.txt"
     output:
