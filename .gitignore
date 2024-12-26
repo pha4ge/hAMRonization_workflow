@@ -1,2 +1,5 @@
-.snakemake*
-.idea*
+/.idea*
+/.snakemake
+/.theano
+/logs
+/results
