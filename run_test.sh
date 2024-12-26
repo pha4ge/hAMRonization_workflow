@@ -14,4 +14,4 @@ conda env create -n hamronization_workflow --file envs/hamronization_workflow.ya
 conda activate hamronization_workflow
 
 # run snakemake on this trivial test-case, no snakemake support for singularity args for individual repos
-snakemake --conda-frontend mamba --configfile test/test_config.yaml --use-conda --jobs 1 --use-singularity --singularity-args "-B $PWD:/data"
+snakemake --configfile test/test_config.yaml --use-conda --jobs 1 --use-singularity --singularity-args "-B $PWD:/data"

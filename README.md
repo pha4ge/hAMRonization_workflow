@@ -2,7 +2,7 @@
 
 ## Description
 
-hAMRonization is a project aiming at the harmonization of output file formats of antimicrobial resistance detection tools. 
+hAMRonization is a project aiming at the harmonization of output file formats of antimicrobial resistance detection tools.
 This is a workflow acting as a proof of concept test-case for the [hAMRonization](https://github.com/pha4ge/hAMRonization) parsers.
 
 Specifically, this runs a set of AMR gene detection tools against a set of contigs/reads and uses `hAMRonization` to collate the results in a single unified report.
@@ -22,70 +22,82 @@ The following tools are currently included:
 * DeepARG (requires singularity)
 * CSSTAR
 * AMRplusplus
-* SRST2 
+* SRST2
 * KmerResistance
 
 Excluded tools:
 * mykrobe (needs variant specification to be parseable)
-* pointfinder (needs variant specification to be parseable)
 * SEAR, ARG-ANNOT (no longer downloadable)
 * RAST/PATRIC (not easily runnable on CLI)
 * Single organism/or resistance tools (e.g. Kleborate, LREfinder, SSCmec Finder, U-CARE, ARGO)
 * shortBRED, ARGS-OAP (rely on usearch which isn't open-source)
+* PointFinder (now included in ResFinder)
 
-## Installation 
+## Installation
 
-First clone this repository:
+Installation from source requires Conda or Miniconda.  If you do not have `conda` but do have Docker, then using the pre-built Docker container (see [below](#docker) may be easier.
 
-`git clone https://github.com/pha4ge/hAMRonization_workflow`
+Install prerequisites for building this pipeline (on Ubuntu):
 
-This pipeline depends on snakemake, conda, build-essentials, git, zlib-dev, and unzip. 
-If you have conda installed, please run:
+    sudo apt install build-essential git zlib1g-dev curl wget file unzip jq
 
-`conda env create -n hamronization_workflow --file envs/hamronization_workflow.yaml` 
+You need Singularity if you want to run `DeepARG`:
 
-and 
+    sudo apt install singularity-container
 
-`conda activate hamronization_workflow`
+Clone this repository:
 
-All further dependencies will be installed via conda on execution.
+    git clone https://github.com/pha4ge/hAMRonization_workflow
 
-If you want to run `DeepARG` you need to have a working `singularity` install on your system and invoke `--use-singularity --singularity-args "-B $PWD:/data"` when running snakemake (otherwise comment out this input to the cleanup rule in the `Snakefile`).
+Create the Conda environment:
+
+    cd hAMRonization_workflow
+    conda env create -n hamronization_workflow --file envs/hamronization_workflow.yaml
+
+Activate the Conda environment:
+
+    conda activate hamronization_workflow
+
+All further dependencies will be installed when running the workflow.
+
+> Note: if you want to run `DeepARG` you need to invoke snakemake with `--use-singularity --singularity-args "-B $PWD:/data"`.
 
 ## Running
 
 To execute the pipeline, navigate to the cloned repository, edit the config (`config/config.yaml`) and input details (`config/isolate_list.txt`) for your purposes.
-Execute the following substitution the value for `--jobs` as needed:
+Execute the following, substituting a value for `--jobs` as needed:
 
-`snakemake --configfile config/config.yaml --use-conda --conda-frontend mamba --jobs 2 --use-singularity --singularity-args "-B $PWD:/data"` 
+    snakemake --configfile config/config.yaml --use-conda --jobs 2 --use-singularity --singularity-args "-B $PWD:/data"
+
+> Note: you may get better Conda performance if you add `--conda-frontend mamba`, but you may run into the unresolved error _"libmamba: non-conda folder exists at prefix"_.
 
 Testing
 -------
 
 To test the pipeline follow the above installation instructions and execute on the test data set:
 
-`snakemake --configfile config/test_config.yaml --use-conda --conda-frontend mamba --jobs 1 --use-singularity --singularity-args "-B $PWD:/data"`
+    snakemake --configfile config/test_config.yaml --use-conda --jobs 1 --use-singularity --singularity-args "-B $PWD:/data"
 
 Docker
 ------
 
-Alternatively, the workflow can be run using docker.  Given the collective quirks of the bundled tools this will probably be easier for most users.
+Alternatively, the workflow can be run using Docker.  Given the collective quirks of the bundled tools this will probably be easier for most users.
 
-Unfortunately, deeparg is only really runnable as a container, and snakemake uses singularity, the docker version has to be run in a privileged manner i.e. `docker run --privileged`.
+Unfortunately, DeepARG is only really runnable as a container, and Snakemake uses Singularity, the docker version has to be run in a privileged manner i.e. `docker run --privileged`.
 
 If you are unable to run docker in privileged mode then you can just comment out the deeparg target in the main `Snakefile` (`expand("results/{sample}/deeparg/output.mapping.ARG", sample=samples.index),`).
 
 First get the docker container:
 
-`docker pull finlaymaguire/hamronization:1.0.1`
+    docker pull finlaymaguire/hamronization:1.0.1
 
 You can execute it in a couple of ways but the easiest is to just mount the folder containing your reads and running it interactively:
 
-`docker run -it --privileged -v $HOST_FOLDER_CONTAINING_ISOLATES:/data finlaymaguire/hamronization:1.0.1 /bin/bash`
+    docker run -it --privileged -v $HOST_FOLDER_CONTAINING_ISOLATES:/data finlaymaguire/hamronization:1.0.1 /bin/bash
 
 If our isolate data is in `~/isolates` the command to interactively run this container and get a bash terminal would be:
 
-`docker run -it --privileged -v ~/isolates:/data finlaymaguire/hamronization:1.0.1 /bin/bash`
+    docker run -it --privileged -v ~/isolates:/data finlaymaguire/hamronization:1.0.1 /bin/bash
 
 Then point your `sample_table.tsv` to that folder, entries for this example would be:
 
@@ -97,13 +109,13 @@ Mycobacterium tuberculosis      SAMN02599009    /data/SAMN02599009/GCF_000662586
 
 Then specify your `config.yaml` to use this `sample_table.tsv` and execute the pipeline from bash in the container by activating the top-level environment:
 
-`conda activate hamronization_workflow`
+    conda activate hamronization_workflow
 
 Then the workflow:
 
-`snakemake --configfile config/config.yaml --use-conda --cores 6 --use-singularity --singularity-args "-B $PWD:/data"`
+    snakemake --configfile config/config.yaml --use-conda --cores 6 --use-singularity --singularity-args "-B $PWD:/data"
 
-*WARNING* You will have to extract your results folder (e.g. `cp results /data` for the example mounted volume) from the container if you wish to use them elsewhere.  
+*WARNING* You will have to extract your results folder (e.g. `cp results /data` for the example mounted volume) from the container if you wish to use them elsewhere.
 
 Note: kma/kmerresistance fails without explanation in the container (possibly zlib related, although adding the zlib headers didn't solve this). It is commented out for now.
 
@@ -144,7 +156,6 @@ Contact
 Please consult the [PHA4GE project website](https://github.com/pha4ge) for questions.
 
 For technical questions, please feel free to consult:
- * Finlay Maguire <finlaymaguire (at) gmail.com> 
- * Simon H. Tausch <Simon.Tausch (at) bfr.bund.de> 
- 
+ * Finlay Maguire <finlaymaguire (at) gmail.com>
+ * Simon H. Tausch <Simon.Tausch (at) bfr.bund.de>
 
