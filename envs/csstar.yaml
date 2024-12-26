@@ -5,5 +5,6 @@ channels:
   - defaults
 dependencies:
   - biopython
-  - python=2.7.17
+  - nomkl
+  - python=2.7.18
   - blast=2.10.1

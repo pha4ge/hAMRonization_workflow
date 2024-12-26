@@ -1,5 +1,5 @@
 rule get_rgi_bwt_db:
-    output: 
+    output:
        card_db_bwt = os.path.join(config["params"]["db_dir"], "card_bwt", "card.json")
     params:
         db_version = config['params']['rgi']['db_version'],
@@ -32,7 +32,7 @@ rule run_rgi_bwt:
         output_prefix = "results/{sample}/rgibwt/rgibwt"
     shell:
        """
-       rgi card_annotation --input {input.card_db_bwt} > {log} 2>&1 
+       rgi card_annotation --input {input.card_db_bwt} > {log} 2>&1
        rgi load --card_json {input.card_db_bwt} --card_annotation card_database_v*.fasta >> {log} 2>&1
        rm card_database_v*.fasta
        rgi bwt --read_one {input.read1} --read_two {input.read2} --output_file {params.output_prefix} --aligner bwa --threads {threads} >>{log} 2>&1

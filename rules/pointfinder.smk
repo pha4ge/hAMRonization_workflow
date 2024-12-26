@@ -1,5 +1,5 @@
 rule get_pointfinder_db:
-    output: 
+    output:
         pointfinder_db = directory(os.path.join(config["params"]["db_dir"], "pointfinder_db"))
     shell:
         """
@@ -15,7 +15,7 @@ rule get_pointfinder_script:
         """
         cd {params.binary_dir}
         git clone https://bitbucket.org/genomicepidemiology/pointfinder.git --recursive
-        
+
         # tidy up shebang
         sed -i "s|env python3$|env python|" pointfinder/PointFinder.py
         chmod +x pointfinder/PointFinder.py
@@ -38,7 +38,7 @@ rule run_pointfinder:
     params:
         species = config["params"]["pointfinder"]["species"],
         output_tmp_dir = "results/{sample}/pointfinder/tmp",
-	output_dir = "results/{sample}/pointfinder"
+        output_dir = "results/{sample}/pointfinder"
     shell:
         """
         python {input.pointfinder_script} -i {input.contigs} -p {input.pointfinder_db} -s {params.species} -m blastn -m_p $(which blastn) -o results/{wildcards.sample}/pointfinder > {log} 2>&1

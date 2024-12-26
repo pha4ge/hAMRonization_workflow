@@ -1,5 +1,5 @@
 rule get_rgi_db:
-    output: 
+    output:
        card_db = os.path.join(config["params"]["db_dir"], "card", "card.json")
     params:
         db_version = config['params']['rgi']['db_version'],

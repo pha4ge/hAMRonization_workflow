@@ -72,8 +72,8 @@ rule hamronize:
         """
         hamronize summarize -o {output} -t tsv {input}
         """
-        
-include: "rules/srst2.smk" 
+
+include: "rules/srst2.smk"
 include: "rules/deeparg.smk"
 include: "rules/abricate.smk"
 include: "rules/amrfinderplus.smk"
@@ -83,9 +83,9 @@ include: "rules/rgi.smk"
 include: "rules/rgi_bwt.smk"
 include: "rules/staramr.smk"
 include: "rules/resfams.smk"
-include: "rules/resfinder.smk" 
-include: "rules/kmerresistance.smk" 
-include: "rules/srax.smk" 
+include: "rules/resfinder.smk"
+include: "rules/kmerresistance.smk"
+include: "rules/srax.smk"
 include: "rules/amrplusplus.smk"
 include: "rules/csstar.smk"
 

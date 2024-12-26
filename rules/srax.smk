@@ -42,5 +42,5 @@ rule hamronize srax:
         "../envs/hamronization.yaml"
     shell:
         """
-        hamronize srax --input_file_name {input.contigs} $(paste - - < {input.metadata}) --reference_database_id srax_{params.dbtype}_amr_db {input.report} > {output}
+        hamronize srax --input_file_name {input.contigs} $(paste - - < {input.metadata}) --reference_database_name srax_{params.dbtype}_amr_db {input.report} > {output}
         """
