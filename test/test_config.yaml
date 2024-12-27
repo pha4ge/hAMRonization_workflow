@@ -1,4 +1,4 @@
-# Path or URL to sample sheet
+# Path or URL to the sample sheet
 samples: "test/test_data.tsv"
 
 params:
@@ -33,16 +33,17 @@ params:
   mykrobe:
     #empty, no options exposed
   resfinder:
-    db_version: 2a8dd7fc7a8c
-    #git hash for version used
+    # git tags for databases used; each component has its own at https://bitbucket.org/genomicepidemiology
+    res_db_version: "resfinder-4.6.0"
+    point_db_version: "resfinder-4.6.0"
+    disinf_db_version: "resfinder-4.6.0"
   kmerresistance:
-    db_version: 2a8dd7fc7a8c
-    # git hash for resfinder version used 
-    # empty, no options exposed, uses same res db as resfinder and due to the the large size and slow FTP for the species db (20GB >2hr download) just uses a single dummy klebsiella type genome
+    # uses same res_db as resfinder but also KmerFinder database for species detection (TODO: check needed?)
+    # due to the the large size and slow FTP for KmerFinder db we use just use a single dummy klebsiella type genome
+    res_db_version: "resfinder-4.6.0"
   csstar:
     db_source: "https://raw.githubusercontent.com/tomdeman-bio/Sequence-Search-Tool-for-Antimicrobial-Resistance-SSTAR-/master/Latest_AR_database/ResGANNOT_srst2.fasta"
-    # empty, no options exposed, uses same res db as resfinder and due to the the large size and slow FTP for the species db (20GB >2hr download) just uses a single dummy klebsiella type genome
-  srst2: # not supported due to upstream packaging bug
+  srst2:
     gene_db: "ARGannot.fasta"
     db_source: "https://raw.githubusercontent.com/katholt/srst2/master/data/ARGannot.fasta"
     min_depth: 5

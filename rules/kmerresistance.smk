@@ -1,42 +1,37 @@
 rule get_kmerresistance_db:
     output:
-        kma_resfinder_db_name = os.path.join(config["params"]["db_dir"], "kmerresistance", 'resfinder_kma.name'),
-        species_db_name = os.path.join(config["params"]["db_dir"], "kmerresistance", 'bacteria.name')
+        # We do not mark species_db as a directory output because Snakemake would drop it on failure and it is a 20G download
+        resfinder_db = directory(os.path.join(config['params']['db_dir'], 'kmerresistance', 'resfinder_db'))
     params:
-        db_dir = os.path.join(config["params"]["db_dir"], 'kmerresistance'),
-        db_version = config["params"]["kmerresistance"]["db_version"],
-        kma_resfinder_db = os.path.join(config["params"]["db_dir"], "kmerresistance", 'resfinder_kma'),
-        species_db = os.path.join(config["params"]["db_dir"], "kmerresistance", 'bacteria')
+        db_base = os.path.join(config['params']['db_dir'], 'kmerresistance'),
+        res_db_version = config['params']['kmerresistance']['res_db_version'],
+        species_db = os.path.join(config['params']['db_dir'], 'kmerresistance', 'kmerfinder_db')
     log:
         "logs/kmerresistance_db.log"
     conda:
         "../envs/kmerresistance.yaml"
     shell:
         """
+        mkdir -p {params.db_base}
         # Species database is downloaded like this but is 20G and downloads
         # from the DTU FTP very slowly, so not going to support this feature
         # for now and just use a single type klebsiella genome for now
-        #pushd {params.db_dir}
-        #git clone https://bitbucket.org/genomicepidemiology/kmerfinder_db.git
-        #cd kmerfinder_db
-        #export KmerFinder_DB=$(pwd)
-        #bash INSTALL.sh $KmerFinder_DB bacteria latest
-        curl https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/240/185/GCF_000240185.1_ASM24018v2/GCF_000240185.1_ASM24018v2_genomic.fna.gz | gunzip > {params.db_dir}/klebsiella_type_genome.fasta
-        kma index -i {params.db_dir}/klebsiella_type_genome.fasta -o {params.species_db} -Sparse ATG
-
-        curl https://bitbucket.org/genomicepidemiology/resfinder_db/get/{params.db_version}.zip --output {params.db_dir}.zip
-        mkdir -p {params.db_dir}/resfinder
-        unzip -j -d {params.db_dir}/resfinder {params.db_dir}.zip
-        cat {params.db_dir}/resfinder/*.fsa > {params.db_dir}/resfinder.fsa
-        kma index -i {params.db_dir}/resfinder.fsa -o {params.kma_resfinder_db}
+        #git clone --depth=1 https://bitbucket.org/genomicepidemiology/kmerfinder_db.git {params.species_db}
+        #{params.species_db}/INSTALL.sh {params.species_db} bacteria latest
+        mkdir -p {params.species_db}
+        test -f '{params.species_db}/bacteria.name' ||
+           wget -O- https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/240/185/GCF_000240185.1_ASM24018v2/GCF_000240185.1_ASM24018v2_genomic.fna.gz |
+           gunzip -c - | tee '{params.species_db}/bacteria.fsa' | kma_index -Sparse ATG -i -- -o '{params.species_db}/bacteria'
+        # Resistance database same as for resfinder
+        git clone --depth=1 -b {params.res_db_version} https://bitbucket.org/genomicepidemiology/resfinder_db.git {output.resfinder_db}
+        grep -Ev '^\s*(#|$)' {output.resfinder_db}/config | cut -f1 | xargs -I@ cat {output.resfinder_db}/@.fsa | kma_index -i -- -o {output.resfinder_db}/kma_resfinder
         """
 
 rule run_kmerresistance:
     input:
         read1 = get_read1,
         read2 = get_read2,
-        kma_resfinder_db_name = os.path.join(config["params"]["db_dir"], "kmerresistance", 'resfinder_kma.name'),
-        species_db_name = os.path.join(config["params"]["db_dir"], "kmerresistance", 'bacteria.name')
+        resfinder_db = os.path.join(config['params']['db_dir'], 'kmerresistance', 'resfinder_db')
     output:
         report = "results/{sample}/kmerresistance/results.res",
         metadata = "results/{sample}/kmerresistance/metadata.txt"
@@ -49,9 +44,9 @@ rule run_kmerresistance:
         config['params']['threads']
     params:
         output_folder = "results/{sample}/kmerresistance",
-        kma_resfinder_db = os.path.join(config["params"]["db_dir"], "kmerresistance", 'resfinder_kma'),
-        species_db = os.path.join(config["params"]["db_dir"], "kmerresistance", 'bacteria'),
-        db_version = config["params"]["kmerresistance"]["db_version"]
+        kma_resfinder_db = os.path.join(config['params']['db_dir'], 'kmerresistance', 'resfinder_db', 'kma_resfinder'),
+        species_db = os.path.join(config['params']['db_dir'], 'kmerresistance', 'kmerfinder_db', 'bacteria'),
+        db_version = config['params']['kmerresistance']['res_db_version']
     shell:
         """
         zcat {input.read1} {input.read2} > {params.output_folder}/temp_all_reads.fq
