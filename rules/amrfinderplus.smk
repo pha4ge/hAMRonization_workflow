@@ -1,12 +1,12 @@
 rule get_amrfinder_db:
     output:
-       dbversion = os.path.join(config["params"]["db_dir"], "amrfinderplus", "latest", "version.txt")
+        dbversion = os.path.join(config["params"]["db_dir"], "amrfinderplus", "latest", "version.txt")
     conda:
-      "../envs/amrfinderplus.yaml"
+        "../envs/amrfinderplus.yaml"
     params:
         db_dir = os.path.join(config['params']['db_dir'], 'amrfinderplus')
     log:
-       "logs/amrfinderplus_db.log"
+        "logs/amrfinderplus_db.log"
     shell:
         "amrfinder_update -d {params.db_dir} 2> {log}"
 
@@ -19,14 +19,14 @@ rule run_amrfinderplus:
         metadata = "results/{sample}/amrfinderplus/metadata.txt"
     message: "Running rule run_amrfinderplus on {wildcards.sample} with contigs"
     log:
-       "logs/amrfinderplus_{sample}.log"
+        "logs/amrfinderplus_{sample}.log"
     conda:
-      "../envs/amrfinderplus.yaml"
+        "../envs/amrfinderplus.yaml"
     params:
         db = os.path.join(config["params"]["db_dir"], "amrfinderplus"),
         output_tmp_dir = "results/{sample}/amrfinderplus/tmp",
     threads:
-       config["params"]["threads"]
+        config["params"]["threads"]
     shell:
         """
         amrfinder -n {input.contigs} -o {output.report} -d {params.db}/latest >{log} 2>&1

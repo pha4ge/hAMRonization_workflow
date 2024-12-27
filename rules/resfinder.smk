@@ -26,8 +26,8 @@ rule get_resfinder_db:
 rule run_resfinder:
     input:
         # ResFinder can take a reads pair or an assembly (or a single nanopore reads file, ignored for now);
-        # we prefer reads, so we use 'get_reads_or_assembly' which looks for inputs in that order.
-        inputs = get_reads_or_assembly,
+        # We might normally prefer reads for accuracy, but pick assembly first for uniformity in the workflow
+        inputs = get_assembly_or_reads,
         res_db = os.path.join(config['params']['db_dir'], "resfinder_db"),
         point_db = os.path.join(config['params']['db_dir'], "pointfinder_db"),
         disinf_db = os.path.join(config['params']['db_dir'], "disinfinder_db")
@@ -42,9 +42,9 @@ rule run_resfinder:
         config['params']['threads']
     params:
         # Depending on whether we have a read pair or an assembly, compose the appropriate ResFinder argument
-        inputs_arg = branch(get_reads,
-            then = lambda w: "-ifq '{0}' '{1}'".format(get_read1(w), get_read2(w)),
-            otherwise = lambda w: "-ifa '{}'".format(get_assembly(w))),
+        inputs_arg = branch(get_assembly,
+            then = lambda w: "-ifa '{}'".format(get_assembly(w)),
+            otherwise = lambda w: "-ifq '{0}' '{1}'".format(get_read1(w), get_read2(w))),
         # PointFinder requires a species, but will not error out if it is not in its database.
         species = branch(get_species, then=get_species, otherwise="Unknown"),
         outdir = "results/{sample}/resfinder"

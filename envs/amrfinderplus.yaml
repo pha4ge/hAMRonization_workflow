@@ -4,4 +4,4 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - ncbi-amrfinderplus=3.10.23
+  - ncbi-amrfinderplus=4.0.3
