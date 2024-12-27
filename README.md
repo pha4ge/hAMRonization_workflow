@@ -35,7 +35,9 @@ Excluded tools:
 
 ## Installation
 
-Installation from source requires Conda or Miniconda.  If you do not have `conda` but do have Docker, then using the pre-built Docker container (see [below](#docker) may be easier.
+Installation from source requires Conda or Miniconda to be installed.
+
+> Note: if you have Docker, Podman or Singularity, then the pre-built Docker container (see [below](#docker)) may be the easier way to go.
 
 Install prerequisites for building this pipeline (on Ubuntu):
 
@@ -64,19 +66,19 @@ All further dependencies will be installed when running the workflow.
 
 ## Running
 
-To execute the pipeline, navigate to the cloned repository, edit the config (`config/config.yaml`) and input details (`config/isolate_list.txt`) for your purposes.
-Execute the following, substituting a value for `--jobs` as needed:
+To execute the pipeline, navigate to the cloned repository, edit the config (`config/config.yaml`) and isolate list (`config/isolate_list.tsv`) to suit your purposes.
+Execute the following, increasing the value for `--jobs` if your compute capacity allows:
 
     snakemake --configfile config/config.yaml --use-conda --jobs 2 --use-singularity --singularity-args "-B $PWD:/data"
 
-> Note: you may get better Conda performance if you add `--conda-frontend mamba`, but you may run into the unresolved error _"libmamba: non-conda folder exists at prefix"_.
+> Note: you might get better Conda performance if you add `--conda-frontend mamba`, but this could hit the unresolved bug _"libmamba: non-conda folder exists at prefix"_.
 
 Testing
 -------
 
-To test the pipeline follow the above installation instructions and execute on the test data set:
+To test the pipeline, follow the above installation instructions and execute on the test data set:
 
-    snakemake --configfile config/test_config.yaml --use-conda --jobs 1 --use-singularity --singularity-args "-B $PWD:/data"
+    snakemake --configfile test/test_config.yaml --use-conda --jobs 1 --use-singularity --singularity-args "-B $PWD:/data"
 
 Docker
 ------
