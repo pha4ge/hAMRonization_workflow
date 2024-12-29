@@ -23,48 +23,65 @@ rule get_resfinder_db:
         }} >{log} 2>&1
         """
 
-rule run_resfinder:
+rule run_resfinder_fna:
+    output:
+        dir = directory("results/{sample}/resfinder-fna"),
+        report = "results/{sample}/resfinder-fna/data_resfinder.json"
     input:
-        # ResFinder can take a reads pair or an assembly (or a single nanopore reads file, ignored for now);
-        # We might normally prefer reads for accuracy, but pick assembly first for uniformity in the workflow
-        inputs = get_assembly_or_reads,
+        assembly = get_assembly,
         res_db = os.path.join(config['params']['db_dir'], "resfinder_db"),
         point_db = os.path.join(config['params']['db_dir'], "pointfinder_db"),
         disinf_db = os.path.join(config['params']['db_dir'], "disinfinder_db")
-    output:
-        report = "results/{sample}/resfinder/data_resfinder.json",
-    message: "Running rule run_resfinder on {wildcards.sample}"
+    message: "Running rule run_resfinder_fna on {wildcards.sample} assembly"
     log:
-        "logs/resfinder_{sample}.log"
+        "logs/resfinder-fna_{sample}.log"
     conda:
         "../envs/resfinder.yaml"
     threads:
         config['params']['threads']
     params:
-        # Depending on whether we have a read pair or an assembly, compose the appropriate ResFinder argument
-        inputs_arg = branch(get_assembly,
-            then = lambda w: "-ifa '{}'".format(get_assembly(w)),
-            otherwise = lambda w: "-ifq '{0}' '{1}'".format(get_read1(w), get_read2(w))),
-        # PointFinder requires a species, but will not error out if it is not in its database.
         species = branch(get_species, then=get_species, otherwise="Unknown"),
-        outdir = "results/{sample}/resfinder"
     shell:
         """
-        {{ set -euo pipefail
-        mkdir -p '{params.outdir}'
+        mkdir -p {output.dir}
         run_resfinder.py --acquired --point --disinfectant --species '{params.species}' --ignore_missing_species \
             -db_res '{input.res_db}' -db_point '{input.point_db}' -db_disinf '{input.disinf_db}' \
-            {params.inputs_arg} -j '{output.report}' -o '{params.outdir}'
-        }} >{log} 2>&1
+            -ifa '{input.assembly}' -j {output.report} -o {output.dir} >{log} 2>&1
+        """
+
+rule run_resfinder_fqs:
+    output:
+        dir = directory("results/{sample}/resfinder-fqs"),
+        report = "results/{sample}/resfinder-fqs/data_resfinder.json"
+    input:
+        read1 = get_read1, read2 = get_read2,
+        res_db = os.path.join(config['params']['db_dir'], "resfinder_db"),
+        point_db = os.path.join(config['params']['db_dir'], "pointfinder_db"),
+        disinf_db = os.path.join(config['params']['db_dir'], "disinfinder_db")
+    message: "Running rule run_resfinder_fqs on {wildcards.sample} reads"
+    log:
+        "logs/resfinder-fqs_{sample}.log"
+    conda:
+        "../envs/resfinder.yaml"
+    threads:
+        config['params']['threads']
+    params:
+        species = branch(get_species, then=get_species, otherwise="Unknown"),
+    shell:
+        """
+        mkdir -p {output.dir}
+        run_resfinder.py --acquired --point --disinfectant --species '{params.species}' --ignore_missing_species \
+            -db_res '{input.res_db}' -db_point '{input.point_db}' -db_disinf '{input.disinf_db}' \
+            -ifq '{input.read1}' '{input.read2}' -j {output.report} -o {output.dir} >{log} 2>&1
         """
 
 rule hamronize_resfinder:
     input:
-        report = "results/{sample}/resfinder/data_resfinder.json",
+        report = "results/{sample}/{resfinder}/data_resfinder.json",
     output:
-        "results/{sample}/resfinder/hamronized_report.tsv"
+        "results/{sample}/{resfinder}/hamronized_report.tsv"
     log:
-        "logs/resfinder_{sample}_harmonize.log"
+        "logs/{resfinder}_{sample}_harmonize.log"
     conda:
         "../envs/hamronization.yaml"
     shell:
