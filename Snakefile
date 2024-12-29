@@ -10,7 +10,6 @@ shell.executable("bash")
 # - Lenienty skip spaces that start a cell value
 # - The 'biosample' index column must be unique (checked below)
 # - The 'usecols' array lists our required columns (others are ignored),
-#   and enforces that every row has a (possibly empty) value for each
 samples = pd.read_table(config['samples'], index_col="biosample",
     dtype='str', na_filter=False, comment='#', skipinitialspace=True,
     usecols=['biosample', 'species', 'assembly', 'read1', 'read2'])
@@ -86,7 +85,6 @@ rule hamronize:
         expand("results/{sample}/amrplusplus/hamronized_report.tsv", sample=samples.index),
         expand("results/{sample}/srst2/hamronized_report.tsv", sample=samples.index)
         #expand("results/{sample}/mykrobe/report.json", sample=samples.index), need variant spec to use
-        #expand("results/{sample}/pointfinder/report.tsv", sample=samples.index), need variant spec to use
     output:
         "results/all_hamronized_results.tsv"
     conda:
@@ -113,5 +111,4 @@ include: "rules/amrplusplus.smk"
 include: "rules/csstar.smk"
 
 #include: "rules/mykrobe.smk"
-#include: "rules/pointfinder.smk"
 
