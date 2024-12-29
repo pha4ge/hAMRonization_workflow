@@ -24,7 +24,7 @@ rule get_kmerresistance_db:
            gunzip -c - | tee '{params.species_db}/bacteria.fsa' | kma_index -Sparse ATG -i -- -o '{params.species_db}/bacteria'
         # Resistance database same as for resfinder
         git clone --depth=1 -b {params.res_db_version} https://bitbucket.org/genomicepidemiology/resfinder_db.git {output.resfinder_db}
-        grep -Ev '^\s*(#|$)' {output.resfinder_db}/config | cut -f1 | xargs -I@ cat {output.resfinder_db}/@.fsa | kma_index -i -- -o {output.resfinder_db}/kma_resfinder
+        grep -Ev '^[[:space:]]*(#|$)' {output.resfinder_db}/config | cut -f1 | xargs -I@ cat {output.resfinder_db}/@.fsa | kma_index -i -- -o {output.resfinder_db}/kma_resfinder
         """
 
 rule run_kmerresistance:
