@@ -53,9 +53,6 @@ get_reads = lambda w: list(filter(None, [get_read1(w), get_read2(w)]))
 get_reads_or_assembly = lambda w: get_reads(w) or list(filter(None, [get_assembly(w)]))
 get_assembly_or_reads = lambda w: list(filter(None, [get_assembly(w)])) or get_reads(w)
 
-# Report whether we have Singularity (or at least workflow runs with --singularity-args)
-use_singularity = lambda w: workflow.deployment_settings.apptainer_args is not None
-
 # Target rules ---
 
 rule all:
@@ -91,7 +88,8 @@ rule summarize_sample:
         expand("results/{sample}/amrplusplus/hamronized_report.tsv", sample=samples_with_readpair),
         expand("results/{sample}/ariba/hamronized_report.tsv", sample=samples_with_readpair),
         expand("results/{sample}/csstar/hamronized_report.tsv", sample=samples_with_assembly),
-        branch(use_singularity, then=expand("results/{sample}/deeparg/hamronized_report.tsv", sample=samples_with_readpair)),
+        expand("results/{sample}/deeparg-fna/hamronized_report.tsv", sample=samples_with_assembly),
+        expand("results/{sample}/deeparg-fqs/hamronized_report.tsv", sample=samples_with_readpair),
         expand("results/{sample}/groot/hamronized_report.tsv", sample=samples_with_readpair),
         expand("results/{sample}/kmerresistance/hamronized_report.tsv", sample=samples_with_readpair),
 #       expand("results/{sample}/mykrobe/hamronized_report.json", sample=samples_with_readpair),

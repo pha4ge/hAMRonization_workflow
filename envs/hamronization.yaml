@@ -2,7 +2,7 @@ name: hamronization
 channels:
   - defaults
 dependencies:
-  - python>=3.7
+  - python>=3.9
   - pip
   - pip:
      - git+https://github.com/zwets/hamronization

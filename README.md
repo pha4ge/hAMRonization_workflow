@@ -19,7 +19,7 @@ The following tools are currently included:
 * staramr
 * Resfinder (including PointFinder)
 * sraX
-* DeepARG (requires singularity)
+* DeepARG
 * CSSTAR
 * AMRplusplus
 * SRST2
@@ -42,10 +42,6 @@ Install prerequisites for building this pipeline (on Ubuntu):
 
     sudo apt install build-essential git zlib1g-dev curl wget file unzip jq
 
-You need Singularity if you want to run `DeepARG`:
-
-    sudo apt install singularity-container
-
 Clone this repository:
 
     git clone https://github.com/pha4ge/hAMRonization_workflow
@@ -54,6 +50,11 @@ Create the Conda environment:
 
     cd hAMRonization_workflow
     conda env create -n hamronization_workflow --file envs/hamronization_workflow.yaml
+
+This may considerably speed up conda environment creation and create a more predictable outcome
+
+    conda activate hamronization_workflow
+    conda config --env --set channel_priority strict
 
 Run a smoke test (note this takes a while as Snakemake pulls in all the tools and databases upon its first run):
 
@@ -69,18 +70,16 @@ Remember to activate the Conda environment:
 
     conda activate hamronization_workflow
 
-Run the configured workflow (change the job count according to your compute capacity, omit the singularity args if you don't have Singularity):
+Run the configured workflow (change the job count according to your compute capacity):
 
-    snakemake --configfile config/config.yaml --use-conda --jobs 2 --use-singularity --singularity-args "-B $PWD:/data"
+    snakemake --configfile config/config.yaml --use-conda --jobs 2
 
 Docker
 ------
 
-Alternatively, the workflow can be run using Docker (and probably Podman and Singularity).  Given the collective quirks of the bundled tools this will probably be easier for most users.
+**NOTE the Docker container for the latest version of is not yet available!**
 
-Because DeepARG runs as a container inside the Docker container, the Docker container must be run with `docker run --privileged`.
-
-If you are unable to run docker in privileged mode then you can just comment out the deeparg targets in the main `Snakefile`.
+Alternatively, the workflow can be run using Docker, Podman or Singularity.  Given the collective quirks of the bundled tools this will probably be easier for most users.
 
 First get the docker container:
 
@@ -108,7 +107,7 @@ Then specify your `config.yaml` to use this `sample_table.tsv` and execute the p
 
 Then the workflow:
 
-    snakemake --configfile config/config.yaml --use-conda --cores 6 --use-singularity --singularity-args "-B $PWD:/data"
+    snakemake --configfile config/config.yaml --use-conda --cores 6
 
 *WARNING* You will have to extract your results folder (e.g. `cp results /data` for the example mounted volume) from the container if you wish to use them elsewhere.
 

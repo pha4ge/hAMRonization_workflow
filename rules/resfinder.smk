@@ -24,14 +24,14 @@ rule get_resfinder_db:
         """
 
 rule run_resfinder_fna:
-    output:
-        dir = directory("results/{sample}/resfinder-fna"),
-        report = "results/{sample}/resfinder-fna/data_resfinder.json"
     input:
         assembly = get_assembly,
         res_db = os.path.join(config['params']['db_dir'], "resfinder_db"),
         point_db = os.path.join(config['params']['db_dir'], "pointfinder_db"),
         disinf_db = os.path.join(config['params']['db_dir'], "disinfinder_db")
+    output:
+        dir = directory("results/{sample}/resfinder-fna"),
+        report = "results/{sample}/resfinder-fna/data_resfinder.json"
     message: "Running rule run_resfinder_fna on {wildcards.sample} assembly"
     log:
         "logs/resfinder-fna_{sample}.log"
@@ -50,14 +50,14 @@ rule run_resfinder_fna:
         """
 
 rule run_resfinder_fqs:
-    output:
-        dir = directory("results/{sample}/resfinder-fqs"),
-        report = "results/{sample}/resfinder-fqs/data_resfinder.json"
     input:
         read1 = get_read1, read2 = get_read2,
         res_db = os.path.join(config['params']['db_dir'], "resfinder_db"),
         point_db = os.path.join(config['params']['db_dir'], "pointfinder_db"),
         disinf_db = os.path.join(config['params']['db_dir'], "disinfinder_db")
+    output:
+        dir = directory("results/{sample}/resfinder-fqs"),
+        report = "results/{sample}/resfinder-fqs/data_resfinder.json"
     message: "Running rule run_resfinder_fqs on {wildcards.sample} reads"
     log:
         "logs/resfinder-fqs_{sample}.log"
@@ -77,11 +77,11 @@ rule run_resfinder_fqs:
 
 rule hamronize_resfinder:
     input:
-        report = "results/{sample}/{resfinder}/data_resfinder.json",
+        report = "results/{sample}/resfinder-{sfx}/data_resfinder.json",
     output:
-        "results/{sample}/{resfinder}/hamronized_report.tsv"
+        "results/{sample}/resfinder-{sfx}/hamronized_report.tsv"
     log:
-        "logs/{resfinder}_{sample}_harmonize.log"
+        "logs/resfinder-{sfx}_{sample}_hamronize.log"
     conda:
         "../envs/hamronization.yaml"
     shell:

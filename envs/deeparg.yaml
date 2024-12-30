@@ -1,0 +1,12 @@
+name: deeparg
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - deeparg=1.0.4
+  - trimmomatic
+  - vsearch
+  - bedtools
+  - bowtie2
+  - samtools
