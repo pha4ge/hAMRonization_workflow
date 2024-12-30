@@ -17,9 +17,9 @@ The following tools are currently included:
 * staramr
 * resfams
 * staramr
-* Resfinder
+* Resfinder (including PointFinder)
 * sraX
-* DeepARG (requires singularity)
+* DeepARG
 * CSSTAR
 * AMRplusplus
 * SRST2
@@ -31,7 +31,6 @@ Excluded tools:
 * RAST/PATRIC (not easily runnable on CLI)
 * Single organism/or resistance tools (e.g. Kleborate, LREfinder, SSCmec Finder, U-CARE, ARGO)
 * shortBRED, ARGS-OAP (rely on usearch which isn't open-source)
-* PointFinder (now included in ResFinder)
 
 ## Installation
 
@@ -43,10 +42,6 @@ Install prerequisites for building this pipeline (on Ubuntu):
 
     sudo apt install build-essential git zlib1g-dev curl wget file unzip jq
 
-You need Singularity if you want to run `DeepARG`:
-
-    sudo apt install singularity-container
-
 Clone this repository:
 
     git clone https://github.com/pha4ge/hAMRonization_workflow
@@ -56,44 +51,41 @@ Create the Conda environment:
     cd hAMRonization_workflow
     conda env create -n hamronization_workflow --file envs/hamronization_workflow.yaml
 
-Activate the Conda environment:
+This may considerably speed up conda environment creation and create a more predictable outcome
 
     conda activate hamronization_workflow
+    conda config --env --set channel_priority strict
 
-All further dependencies will be installed when running the workflow.
+Run a smoke test (note this takes a while as Snakemake pulls in all the tools and databases upon its first run):
 
-> Note: if you want to run `DeepARG` you need to invoke snakemake with `--use-singularity --singularity-args "-B $PWD:/data"`.
+    ./run_test.sh
+
+Running it again should seconds and report "Nothing to be done"
 
 ## Running
 
-To execute the pipeline, navigate to the cloned repository, edit the config (`config/config.yaml`) and isolate list (`config/isolate_list.tsv`) to suit your purposes.
-Execute the following, increasing the value for `--jobs` if your compute capacity allows:
+To execute the pipeline with your isolates, navigate to the cloned repository and edit or copy the provided configuration file (`config/config.yaml`) and isolate list (`config/isolate_list.tsv`).
 
-    snakemake --configfile config/config.yaml --use-conda --jobs 2 --use-singularity --singularity-args "-B $PWD:/data"
+Remember to activate the Conda environment:
 
-> Note: you might get better Conda performance if you add `--conda-frontend mamba`, but this could hit the unresolved bug _"libmamba: non-conda folder exists at prefix"_.
+    conda activate hamronization_workflow
 
-Testing
--------
+Run the configured workflow (change the job count according to your compute capacity):
 
-To test the pipeline, follow the above installation instructions and execute on the test data set:
-
-    snakemake --configfile test/test_config.yaml --use-conda --jobs 1 --use-singularity --singularity-args "-B $PWD:/data"
+    snakemake --configfile config/config.yaml --use-conda --jobs 2
 
 Docker
 ------
 
-Alternatively, the workflow can be run using Docker.  Given the collective quirks of the bundled tools this will probably be easier for most users.
+**NOTE the Docker container for the latest version of is not yet available!**
 
-Unfortunately, DeepARG is only really runnable as a container, and Snakemake uses Singularity, the docker version has to be run in a privileged manner i.e. `docker run --privileged`.
-
-If you are unable to run docker in privileged mode then you can just comment out the deeparg target in the main `Snakefile` (`expand("results/{sample}/deeparg/output.mapping.ARG", sample=samples.index),`).
+Alternatively, the workflow can be run using Docker, Podman or Singularity.  Given the collective quirks of the bundled tools this will probably be easier for most users.
 
 First get the docker container:
 
     docker pull finlaymaguire/hamronization:1.0.1
 
-You can execute it in a couple of ways but the easiest is to just mount the folder containing your reads and running it interactively:
+You can execute it in a couple of ways but the easiest is to just mount the folder containing your reads and run it interactively:
 
     docker run -it --privileged -v $HOST_FOLDER_CONTAINING_ISOLATES:/data finlaymaguire/hamronization:1.0.1 /bin/bash
 
@@ -115,7 +107,7 @@ Then specify your `config.yaml` to use this `sample_table.tsv` and execute the p
 
 Then the workflow:
 
-    snakemake --configfile config/config.yaml --use-conda --cores 6 --use-singularity --singularity-args "-B $PWD:/data"
+    snakemake --configfile config/config.yaml --use-conda --cores 6
 
 *WARNING* You will have to extract your results folder (e.g. `cp results /data` for the example mounted volume) from the container if you wish to use them elsewhere.
 
