@@ -8,7 +8,11 @@ rule get_amrfinder_db:
     log:
         "logs/amrfinderplus_db.log"
     shell:
-        "amrfinder_update -d '{params.db_dir}' 2> {log}"
+        """
+        amrfinder_update -d '{params.db_dir}' 2> {log}
+        # Fix the 'latest' symlink to be relative, so it works from containers too
+        ln -srfT "$(realpath '{params.db_dir}/latest')" '{params.db_dir}/latest'
+        """
 
 rule run_amrfinderplus:
     input:
