@@ -11,6 +11,7 @@ rule get_deeparg_db:
         # we use wget -c so an incomplete download will resume (it is 1.8G)
         wget -cO '{params.db_zip}' 'https://zenodo.org/records/8280582/files/deeparg.zip?download=1'
         unzip -d "$(dirname '{output.db_dir}')" '{params.db_zip}'
+        rm -f '{params.db_zip}'
         """
 
 rule run_deeparg_fna:
