@@ -4,7 +4,7 @@ samples: "test/test_data.tsv"
 params:
   db_dir: "data/dbs" # directory to install databases in
   dateformat: "%Y-%b-%d" # date formats for database downloads
-  binary_dir: "data/non_conda_deps" # directory to install non-conda dependencies
+  binary_dir: "bindeps" # directory to install non-conda dependencies
   threads: 1 #number of threads per rule
   abricate:
     name: "ncbi"
