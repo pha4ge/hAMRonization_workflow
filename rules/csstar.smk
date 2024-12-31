@@ -5,6 +5,7 @@ rule get_csstar_script:
         bin_dir = config['params']['binary_dir']
     shell:
         """
+        mkdir {params.bin_dir}
         cd {params.bin_dir}
         git clone https://github.com/chrisgulvik/c-SSTAR
         """

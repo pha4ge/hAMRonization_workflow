@@ -1,5 +1,6 @@
 /.idea*
 /.snakemake
 /.theano
+/bindeps
 /logs
 /results

@@ -27,6 +27,7 @@ rule get_amrplusplus_binaries:
         rarefaction_analyzer_version = config['params']['amrplusplus']["rarefactionanalyzer_version"]
     shell:
         """
+        mkdir -p {params.bin_dir}
         cd {params.bin_dir}
         git clone https://github.com/cdeanj/snpfinder
         cd snpfinder
