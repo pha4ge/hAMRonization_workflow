@@ -87,7 +87,7 @@ rule summarize_sample:
         expand("results/{sample}/amrfinderplus/hamronized_report.tsv", sample=samples_with_assembly),
         expand("results/{sample}/amrplusplus/hamronized_report.tsv", sample=samples_with_readpair),
         expand("results/{sample}/ariba/hamronized_report.tsv", sample=samples_with_readpair),
-        expand("results/{sample}/csstar/hamronized_report.tsv", sample=samples_with_assembly),
+#       expand("results/{sample}/csstar/hamronized_report.tsv", sample=samples_with_assembly),
         expand("results/{sample}/deeparg-fna/hamronized_report.tsv", sample=samples_with_assembly),
         expand("results/{sample}/deeparg-fqs/hamronized_report.tsv", sample=samples_with_readpair),
         expand("results/{sample}/groot/hamronized_report.tsv", sample=samples_with_readpair),
@@ -114,7 +114,7 @@ include: "rules/abricate.smk"
 include: "rules/amrfinderplus.smk"
 include: "rules/amrplusplus.smk"
 include: "rules/ariba.smk"
-include: "rules/csstar.smk"
+#include: "rules/csstar.smk"
 include: "rules/deeparg.smk"
 include: "rules/groot.smk"
 include: "rules/kmerresistance.smk"
