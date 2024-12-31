@@ -1,8 +1,8 @@
 name: staramr
 channels:
-  - defaults
   - conda-forge
   - bioconda
+  - defaults
 dependencies:
   - staramr=0.7.2
   - pandas==1.2.5
