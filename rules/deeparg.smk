@@ -11,6 +11,7 @@ rule get_deeparg_db:
         # we use wget -c so an incomplete download will resume (it is 1.8G)
         wget -cO '{params.db_zip}' 'https://zenodo.org/records/8280582/files/deeparg.zip?download=1'
         unzip -d "$(dirname '{output.db_dir}')" '{params.db_zip}'
+        rm -f '{params.db_zip}'
         """
 
 rule run_deeparg_fna:
@@ -55,11 +56,19 @@ rule run_deeparg_fqs:
         version = "1.0.4"
     shell:
         """
-        mkdir -p '{params.out_dir}'
-        deeparg short_reads_pipeline --forward_pe_file '{input.read1}' --reverse_pe_file '{input.read2}' -d '{input.db_dir}' --output_file '{params.out_dir}/output' >{log} 2>&1
-        mv '{params.out_dir}/output.clean.deeparg.mapping.ARG' '{params.out_dir}/output.mapping.ARG'
-        mv '{params.out_dir}/output.clean.deeparg.mapping.potential.ARG' '{params.out_dir}/output.mapping.potential.ARG'
-        rm -f '{params.out_dir}/output.clean.deeparg'.*
+        mkdir -p '{params.out_dir}/tmp'
+        # Create symlinks to the reads in the output/tmp directory, because deeparg leaves behind huge
+        # temporary files both in the (possibly read-only) input directory and in the output directory.
+        ln -srft '{params.out_dir}/tmp' '{input.read1}' '{input.read2}'
+        deeparg short_reads_pipeline -d '{input.db_dir}' \
+          --forward_pe_file "{params.out_dir}/tmp/$(basename '{input.read1}')" \
+          --reverse_pe_file "{params.out_dir}/tmp/$(basename '{input.read2}')" \
+          --output_file '{params.out_dir}/tmp/output' >{log} 2>&1
+        # Move the final outputs out of the tmp directory and rename to what they should be
+        mv -f '{params.out_dir}/tmp/output.clean.deeparg.mapping.ARG' '{output.report}'
+        mv -f '{params.out_dir}/tmp/output.clean.deeparg.mapping.potential.ARG' '{output.report_potential}'
+        rm -rf '{params.out_dir}/tmp'
+        # Write the metadata file for hamronizer
         echo "--input_file_name '{input.read1}' --analysis_software_version '{params.version}' --reference_database_version '{params.version}'" >{output.metadata}
         """
 
