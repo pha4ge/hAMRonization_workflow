@@ -44,8 +44,8 @@ COPY Snakefile .
 RUN conda env update -n base -f envs/hamronization_workflow.yaml
 
 # make Snakemake install all conda environments and the non-conda binary deps (but not the databases)
-RUN snakemake --configfile test/test_config.yaml --use-conda --jobs 1 --conda-create-envs-only &&
-    snakemake --configfile test/test_config.yaml --use-conda --jobs 1 bindeps/resistomeanalyzer/resistome bindeps/rarefactionanalyzer/rarefaction bindeps/snpfinder/snpfinder
+#RUN snakemake --configfile test/test_config.yaml --use-conda --jobs 1 --conda-create-envs-only &&
+#    snakemake --configfile test/test_config.yaml --use-conda --jobs 1 bindeps/resistomeanalyzer/resistome bindeps/rarefactionanalyzer/rarefaction bindeps/snpfinder/snpfinder
 
 # this maiden run would pull all databases in (and create a huge container)
 # *** better if we put this command on its own in a separate Dockerfile, so we have
