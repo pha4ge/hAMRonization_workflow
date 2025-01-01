@@ -1,6 +1,6 @@
 rule get_amrfinder_db:
     output:
-        os.path.join(config['params']['db_dir'], "amrfinderplus", "latest")
+        directory(os.path.join(config['params']['db_dir'], "amrfinderplus", "latest"))
     conda:
         "../envs/amrfinderplus.yaml"
     params:
