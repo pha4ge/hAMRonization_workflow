@@ -50,5 +50,7 @@ RUN snakemake --configfile test/test_config.yaml --use-conda --jobs 1 --conda-cr
 RUN snakemake --configfile test/test_config.yaml --use-conda --jobs 1 bindeps/resistomeanalyzer/resistome bindeps/rarefactionanalyzer/rarefaction bindeps/snpfinder/snpfinder
 
 # this maiden run pulls all databases in, thus finalising the self-contained image
-RUN snakemake --configfile test/test_config.yaml --use-conda --jobs 1 && \
+# this conda update appears to fix a breaking issue with "PuLP"
+RUN conda update -q -y -C -n base -c conda-forge -c bioconda -c defaults --all && \
+    snakemake --configfile test/test_config.yaml --use-conda --jobs 4 results/hamronized_report.tsv && \
     rm -rf results
