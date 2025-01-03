@@ -25,7 +25,7 @@ RUN echo "unset HISTFILE" >>/etc/bash.bashrc && \
     echo "alias ls='ls --color=auto' l='ls -CF' la='l -a' ll='l -l' lla='ll -a'" >>/etc/bash.bashrc
 
 # system-wide channels probably best off with the usual trio and strict priority for predictability
-RUN conda config --system --add channel defaults --add channel bioconda --add channel conda-forge && \
+RUN conda config --system --add channels defaults --add channels bioconda --add channels conda-forge && \
     conda config --system --set channel_priority strict && \
     conda update -n base --all
 
