@@ -35,7 +35,7 @@ rule run_deeparg_fna:
         mkdir -p '{params.out_dir}'
         # Note: default --arg-alignment-identity is 50, maybe increase to 90?
         deeparg predict --model LS --type nucl -i '{input.contigs}' -d '{input.db_dir}' -o '{params.out_dir}/output' >{log} 2>&1
-        echo "--input_file_name '{input.contigs}' --analysis_software_version '{params.version}' --reference_database_version '{params.version}'" >{output.metadata}
+        echo "--input_file_name {input.contigs} --analysis_software_version {params.version} --reference_database_version {params.version}" >{output.metadata}
         """
 
 rule run_deeparg_fqs:
@@ -69,7 +69,7 @@ rule run_deeparg_fqs:
         mv -f '{params.out_dir}/tmp/output.clean.deeparg.mapping.potential.ARG' '{output.report_potential}'
         rm -rf '{params.out_dir}/tmp'
         # Write the metadata file for hamronizer
-        echo "--input_file_name '{input.read1}' --analysis_software_version '{params.version}' --reference_database_version '{params.version}'" >{output.metadata}
+        echo "--input_file_name {input.read1} --analysis_software_version {params.version} --reference_database_version {params.version}" >{output.metadata}
         """
 
 rule hamronize_deeparg:
