@@ -52,5 +52,5 @@ RUN snakemake --configfile test/test_config.yaml --use-conda --conda-cleanup-pkg
 RUN snakemake --configfile test/test_config.yaml --use-conda --conda-cleanup-pkgs cache --jobs 1 bindeps/resistomeanalyzer/resistome bindeps/rarefactionanalyzer/rarefaction bindeps/snpfinder/snpfinder
 
 # this maiden run pulls all databases in, thus finalising the self-contained image
-RUN snakemake --configfile test/test_config.yaml --use-conda --conda-cleanup-pkgs cache --jobs 1 results/hamronized_report.tsv && \
-    rm -rf results
+#RUN snakemake --configfile test/test_config.yaml --use-conda --conda-cleanup-pkgs cache --jobs 1 results/hamronized_report.tsv && \
+#    rm -rf results
