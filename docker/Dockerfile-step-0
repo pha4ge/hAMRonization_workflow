@@ -46,7 +46,7 @@ RUN conda env update -n base -f envs/hamronization_workflow.yaml
 # out the subsequent steps and rebuild up to the last successful commit, then enter that image.
 
 # make Snakemake install all conda environments (but not the non-conda binary deps or databases)
-RUN snakemake --configfile test/test_config.yaml --use-conda --conda-cleanup-pkgs cache --jobs 1 --conda-create-envs-only
+#RUN snakemake --configfile test/test_config.yaml --use-conda --conda-cleanup-pkgs cache --jobs 1 --conda-create-envs-only
 
 # make Snakemake install the the non-conda binary deps (but not the databases)
 #RUN snakemake --configfile test/test_config.yaml --use-conda --conda-cleanup-pkgs cache --jobs 1 bindeps/resistome bindeps/rarefaction bindeps/snpfinder
