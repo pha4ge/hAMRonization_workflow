@@ -19,7 +19,7 @@ params:
     read_length: 150 # readlengh to use for indexing the preclustered db
     window: 20 # window size to allow min and max read length (min-len = read_length - window)
   rgi:
-    db_version: "3.1.1"
+    #empty, no options exposed
   srax:
     dbtype: "basic"
   amrplusplus:
