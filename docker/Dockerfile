@@ -49,7 +49,7 @@ RUN conda env update -n base -f envs/hamronization_workflow.yaml
 RUN snakemake --configfile test/test_config.yaml --use-conda --conda-cleanup-pkgs cache --jobs 1 --conda-create-envs-only
 
 # make Snakemake install the the non-conda binary deps (but not the databases)
-RUN snakemake --configfile test/test_config.yaml --use-conda --conda-cleanup-pkgs cache --jobs 1 bindeps/resistomeanalyzer/resistome bindeps/rarefactionanalyzer/rarefaction bindeps/snpfinder/snpfinder
+RUN snakemake --configfile test/test_config.yaml --use-conda --conda-cleanup-pkgs cache --jobs 1 bindeps/resistome bindeps/rarefaction bindeps/snpfinder
 
 # this maiden run pulls all databases in, thus finalising the self-contained image
 RUN snakemake --configfile test/test_config.yaml --use-conda --conda-cleanup-pkgs cache --jobs 1 results/hamronized_report.tsv && \
