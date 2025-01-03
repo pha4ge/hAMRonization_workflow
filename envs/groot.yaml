@@ -1,9 +1,8 @@
 name: groot
 channels:
-  - bioconda/label/cf201901
-  - defaults
   - conda-forge
   - bioconda
+  - defaults
 dependencies:
   - seqkit
   - groot=1.1.2

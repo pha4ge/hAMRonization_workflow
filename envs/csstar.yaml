@@ -1,9 +1,10 @@
 name: csstar
 channels:
-  - bioconda
   - conda-forge
+  - bioconda
   - defaults
 dependencies:
   - biopython
-  - python=2.7.17
-  - blast=2.10.1
+  - nomkl
+  - python<3.0
+  - blast

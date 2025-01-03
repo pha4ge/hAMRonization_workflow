@@ -15,8 +15,8 @@ rule get_srst2_db:
 
 rule run_srst2:
     input:
-        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
-        read2 = lambda wildcards: _get_seq(wildcards, 'read2'),
+        read1 = get_read1,
+        read2 = get_read2,
         db_file = os.path.join(config["params"]["db_dir"], config["params"]["srst2"]["gene_db"]),
         dbversion = os.path.join(config["params"]["db_dir"], config["params"]["srst2"]["gene_db"] + '-version.txt')
     output:
@@ -40,13 +40,12 @@ rule run_srst2:
        """
        srst2 --threads {threads} --gene_db {params.gene_db} --forward {params.for_suffix} --reverse {params.rev_suffix} --input_pe {input.read1} {input.read2} --min_depth {params.min_depth} --output {params.output_prefix} > {log} 2>&1
        srst2 --version 2>&1 | perl -p -e 's/srst2 (.+)/--analysis_software_version $1/' > {output.metadata}
-       cat {input.dbversion} | perl -p -e 's/(.+)/--reference_database_version $1/' >> {output.metadata} 
+       cat {input.dbversion} | perl -p -e 's/(.+)/--reference_database_version $1/' >> {output.metadata}
        """
-
 
 rule hamronize_srst2:
     input:
-        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
+        read1 = get_read1,
         report = "results/{sample}/srst2/srst2__fullgenes__ARGannot__results.txt",
         metadata = "results/{sample}/srst2/metadata.txt"
     output:

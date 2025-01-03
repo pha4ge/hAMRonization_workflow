@@ -1,5 +1,5 @@
 rule get_groot_db:
-    output: 
+    output:
        db = directory(os.path.join(config["params"]["db_dir"], "groot_index"))
     conda:
       "../envs/groot.yaml"
@@ -13,15 +13,15 @@ rule get_groot_db:
        config["params"]["threads"]
     shell:
         """
-	    rm -rf {params.db_dir}/groot_clustered
-        groot get -d {params.db_source} -o {params.db_dir}/groot_clustered 
+        rm -rf {params.db_dir}/groot_clustered
+        groot get -d {params.db_source} -o {params.db_dir}/groot_clustered
         groot index -p {threads} -m {params.db_dir}/groot_clustered/{params.db_source}.90 -i {output.db} -w {params.read_length} --log {log}
         """
 
 rule run_groot:
     input:
-        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
-        read2 = lambda wildcards: _get_seq(wildcards, 'read2'),
+        read1 = get_read1,
+        read2 = get_read2,
         db_index = os.path.join(config["params"]["db_dir"], "groot_index")
     output:
         report = "results/{sample}/groot/report.tsv",
@@ -45,7 +45,7 @@ rule run_groot:
 
 rule hamronize_groot:
     input:
-        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
+        read1 = get_read1,
         report = "results/{sample}/groot/report.tsv",
         metadata = "results/{sample}/groot/metadata.txt"
     output:
@@ -57,5 +57,5 @@ rule hamronize_groot:
         db_dir = config["params"]["db_dir"]
     shell:
         """
-        hamronize groot --input_file_name {input.read1} $(paste - < {input.metadata}) --reference_database_id {params.db_source} --reference_database_version $(paste - < {params.db_dir}/groot_clustered/card.90/timestamp.txt) {input.report} > {output}
+        hamronize groot --input_file_name {input.read1} $(paste - < {input.metadata}) --reference_database_name {params.db_source} --reference_database_version $(paste - < {params.db_dir}/groot_clustered/card.90/timestamp.txt) {input.report} > {output}
         """

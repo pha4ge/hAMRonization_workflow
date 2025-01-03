@@ -1,2 +1,6 @@
-.snakemake*
-.idea*
+/.idea*
+/.snakemake
+/.theano
+/bindeps
+/logs
+/results

@@ -1,5 +1,5 @@
 rule get_ariba_db:
-    output: 
+    output:
       db = directory(os.path.join(config["params"]["db_dir"], "ariba_card.prepareref")),
       dbversion = os.path.join(config["params"]["db_dir"], "ariba_card.version.txt")
     conda:
@@ -18,8 +18,8 @@ rule get_ariba_db:
 
 rule run_ariba:
     input:
-        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
-        read2 = lambda wildcards: _get_seq(wildcards, 'read2'),
+        read1 = get_read1,
+        read2 = get_read2,
         ref_db = os.path.join(config["params"]["db_dir"], "ariba_card.prepareref"),
         dbversion = os.path.join(config["params"]["db_dir"], "ariba_card.version.txt")
     output:
@@ -39,13 +39,13 @@ rule run_ariba:
        mkdir -p {params.tmp_dir}
        ariba run --noclean --force --tmp_dir {params.tmp_dir} --threads {threads} {input.ref_db} {input.read1} {input.read2} {params.output_folder} > {log} 2>&1
        rm -rf {params.tmp_dir}
-       ariba version | grep "ARIBA version" | perl -p -e 's/ARIBA version: (.+)/--analysis_software_version $1/' > {output.metadata} 
-       cat {input.dbversion} | perl -p -e 's/(.+)/--reference_database_version $1/' >> {output.metadata} 
+       ariba version | grep "ARIBA version" | perl -p -e 's/ARIBA version: (.+)/--analysis_software_version $1/' > {output.metadata}
+       cat {input.dbversion} | perl -p -e 's/(.+)/--reference_database_version $1/' >> {output.metadata}
        """
 
 rule hamronize_ariba:
     input:
-        read1 = lambda wildcards: _get_seq(wildcards, 'read1'),
+        read1 = get_read1,
         report = "results/{sample}/ariba/report.tsv",
         metadata = "results/{sample}/ariba/metadata.txt"
     output:
@@ -54,5 +54,5 @@ rule hamronize_ariba:
         "../envs/hamronization.yaml"
     shell:
         """
-        hamronize ariba --input_file_name {input.read1} --reference_database_id CARD $(paste - - < {input.metadata}) {input.report} > {output}
+        hamronize ariba --input_file_name {input.read1} --reference_database_name CARD $(paste - - < {input.metadata}) {input.report} > {output}
         """

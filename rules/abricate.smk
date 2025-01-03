@@ -1,6 +1,6 @@
 rule run_abricate:
     input:
-        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        contigs = get_assembly
     output:
         report = "results/{sample}/abricate/report.tsv",
         metadata = "results/{sample}/abricate/metadata.txt"

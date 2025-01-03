@@ -7,4 +7,5 @@
 # reads, or species, then tools that require these inputs will fail to run.
 
 species	biosample	assembly	read1	read2
-NDM	NDM_biosample	test/simple/test_contig.fna	test/simple/test_R1.fq.gz	test/simple/test_R2.fq.gz
+Salmonella enterica	SAMN13012778	sample_folder/genome.fna	sample_folder/R1.fq.gz	sample_folder/R2.fq.gz
+

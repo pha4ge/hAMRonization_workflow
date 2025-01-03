@@ -1,46 +1,55 @@
 rule get_rgi_db:
-    output: 
-       card_db = os.path.join(config["params"]["db_dir"], "card", "card.json")
+    output:
+        card_db = os.path.join(config["params"]["db_dir"], "card", "card.json")
     params:
-        db_version = config['params']['rgi']['db_version'],
         db_dir = os.path.join(config["params"]["db_dir"], "card")
     log:
         "logs/rgi_db.log"
     shell:
-        """
+        """{{
         mkdir -p {params.db_dir}
-        curl https://card.mcmaster.ca/latest/data --output {params.db_dir}/card.tar.bz2
+        wget -c -q -O {params.db_dir}/card.tar.bz2 'https://card.mcmaster.ca/latest/data'
         tar -C {params.db_dir} -xvf {params.db_dir}/card.tar.bz2
+        rm -f {params.db_dir}/card.tar.bz2
+        }} >{log} 2>&1
         """
 
 rule run_rgi:
     input:
-        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        contigs = get_assembly,
         card_db = os.path.join(config["params"]["db_dir"], "card", "card.json")
     output:
         report = "results/{sample}/rgi/rgi.txt",
         metadata = "results/{sample}/rgi/metadata.txt"
     message: "Running rule run_rgi on {wildcards.sample} with contigs"
     log:
-       "logs/rgi_{sample}.log"
+        "logs/rgi_{sample}.log"
     conda:
-      "../envs/rgi.yaml"
+        "../envs/rgi.yaml"
     threads:
-       config["params"]["threads"]
+        config["params"]["threads"]
     params:
-        output_prefix = "results/{sample}/rgi/rgi"
+        out_dir = "results/{sample}/rgi"
     shell:
-       """
-       rgi load --card_json {input.card_db} > {log} 2>&1
-       rgi main --input_sequence {input.contigs} --output_file {params.output_prefix} --clean --num_threads {threads} >>{log} 2>&1
-
-       echo "--analysis_software_version $(rgi main --version)" > {output.metadata}
-       echo "--reference_database_version $(rgi database --version)" >> {output.metadata}
-       """
+        """{{
+        # Inconveniently we need to cd to the output directory because 'rgi load' writes
+        # its database where it runs, and we don't want two jobs writing in one location.
+        # Before we change directory we need to make all file paths absolute.
+        FNA="$(realpath '{input.contigs}')"
+        CARD="$(realpath '{input.card_db}')"
+        META="$(realpath '{output.metadata}')"
+        mkdir -p {params.out_dir}
+        cd {params.out_dir}
+        rgi load -i "$CARD" --local
+        rgi main --local --clean --input_sequence "$FNA" --output_file rgi --num_threads {threads}
+        # We extract the database version from the JSON, as 'rgi database -v' gives "N/A"
+        echo "--analysis_software_version $(rgi main --version) --reference_database_version $(jq -r '._version' "$CARD")" >"$META"
+        }} >{log} 2>&1
+        """
 
 rule hamronize_rgi:
     input:
-        contigs = lambda wildcards: _get_seq(wildcards, 'assembly'),
+        contigs = get_assembly,
         report = "results/{sample}/rgi/rgi.txt",
         metadata = "results/{sample}/rgi/metadata.txt"
     output:
@@ -49,5 +58,5 @@ rule hamronize_rgi:
         "../envs/hamronization.yaml"
     shell:
         """
-        hamronize rgi $(paste - - < {input.metadata}) --input_file_name {input.contigs} {input.report} > {output}
+        hamronize rgi $(cat {input.metadata}) --input_file_name {input.contigs} {input.report} > {output}
         """
