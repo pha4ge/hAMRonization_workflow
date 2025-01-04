@@ -13,8 +13,11 @@ rule get_groot_db:
        config["params"]["threads"]
     shell:
         """
-        rm -rf {params.db_dir}/groot_clustered
-        groot get -d {params.db_source} -o {params.db_dir}/groot_clustered
+        rm -rf {params.db_dir}/groot_clustered {params.db_dir}/groot_index
+        # the mv and tmp alternatives work around 'groot get' in container insisting
+        # that it cannot unpack in the output directory (while it did unpack fine in /tmp)
+        groot get -d {params.db_source} -o {params.db_dir}/groot_clustered >{log} 2>&1 || true
+        test -d {params.db_dir}/groot_clustered || mv /tmp/{params.db_source}.90 {params.db_dir}/groot_clustered/ || tar -C {params.db_dir}/groot_clustered -xf tmp.tar && rm -f tmp.tar
         groot index -p {threads} -m {params.db_dir}/groot_clustered/{params.db_source}.90 -i {output.db} -w {params.read_length} --log {log}
         """
 
