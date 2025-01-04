@@ -102,7 +102,7 @@ We suggest starting with a simple setup (you may skip this if you are familiar w
 You are ready to run the container.  While in the workspace directory, run:
 
     docker run -ti --rm --tmpfs .cache --tmpfs /tmp --tmpfs \
-        -v inputs:/inputs:ro -v config:/config:ro -v results:/results -v logs:/logs \
+        -v $PWD/inputs:/inputs:ro -v $PWD/config:/config:ro -v $PWD/results:/results -v $PWD/tlogs:/logs \
         run finlaymaguire/hamronization:1.1.0 \
         snakemake --configfile config/config.yaml --use-conda --cores 6
 
