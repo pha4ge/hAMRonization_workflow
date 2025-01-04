@@ -77,41 +77,36 @@ Run the configured workflow (change the job count according to your compute capa
 Docker
 ------
 
-**NOTE the Docker container for the latest version of is not yet available!**
+**NOTE the Docker container for the latest version of hAMRonization is not yet available!**
 
-Alternatively, the workflow can be run using Docker, Podman or Singularity.  Given the collective quirks of the bundled tools this will probably be easier for most users.
+Alternatively, the workflow can be run using a pre-built Docker image that contains all the tools and their databases.  Given the collective quirks of the bundled tools this is probably easier for most users.
 
-First get the docker container:
+To get the docker container:
 
-    docker pull finlaymaguire/hamronization:1.0.1
+    docker pull finlaymaguire/hamronization:1.1.0
 
-You can execute it in a couple of ways but the easiest is to just mount the folder containing your reads and run it interactively:
+> The previous command should also work for `podman` and `singularity`, but we have not yet tested this.  Give us a shout if you have this working!
 
-    docker run -it --privileged -v $HOST_FOLDER_CONTAINING_ISOLATES:/data finlaymaguire/hamronization:1.0.1 /bin/bash
+To run the workflow on your isolates, the container needs access to (1a) a workflow configuration (`config.yaml`) and (1b) isolate list (`isolates.tsv`), (2) the actual data (FASTA/FASTQ files), and (3) a `results` directory to write the its output in. (A `logs` directory in case things fail will also be helpful.)
 
-If our isolate data is in `~/isolates` the command to interactively run this container and get a bash terminal would be:
+We suggest starting with a simple setup (you may skip this if you are familiar with Docker mounts)
 
-    docker run -it --privileged -v ~/isolates:/data finlaymaguire/hamronization:1.0.1 /bin/bash
+ * Create a new empty directory which will serve as your workspace
+ * Inside the workspace create four directories: `config`, `inputs`, `results`, and `logs`
+ * Copy your FASTA/FASTQ files into the `inputs` directory (possibly organised in subdirectories)
+ * In the `config` directory create a file `isolates.tsv` (take `../test/test_data.tsv` as an example)
+ * In `config/isolates.tsv` add a line for each isolate and (this is the important bit) _make sure their file paths start with `inputs/`_
+ * In the `config` directory create a file `config.yaml` (again take `../test/test_config.yaml` as an example)
+ * In `config/config.yaml` you need to change _only one setting_: `samples: "config/isolates.tsv"`
 
-Then point your `sample_table.tsv` to that folder, entries for this example would be:
+You are ready to run the container.  While in the workspace directory, run:
 
-```
-species biosample       assembly        read1   read2
-Mycobacterium tuberculosis      SAMN02599008    /data/SAMN02599008/GCF_000662585.1.fna  /data/SAMN02599008/SRR1180160_R1.fastq.gz       /data/SAMN02599008/SRR1180160_R2.fastq.gz
-Mycobacterium tuberculosis      SAMN02599009    /data/SAMN02599009/GCF_000662586.1.fna  /data/SAMN02599009/SRR1180161_R1.fastq.gz       /data/SAMN02599009/SRR1180161_R2.fastq.gz
-```
+    docker run -ti --rm --tmpfs .cache --tmpfs /tmp --tmpfs \
+        -v inputs:/inputs:ro -v config:/config:ro -v results:/results -v logs:/logs \
+        run finlaymaguire/hamronization:1.1.0 \
+        snakemake --configfile config/config.yaml --use-conda --cores 6
 
-Then specify your `config.yaml` to use this `sample_table.tsv` and execute the pipeline from bash in the container by activating the top-level environment:
-
-    conda activate hamronization_workflow
-
-Then the workflow:
-
-    snakemake --configfile config/config.yaml --use-conda --cores 6
-
-*WARNING* You will have to extract your results folder (e.g. `cp results /data` for the example mounted volume) from the container if you wish to use them elsewhere.
-
-Note: kma/kmerresistance fails without explanation in the container (possibly zlib related, although adding the zlib headers didn't solve this). It is commented out for now.
+If the workflow runs successfully, results will be in `./results`.  If case of an error, check the latest file in the `logs` directory.
 
 
 Initial Run
