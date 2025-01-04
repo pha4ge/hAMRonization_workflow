@@ -18,7 +18,7 @@ mkdir -p "$TMP_DIR/logs" "$TMP_DIR/results"
 
 docker run -it --rm --tmpfs /.cache --tmpfs /run --tmpfs /tmp \
      -v "$TEST_DIR:/test:ro" -v "$TMP_DIR/results:/results" -v "$TMP_DIR/logs:/logs" \
-     'hamronization_workflow' \
+     'localhost/hamronization_workflow' \
      snakemake --configfile 'test/test_config.yaml' --use-conda --cores $(nproc) || true
 
 printf '

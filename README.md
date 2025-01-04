@@ -74,39 +74,43 @@ Run the configured workflow (change the job count according to your compute capa
 
     snakemake --configfile config/config.yaml --use-conda --jobs 2
 
-Docker
-------
+Docker / Podman / Singularity
+-----------------------------
 
-**NOTE the Docker container for the latest version of hAMRonization is not yet available!**
+**NOTE the Docker container for the latest version of hAMRonization is not yet available for download but a build script is available in the `docker` directory.**
 
-Alternatively, the workflow can be run using a pre-built Docker image that contains all the tools and their databases.  Given the collective quirks of the bundled tools this is probably easier for most users.
+Alternatively, the workflow can be run using a pre-built OCI image that contains all the tools and their databases.  Given the collective quirks of the bundled tools this is probably easier for most users.
 
-To get the docker container:
+To get the container (replace `docker` by `podman`, `singularity`, or `apptainer` if that is what you use):
 
-    docker pull finlaymaguire/hamronization:1.1.0
-
-> The previous command should also work for `podman` and `singularity`, but we have not yet tested this.  Give us a shout if you have this working!
+    docker pull docker://finlaymaguire/hamronization_workflow:1.1.0
 
 To run the workflow on your isolates, the container needs access to (1a) a workflow configuration (`config.yaml`) and (1b) isolate list (`isolates.tsv`), (2) the actual data (FASTA/FASTQ files), and (3) a `results` directory to write the its output in. (A `logs` directory in case things fail will also be helpful.)
 
-We suggest starting with a simple setup (you may skip this if you are familiar with Docker mounts)
+We suggest starting with this setup:
 
  * Create a new empty directory which will serve as your workspace
  * Inside the workspace create four directories: `config`, `inputs`, `results`, and `logs`
  * Copy your FASTA/FASTQ files into the `inputs` directory (possibly organised in subdirectories)
  * In the `config` directory create a file `isolates.tsv` (take `../test/test_data.tsv` as an example)
- * In `config/isolates.tsv` add a line for each isolate and (this is the important bit) _make sure their file paths start with `inputs/`_
+ * In `config/isolates.tsv` add a line for each isolate and (this is the important bit) _make sure their file paths start with `inputs/`_ because this is where the container will see them.
  * In the `config` directory create a file `config.yaml` (again take `../test/test_config.yaml` as an example)
- * In `config/config.yaml` you need to change _only one setting_: `samples: "config/isolates.tsv"`
+ * In `config/config.yaml` change _only one setting_: `samples: "config/isolates.tsv"` (again, this is where the container will see the isolates file).
 
-You are ready to run the container.  While in the workspace directory, run:
+You are ready to run the container.  While in the workspace directory:
 
-    docker run -ti --rm --tmpfs .cache --tmpfs /tmp --tmpfs \
+    # Works identically for podman (just use 'podman' instead of 'docker')
+    docker run -ti --rm --tmpfs /.cache --tmpfs /tmp --tmpfs /run \
         -v $PWD/inputs:/inputs:ro -v $PWD/config:/config:ro -v $PWD/results:/results -v $PWD/tlogs:/logs \
-        run finlaymaguire/hamronization:1.1.0 \
+        run finlaymaguire/hamronization_workflow:1.1.0 \
         snakemake --configfile config/config.yaml --use-conda --cores 6
 
-If the workflow runs successfully, results will be in `./results`.  If case of an error, check the latest file in the `logs` directory.
+    # Singularity/apptainer makes life easy: no hassle with mounts!
+    ./hamronization_workflow.sif snakemake --configfile config/config.yaml --use-conda --cores 6
+
+If the workflow runs successfully, results will be in `./results`.  In case of an error, check the most recent file in `./logs`.
+
+You are not bound to the above setup: you can mount any host directory in the container, at any mountpoint you like **except for the output directory which must be mounted at `/results`**.  (If you don't mount anything on `/results`, the results get written _inside_ the container.)  Just remember that the file paths in your isolate list are interpreted from _within_ the container (and relative to `/`).
 
 
 Initial Run

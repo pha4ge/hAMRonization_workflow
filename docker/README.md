@@ -1,10 +1,11 @@
 # Docker
 
-This directory has scripts to (locally) build and test the Docker container.
+This directory has scripts to (locally) build and test the Docker/Podman container.
 
 ## Building
 
-The `build-containers.sh` script successively builds 4 images:
+The `build-containers.sh` script successively builds 4 images, using `podman`
+if installed, else `docker`.
 
  * step 0: base Conda with only Snakemake added (= `envs/hamronization_workflow.yaml`)
  * step 1: step 0 with on top all tools, installed by Snakemake (= `envs/*.yaml`)
@@ -25,11 +26,10 @@ successful image from the prior step for debugging the failing step.
 
 ## Running
 
-The `run-*.sh` scripts are convenience wrappers for `docker run ...`, with
-the necessary mounts set up.
+The `run-*.sh` scripts are convenience wrappers for `podman|docker run ...`,
+with the necessary mounts set up.
 
 ## Testing
 
 The `test-final.sh` script runs the final container against the test data
-in `../test`, writing results and logs to `/tmp`.
-
+in `../test`, writing results and logs to a temporary directory in `/tmp`.

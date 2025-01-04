@@ -1,5 +1,5 @@
 # Base image 
-FROM continuumio/miniconda3
+FROM docker.io/continuumio/miniconda3
 
 # metadata
 LABEL base.image="miniconda3"
