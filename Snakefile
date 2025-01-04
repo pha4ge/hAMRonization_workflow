@@ -92,7 +92,7 @@ rule summarize_sample:
         expand("results/{sample}/deeparg-fqs/hamronized_report.tsv", sample=samples_with_readpair),
         expand("results/{sample}/groot/hamronized_report.tsv", sample=samples_with_readpair),
         expand("results/{sample}/kmerresistance/hamronized_report.tsv", sample=samples_with_readpair),
-#       expand("results/{sample}/mykrobe/hamronized_report.json", sample=samples_with_readpair),
+        expand("results/{sample}/mykrobe/hamronized_report.tsv", sample=samples_with_readpair),
         expand("results/{sample}/resfams/hamronized_report.tsv", sample=samples_with_assembly),
         expand("results/{sample}/resfinder-fna/hamronized_report.tsv", sample=samples_with_assembly),
         expand("results/{sample}/resfinder-fqs/hamronized_report.tsv", sample=samples_with_readpair),
@@ -118,7 +118,7 @@ include: "rules/ariba.smk"
 include: "rules/deeparg.smk"
 include: "rules/groot.smk"
 include: "rules/kmerresistance.smk"
-#include: "rules/mykrobe.smk"
+include: "rules/mykrobe.smk"
 include: "rules/resfams.smk"
 include: "rules/resfinder.smk"
 include: "rules/rgi.smk"
