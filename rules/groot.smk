@@ -19,6 +19,8 @@ rule get_groot_db:
         groot get -d {params.db_source} -o {params.db_dir}/groot_clustered >{log} 2>&1 || true
         test -d {params.db_dir}/groot_clustered || mv /tmp/{params.db_source}.90 {params.db_dir}/groot_clustered/ || tar -C {params.db_dir}/groot_clustered -xf tmp.tar && rm -f tmp.tar
         groot index -p {threads} -m {params.db_dir}/groot_clustered/{params.db_source}.90 -i {output.db} -w {params.read_length} --log {log}
+        # fix permissions on the directories created by groot (why 0700?), sure to fail in shared envs and non-root containers
+        chmod 0755 {params.db_dir}/groot_clustered {params.db_dir}/groot_index
         """
 
 rule run_groot:
