@@ -36,7 +36,7 @@ Excluded tools:
 
 Installation from source requires Conda or Miniconda to be installed.
 
-> Note: if you have Docker, Podman or Singularity, then the pre-built Docker container (see [below](#docker)) may be the easier way to go.
+> Note: if you have Docker or Podman, then the pre-built container (see below) may be the easier way to go.
 
 Install prerequisites for building this pipeline (on Ubuntu):
 
@@ -74,16 +74,17 @@ Run the configured workflow (change the job count according to your compute capa
 
     snakemake --configfile config/config.yaml --use-conda --jobs 2
 
-Docker / Podman / Singularity
------------------------------
+Podman / Docker
+---------------
 
-**NOTE the Docker container for the latest version of hAMRonization is not yet available for download but a build script is available in the `docker` directory.**
+**NOTE the Docker image for the latest version of hAMRonization is not yet available for download but a build script is available in the `docker` directory.**
 
-Alternatively, the workflow can be run using a pre-built OCI image that contains all the tools and their databases.  Given the collective quirks of the bundled tools this is probably easier for most users.
+Alternatively, the workflow can be run using a pre-built image that contains all the tools and their databases.  Given the collective quirks of the bundled tools this is probably easier for most users.
 
-To get the container (replace `docker` by `podman`, `singularity`, or `apptainer` if that is what you use):
+To get the container using `podman` (preferred) or `docker`:
 
-    docker pull docker://finlaymaguire/hamronization_workflow:1.1.0
+    podman pull docker.io/finlaymaguire/hamronization_workflow:1.1.0
+    docker pull docker.io/finlaymaguire/hamronization_workflow:1.1.0
 
 To run the workflow on your isolates, the container needs access to (1a) a workflow configuration (`config.yaml`) and (1b) isolate list (`isolates.tsv`), (2) the actual data (FASTA/FASTQ files), and (3) a `results` directory to write the its output in. (A `logs` directory in case things fail will also be helpful.)
 
@@ -99,14 +100,11 @@ We suggest starting with this setup:
 
 You are ready to run the container.  While in the workspace directory:
 
-    # Works identically for podman (just use 'podman' instead of 'docker')
-    docker run -ti --rm --tmpfs /.cache --tmpfs /tmp --tmpfs /run \
+    # Works identically for docker (just use 'docker' instead of 'podman')
+    podman run -ti --rm --tmpfs /.cache --tmpfs /tmp --tmpfs /run \
         -v $PWD/inputs:/inputs:ro -v $PWD/config:/config:ro -v $PWD/results:/results -v $PWD/tlogs:/logs \
         run finlaymaguire/hamronization_workflow:1.1.0 \
         snakemake --configfile config/config.yaml --use-conda --cores 6
-
-    # Singularity/apptainer makes life easy: no hassle with mounts!
-    ./hamronization_workflow.sif snakemake --configfile config/config.yaml --use-conda --cores 6
 
 If the workflow runs successfully, results will be in `./results`.  In case of an error, check the most recent file in `./logs`.
 
