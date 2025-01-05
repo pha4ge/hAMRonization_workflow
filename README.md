@@ -51,10 +51,12 @@ Create the Conda environment:
     cd hAMRonization_workflow
     conda env create -n hamronization_workflow --file envs/hamronization_workflow.yaml
 
-This may considerably speed up conda environment creation and create a more predictable outcome
+Configure the environment for a more predictable outcome:
 
     conda activate hamronization_workflow
+    conda config --env --add channels defaults --add channels bioconda --add channels conda-forge
     conda config --env --set channel_priority strict
+    conda update --all
 
 Run a smoke test (note this takes a while as Snakemake pulls in all the tools and databases upon its first run):
 
