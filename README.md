@@ -36,7 +36,7 @@ Excluded tools:
 
 Installation from source requires Conda or Miniconda to be installed.
 
-> Note: if you have Docker, Podman or Singularity, then the pre-built Docker container (see [below](#docker)) may be the easier way to go.
+> Note: if you have Docker or Podman, then the pre-built container (see below) may be the easier way to go.
 
 Install prerequisites for building this pipeline (on Ubuntu):
 
@@ -51,10 +51,12 @@ Create the Conda environment:
     cd hAMRonization_workflow
     conda env create -n hamronization_workflow --file envs/hamronization_workflow.yaml
 
-This may considerably speed up conda environment creation and create a more predictable outcome
+Configure the environment for a more predictable outcome:
 
     conda activate hamronization_workflow
+    conda config --env --add channels defaults --add channels bioconda --add channels conda-forge
     conda config --env --set channel_priority strict
+    conda update --all
 
 Run a smoke test (note this takes a while as Snakemake pulls in all the tools and databases upon its first run):
 
@@ -74,44 +76,41 @@ Run the configured workflow (change the job count according to your compute capa
 
     snakemake --configfile config/config.yaml --use-conda --jobs 2
 
-Docker
-------
+Podman / Docker
+---------------
 
-**NOTE the Docker container for the latest version of is not yet available!**
+**NOTE the Docker image for the latest version of hAMRonization is not yet available for download but a build script is available in the `docker` directory.**
 
-Alternatively, the workflow can be run using Docker, Podman or Singularity.  Given the collective quirks of the bundled tools this will probably be easier for most users.
+Alternatively, the workflow can be run using a pre-built image that contains all the tools and their databases.  Given the collective quirks of the bundled tools this is probably easier for most users.
 
-First get the docker container:
+To get the container using `podman` (preferred) or `docker`:
 
-    docker pull finlaymaguire/hamronization:1.0.1
+    podman pull docker.io/finlaymaguire/hamronization_workflow:1.1.0
+    docker pull docker.io/finlaymaguire/hamronization_workflow:1.1.0
 
-You can execute it in a couple of ways but the easiest is to just mount the folder containing your reads and run it interactively:
+To run the workflow on your isolates, the container needs access to (1a) a workflow configuration (`config.yaml`) and (1b) isolate list (`isolates.tsv`), (2) the actual data (FASTA/FASTQ files), and (3) a `results` directory to write the its output in. (A `logs` directory in case things fail will also be helpful.)
 
-    docker run -it --privileged -v $HOST_FOLDER_CONTAINING_ISOLATES:/data finlaymaguire/hamronization:1.0.1 /bin/bash
+We suggest starting with this setup:
 
-If our isolate data is in `~/isolates` the command to interactively run this container and get a bash terminal would be:
+ * Create a new empty directory which will serve as your workspace
+ * Inside the workspace create four directories: `config`, `inputs`, `results`, and `logs`
+ * Copy your FASTA/FASTQ files into the `inputs` directory (possibly organised in subdirectories)
+ * In the `config` directory create a file `isolates.tsv` (take `../test/test_data.tsv` as an example)
+ * In `config/isolates.tsv` add a line for each isolate and (this is the important bit) _make sure their file paths start with `inputs/`_ because this is where the container will see them.
+ * In the `config` directory create a file `config.yaml` (again take `../test/test_config.yaml` as an example)
+ * In `config/config.yaml` change _only one setting_: `samples: "config/isolates.tsv"` (again, this is where the container will see the isolates file).
 
-    docker run -it --privileged -v ~/isolates:/data finlaymaguire/hamronization:1.0.1 /bin/bash
+You are ready to run the container.  While in the workspace directory:
 
-Then point your `sample_table.tsv` to that folder, entries for this example would be:
+    # Works identically for docker (just use 'docker' instead of 'podman')
+    podman run -ti --rm --tmpfs /.cache --tmpfs /tmp --tmpfs /run \
+        -v $PWD/inputs:/inputs:ro -v $PWD/config:/config:ro -v $PWD/results:/results -v $PWD/tlogs:/logs \
+        run finlaymaguire/hamronization_workflow:1.1.0 \
+        snakemake --configfile config/config.yaml --use-conda --cores 6
 
-```
-species biosample       assembly        read1   read2
-Mycobacterium tuberculosis      SAMN02599008    /data/SAMN02599008/GCF_000662585.1.fna  /data/SAMN02599008/SRR1180160_R1.fastq.gz       /data/SAMN02599008/SRR1180160_R2.fastq.gz
-Mycobacterium tuberculosis      SAMN02599009    /data/SAMN02599009/GCF_000662586.1.fna  /data/SAMN02599009/SRR1180161_R1.fastq.gz       /data/SAMN02599009/SRR1180161_R2.fastq.gz
-```
+If the workflow runs successfully, results will be in `./results`.  In case of an error, check the most recent file in `./logs`.
 
-Then specify your `config.yaml` to use this `sample_table.tsv` and execute the pipeline from bash in the container by activating the top-level environment:
-
-    conda activate hamronization_workflow
-
-Then the workflow:
-
-    snakemake --configfile config/config.yaml --use-conda --cores 6
-
-*WARNING* You will have to extract your results folder (e.g. `cp results /data` for the example mounted volume) from the container if you wish to use them elsewhere.
-
-Note: kma/kmerresistance fails without explanation in the container (possibly zlib related, although adding the zlib headers didn't solve this). It is commented out for now.
+You are not bound to the above setup: you can mount any host directory in the container, at any mountpoint you like **except for the output directory which must be mounted at `/results`**.  (If you don't mount anything on `/results`, the results get written _inside_ the container.)  Just remember that the file paths in your isolate list are interpreted from _within_ the container (and relative to `/`).
 
 
 Initial Run

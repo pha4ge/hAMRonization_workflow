@@ -9,7 +9,7 @@ rule get_rgi_db:
         """{{
         mkdir -p {params.db_dir}
         wget -c -q -O {params.db_dir}/card.tar.bz2 'https://card.mcmaster.ca/latest/data'
-        tar -C {params.db_dir} -xvf {params.db_dir}/card.tar.bz2
+        tar -C {params.db_dir} -xf {params.db_dir}/card.tar.bz2
         rm -f {params.db_dir}/card.tar.bz2
         }} >{log} 2>&1
         """

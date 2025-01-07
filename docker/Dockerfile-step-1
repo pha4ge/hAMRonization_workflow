@@ -1,0 +1,56 @@
+# Base image 
+FROM docker.io/continuumio/miniconda3
+
+# metadata
+LABEL base.image="miniconda3"
+LABEL version="1"
+LABEL software="hAMRonization"
+LABEL software.version="1.0.0"
+LABEL description="Workflow for running many AMR tools on a set of reads/contigs"
+LABEL website="https://github.com/pha4ge/hamronization"
+LABEL documentation="https://github.com/pha4ge/hamronization_workflow"
+LABEL license="https://github.com/pha4ge/hAMRonization/blob/master/LICENSE.txt"
+LABEL tags="Genomics"
+
+# maintainer
+MAINTAINER Finlay Maguire <finlaymaguire@gmail.com>
+
+# install system requirements
+RUN apt-get -qq update --fix-missing && apt-get -qq install apt-utils && dpkg --configure -a && \
+    apt-get -qq install --no-install-recommends git build-essential curl wget unzip bzip2 gnupg zlib1g-dev file jq vim \
+    && apt-get -qq clean && rm -rf /var/lib/apt/lists/*
+
+# stop container's bash from leaving .bash_histories everywhere and add convenience aliases for interactive use
+RUN echo "unset HISTFILE" >>/etc/bash.bashrc && \
+    echo "alias ls='ls --color=auto' l='ls -CF' la='l -a' ll='l -l' lla='ll -a'" >>/etc/bash.bashrc
+
+# system-wide channels probably best off with the usual trio and strict priority for predictability
+RUN conda config --system --add channels defaults --add channels bioconda --add channels conda-forge && \
+    conda config --system --set channel_priority strict && \
+    conda update -n base --all
+
+# install and run in root (weird but keeps user mounts simplest)
+WORKDIR /
+
+# install the setup (note the .dockerignore file!)
+COPY envs envs
+COPY rules rules
+COPY test test
+COPY Snakefile .
+
+# install snakemake straight in base, so no activate needed from user (shouldn't break conda)
+RUN conda env update -n base -f envs/hamronization_workflow.yaml
+
+# The following three steps could all be done in a single compound RUN command, but as especially
+# steps 2 and 3 take ages, having Docker commits in between them makes debugging easy: comment
+# out the subsequent steps and rebuild up to the last successful commit, then enter that image.
+
+# make Snakemake install all conda environments (but not the non-conda binary deps or databases)
+RUN snakemake --configfile test/test_config.yaml --use-conda --conda-cleanup-pkgs cache --jobs 1 --conda-create-envs-only
+
+# make Snakemake install the the non-conda binary deps (but not the databases)
+#RUN snakemake --configfile test/test_config.yaml --use-conda --conda-cleanup-pkgs cache --jobs 1 bindeps/resistome bindeps/rarefaction bindeps/snpfinder
+
+# this maiden run pulls all databases in, thus finalising the self-contained image
+#RUN snakemake --configfile test/test_config.yaml --use-conda --conda-cleanup-pkgs cache --jobs 1 results/hamronized_report.tsv && \
+#    rm -rf results

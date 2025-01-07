@@ -17,9 +17,9 @@ rule get_amrplusplus_db:
 
 rule get_amrplusplus_binaries:
     output:
-        resistome_tool = os.path.join(config["params"]["binary_dir"], 'resistomeanalyzer', 'resistome'),
-        rarefaction_tool = os.path.join(config["params"]["binary_dir"], 'rarefactionanalyzer', 'rarefaction'),
-        snp_tool = os.path.join(config["params"]["binary_dir"], 'snpfinder', 'snpfinder')
+        resistome_tool = os.path.join(config["params"]["binary_dir"], 'resistome'),
+        rarefaction_tool = os.path.join(config["params"]["binary_dir"], 'rarefaction'),
+        snp_tool = os.path.join(config["params"]["binary_dir"], 'snpfinder')
     params:
         bin_dir = config['params']['binary_dir'],
         snpfinder_version = config['params']['amrplusplus']["snpfinder_version"],
@@ -27,22 +27,21 @@ rule get_amrplusplus_binaries:
         rarefaction_analyzer_version = config['params']['amrplusplus']["rarefactionanalyzer_version"]
     shell:
         """
-        mkdir -p {params.bin_dir}
-        cd {params.bin_dir}
-        git clone https://github.com/cdeanj/snpfinder
-        cd snpfinder
-        git checkout {params.snpfinder_version}
-        make
-        cd ..
-        git clone https://github.com/cdeanj/rarefactionanalyzer
-        cd rarefactionanalyzer
-        git checkout {params.rarefaction_analyzer_version}
-        make
-        cd ..
-        git clone https://github.com/cdeanj/resistomeanalyzer
-        cd resistomeanalyzer
-        git checkout {params.resistome_analyzer_version}
-        make
+        rm -rf {output.resistome_tool} {output.rarefaction_tool} {output.snp_tool}
+        TMP_DIR="$(mktemp -d)"
+        git clone https://github.com/cdeanj/snpfinder $TMP_DIR/snpfinder
+        git -C $TMP_DIR/snpfinder checkout {params.snpfinder_version}
+        make -C $TMP_DIR/snpfinder
+        mv $TMP_DIR/snpfinder/snpfinder {output.snp_tool}
+        git clone https://github.com/cdeanj/rarefactionanalyzer $TMP_DIR/rarefaction
+        git -C $TMP_DIR/rarefaction checkout {params.rarefaction_analyzer_version}
+        make -C $TMP_DIR/rarefaction
+        mv $TMP_DIR/rarefaction/rarefaction {output.rarefaction_tool}
+        git clone https://github.com/cdeanj/resistomeanalyzer $TMP_DIR/resistome
+        git -C $TMP_DIR/resistome checkout {params.resistome_analyzer_version}
+        make -C $TMP_DIR/resistome
+        mv $TMP_DIR/resistome/resistome {output.resistome_tool}
+        rm -rf "$TMP_DIR"
         """
 
 rule run_amrplusplus:
@@ -51,9 +50,9 @@ rule run_amrplusplus:
         read2 = get_read2,
         megares_db = os.path.join(config["params"]["db_dir"], "megares", "megares_full_database_v2.00.fasta"),
         megares_annot = os.path.join(config["params"]["db_dir"], "megares", "megares_full_annotations_v2.00.csv"),
-        resistome_tool = os.path.join(config["params"]["binary_dir"], 'resistomeanalyzer', 'resistome'),
-        rarefaction_tool = os.path.join(config["params"]["binary_dir"], 'rarefactionanalyzer', 'rarefaction'),
-        snp_tool = os.path.join(config["params"]["binary_dir"], 'snpfinder', 'snpfinder')
+        resistome_tool = os.path.join(config["params"]["binary_dir"], 'resistome'),
+        rarefaction_tool = os.path.join(config["params"]["binary_dir"], 'rarefaction'),
+        snp_tool = os.path.join(config["params"]["binary_dir"], 'snpfinder')
     output:
         amr_class = "results/{sample}/amrplusplus/class.tsv",
         amr_gene  = "results/{sample}/amrplusplus/gene.tsv",
