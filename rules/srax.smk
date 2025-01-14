@@ -1,46 +1,43 @@
 rule run_srax:
     input:
-        genome_dir = lambda w: os.path.dirname(get_assembly(w))
+        contigs = get_assembly
     output:
-        report = "results/{sample}/srax/Summary_files/sraX_detected_ARGs.tsv",
+        report = "results/{sample}/srax/sraX_detected_ARGs.tsv",
         metadata = "results/{sample}/srax/metadata.txt"
     message: "Running rule run_srax on {wildcards.sample} with contigs"
     log:
-       "logs/srax_{sample}.log"
+        "logs/srax_{sample}.log"
     conda:
-      "../envs/srax.yaml"
+        "../envs/srax.yaml"
     threads:
-       config["params"]["threads"]
+        config["params"]["threads"]
     params:
-       dbtype = config["params"]["srax"]["dbtype"],
-       outdir = "results/{sample}/srax",
-       tmp_output_dir = "results/{sample}/srax/tmp",
-       log_output_dir = "results/{sample}/srax/Log",
-       ARG_DB_output_dir = "results/{sample}/srax/ARG_DB",
-       analysis_output_dir = "results/{sample}/srax/Analysis",
-       result_output_dir = "results/{sample}/srax/Results",
-       dateformat = config["params"]["dateformat"]
+        dbtype = config["params"]["srax"]["dbtype"],
+        dateformat = config["params"]["dateformat"]
     shell:
+        """{{
+        mkdir -p $(dirname {output.report})
+        # copy input to a temp directory because sraX processes every fasta file in its input directory
+        TMPDIR=$(mktemp -d)
+        cp {input.contigs} $TMPDIR/
+        sraX -i $TMPDIR -t 4 -db {params.dbtype} -o $TMPDIR/output
+        mv $TMPDIR/output/Results/Summary_files/sraX_detected_ARGs.tsv {output.report}
+        rm -rf $TMPDIR
+        }} >{log} 2>&1
+        printf -- '--analysis_software_version %s --reference_database_version %s --reference_database_name srax_{params.dbtype}_amr_db' \
+                     $(sraX --version | fgrep version | cut -d: -f2)   $(date '+{params.dateformat}')  >{output.metadata}
        """
-       sraX -i {input.genome_dir} -t 4 -db {params.dbtype} -o {params.outdir} > {log} 2>&1
-       mv {params.result_output_dir}/* {params.outdir}
-       sraX --version | grep version | perl -p -e 's/.+version: (.+)/--analysis_software_version $1/' > {output.metadata}
-       date +"{params.dateformat}" | perl -p -e 's/(.+)/--reference_database_version $1/' >> {output.metadata}
-       """
-#       rm -rf {params.tmp_output_dir} {params.log_output_dir} {params.ARG_DB_output_dir} {params.analysis_output_dir} {params.result_output_dir}
 
 rule hamronize srax:
     input:
         contigs = get_assembly,
-        report = "results/{sample}/srax/Summary_files/sraX_detected_ARGs.tsv",
+        report = "results/{sample}/srax/sraX_detected_ARGs.tsv",
         metadata = "results/{sample}/srax/metadata.txt"
     output:
         "results/{sample}/srax/hamronized_report.tsv"
-    params:
-        dbtype = config["params"]["srax"]["dbtype"]
     conda:
         "../envs/hamronization.yaml"
     shell:
         """
-        hamronize srax --input_file_name {input.contigs} $(paste - - < {input.metadata}) --reference_database_name srax_{params.dbtype}_amr_db {input.report} > {output}
+        hamronize srax --input_file_name {input.contigs} $(cat {input.metadata}) {input.report} > {output}
         """
